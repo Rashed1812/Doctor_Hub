@@ -1,0 +1,168 @@
+@{
+    ViewData["Title"] = "تم إرسال طلب الشراكة بنجاح";
+}
+<link href="~/css/Success.css" rel="stylesheet" />
+<div class="main-content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Success Message -->
+                <div class="text-center mb-5">
+                    <div class="success-icon mb-4">
+                        <i class="fas fa-check-circle text-success" style="font-size: 5rem;"></i>
+                    </div>
+                    <h1 class="display-4 fw-bold text-success mb-3">تم بنجاح!</h1>
+                    <p class="lead text-muted">تم إرسال طلب الشراكة بنجاح</p>
+                </div>
+
+                <!-- Success Card -->
+                <div class="card shadow-lg border-0 mb-5">
+                    <div class="card-body p-5 text-center">
+                        <div class="row">
+                            <div class="col-12">
+                                <h3 class="text-primary fw-bold mb-4">
+                                    <i class="fas fa-handshake me-2"></i>شكراً لاختياركم التعاون معنا
+                                </h3>
+                                <p class="lead mb-4">
+                                    تم استلام طلب الشراكة الخاص بكم بنجاح. سيقوم فريقنا المختص بمراجعة الطلب والتواصل معكم خلال 24-48 ساعة.
+                                </p>
+                                
+                                <!-- Next Steps -->
+                                <div class="row g-4 mb-4">
+                                    <div class="col-md-4">
+                                        <div class="step-item">
+                                            <div class="step-number bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                                <span class="fw-bold">1</span>
+                                            </div>
+                                            <h5 class="fw-bold">مراجعة الطلب</h5>
+                                            <p class="text-muted">سيتم مراجعة طلبكم من قبل فريق الشراكات المختص</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="step-item">
+                                            <div class="step-number bg-success text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                                <span class="fw-bold">2</span>
+                                            </div>
+                                            <h5 class="fw-bold">التواصل معكم</h5>
+                                            <p class="text-muted">سنتواصل معكم لمناقشة تفاصيل الشراكة</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="step-item">
+                                            <div class="step-number bg-info text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 60px; height: 60px;">
+                                                <span class="fw-bold">3</span>
+                                            </div>
+                                            <h5 class="fw-bold">بدء الشراكة</h5>
+                                            <p class="text-muted">بعد الاتفاق سنبدأ رحلة الشراكة الناجحة</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="row g-4 mb-5">
+                    <div class="col-md-6">
+                        <div class="card border-0 bg-light-blue h-100">
+                            <div class="card-body text-center p-4">
+                                <div class="text-primary mb-3">
+                                    <i class="fas fa-envelope fa-3x"></i>
+                                </div>
+                                <h5 class="fw-bold">البريد الإلكتروني</h5>
+                                <p class="text-muted mb-3">للاستفسارات العاجلة</p>
+                                <a href="mailto:doctorhub2025@outlock.com" class="btn btn-outline-primary">
+                                    doctorhub2025@outlock.com
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-0 bg-light-green h-100">
+                            <div class="card-body text-center p-4">
+                                <div class="text-success mb-3">
+                                    <i class="fab fa-whatsapp fa-3x"></i>
+                                </div>
+                                <h5 class="fw-bold">واتساب</h5>
+                                <p class="text-muted mb-3">للتواصل السريع</p>
+                                <a href="https://wa.me/9647715513344" class="btn btn-outline-success" target="_blank">
+                                    <i class="fab fa-whatsapp me-1"></i>تواصل عبر واتساب
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="text-center">
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-primary btn-lg me-md-2">
+                            <i class="fas fa-home me-2"></i>العودة للرئيسية
+                        </a>
+                        <a asp-controller="Partnership" asp-action="Index" class="btn btn-outline-primary btn-lg">
+                            <i class="fas fa-info-circle me-2"></i>معرفة المزيد عن الشراكات
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Additional Information -->
+                <div class="alert alert-info mt-5" role="alert">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-info-circle fa-2x me-3"></i>
+                        <div>
+                            <h5 class="alert-heading fw-bold mb-2">معلومة مهمة</h5>
+                            <p class="mb-0">
+                                في حالة عدم تلقي رد خلال 48 ساعة، يرجى التواصل معنا مباشرة عبر الهاتف أو البريد الإلكتروني.
+                                نحن نقدر وقتكم ونسعى لتقديم أفضل خدمة ممكنة.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Auto redirect after 10 seconds (optional)
+        // setTimeout(function() {
+        //     window.location.href = '@Url.Action("Index", "Home")';
+        // }, 10000);
+
+        // Success animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const successIcon = document.querySelector('.success-icon i');
+            if (successIcon) {
+                successIcon.style.transform = 'scale(0)';
+                successIcon.style.transition = 'transform 0.5s ease-in-out';
+                
+                setTimeout(function() {
+                    successIcon.style.transform = 'scale(1)';
+                }, 200);
+            }
+
+            // Animate step numbers
+            const stepNumbers = document.querySelectorAll('.step-number');
+            stepNumbers.forEach(function(step, index) {
+                step.style.transform = 'scale(0)';
+                step.style.transition = 'transform 0.3s ease-in-out';
+                
+                setTimeout(function() {
+                    step.style.transform = 'scale(1)';
+                }, 500 + (index * 200));
+            });
+        });
+
+        // Show success message if available
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+            toastr.success('@TempData["SuccessMessage"]');
+            </text>
+        }
+    </script>
+}
+
+

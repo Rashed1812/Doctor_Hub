@@ -1,0 +1,398 @@
+@model IEnumerable<DAL.Data.Models.DoctorJoinRequest>
+@{
+    ViewData["Title"] = "إدارة طلبات الأطباء";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="doctor-requests-page">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">طلبات انضمام الأطباء</h2>
+            <p class="text-muted mb-0">إدارة ومراجعة طلبات الأطباء للانضمام للفريق الطبي</p>
+        </div>
+        <div>
+            <button class="btn btn-outline-primary me-2" onclick="filterRequests('all')">
+                <i class="fas fa-list me-1"></i>جميع الطلبات
+            </button>
+            <button class="btn btn-outline-warning me-2" onclick="filterRequests('pending')">
+                <i class="fas fa-clock me-1"></i>قيد المراجعة
+            </button>
+            <button class="btn btn-outline-success" onclick="filterRequests('approved')">
+                <i class="fas fa-check me-1"></i>مقبولة
+            </button>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center p-3">
+                    <i class="fas fa-file-alt fa-2x text-primary mb-2"></i>
+                    <h4 class="fw-bold mb-1">@Model.Count()</h4>
+                    <small class="text-muted">إجمالي الطلبات</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center p-3">
+                    <i class="fas fa-clock fa-2x text-warning mb-2"></i>
+                    <h4 class="fw-bold mb-1">@Model.Count(r => r.Status == DAL.Data.Models.JoinRequestStatus.Pending)</h4>
+                    <small class="text-muted">قيد المراجعة</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center p-3">
+                    <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
+                    <h4 class="fw-bold mb-1">@Model.Count(r => r.Status == DAL.Data.Models.JoinRequestStatus.Approved)</h4>
+                    <small class="text-muted">مقبولة</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center p-3">
+                    <i class="fas fa-times-circle fa-2x text-danger mb-2"></i>
+                    <h4 class="fw-bold mb-1">@Model.Count(r => r.Status == DAL.Data.Models.JoinRequestStatus.Rejected)</h4>
+                    <small class="text-muted">مرفوضة</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Requests Table -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-transparent border-0 p-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="card-title fw-bold mb-0">
+                    <i class="fas fa-table me-2"></i>قائمة الطلبات
+                </h5>
+                <div class="search-box">
+                    <input type="text" class="form-control" placeholder="البحث في الطلبات..." id="searchInput">
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            @if (Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0" id="requestsTable">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="border-0 fw-bold">الطبيب</th>
+                                <th class="border-0 fw-bold">التخصصات</th>
+                                <th class="border-0 fw-bold">سنوات الخبرة</th>
+                                <th class="border-0 fw-bold">الحالة</th>
+                                <th class="border-0 fw-bold">تاريخ التقديم</th>
+                                <th class="border-0 fw-bold">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var request in Model.OrderByDescending(r => r.Id))
+                            {
+                                <tr class="request-row" data-status="@request.Status.ToString().ToLower()">
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="doctor-avatar bg-primary bg-gradient rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                                <i class="fas fa-user-md text-white"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0 fw-bold">@request.FullName</h6>
+                                                <small class="text-muted">@request.Email</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @if (request.DoctorSpecialties != null && request.DoctorSpecialties.Any())
+                                        {
+                                            @foreach (var specialty in request.DoctorSpecialties.Take(2))
+                                            {
+                                                <span class="badge bg-light text-dark me-1 mb-1">@specialty.MedicalSpecialty?.Name</span>
+                                            }
+                                            @if (request.DoctorSpecialties.Count() > 2)
+                                            {
+                                                <span class="badge bg-secondary">+@(request.DoctorSpecialties.Count() - 2)</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">غير محدد</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <span class="fw-bold">@request.ExperienceYears</span>
+                                        <small class="text-muted d-block">سنة</small>
+                                    </td>
+                                    <td>
+                                        @switch (request.Status)
+                                        {
+                                            case DAL.Data.Models.JoinRequestStatus.Pending:
+                                                <span class="badge bg-warning text-dark">
+                                                    <i class="fas fa-clock me-1"></i>قيد المراجعة
+                                                </span>
+                                                break;
+                                            case DAL.Data.Models.JoinRequestStatus.Approved:
+                                                <span class="badge bg-success">
+                                                    <i class="fas fa-check me-1"></i>مقبول
+                                                </span>
+                                                break;
+                                            case DAL.Data.Models.JoinRequestStatus.Rejected:
+                                                <span class="badge bg-danger">
+                                                    <i class="fas fa-times me-1"></i>مرفوض
+                                                </span>
+                                                break;
+                                        }
+                                    </td>
+                                    <td>
+                                        <span class="fw-bold">@DateTime.Now.ToString("dd/MM/yyyy")</span>
+                                        <small class="text-muted d-block">@DateTime.Now.ToString("HH:mm")</small>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a asp-controller="DoctorJoinRequests" asp-action="Details" asp-route-id="@request.Id" 
+                                               class="btn btn-sm btn-outline-info" title="عرض التفاصيل">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            @if (request.Status == DAL.Data.Models.JoinRequestStatus.Pending)
+                                            {
+                                                <button type="button" class="btn btn-sm btn-outline-success" 
+                                                        onclick="approveDoctor(@request.Id)" title="قبول">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-outline-danger" 
+                                                        onclick="rejectDoctor(@request.Id)" title="رفض">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            }
+                                            <button type="button" class="btn btn-sm btn-outline-danger" 
+                                                    onclick="deleteDoctorRequest(@request.Id)" title="حذف">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <i class="fas fa-inbox fa-4x text-muted mb-3"></i>
+                    <h5 class="text-muted">لا توجد طلبات حالياً</h5>
+                    <p class="text-muted">سيتم عرض طلبات انضمام الأطباء هنا عند توفرها</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Confirmation Modals -->
+<div class="modal fade" id="approveModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">تأكيد قبول الطبيب</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>هل أنت متأكد من قبول هذا الطبيب؟</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-success" id="confirmApprove">تأكيد القبول</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="rejectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">تأكيد رفض الطبيب</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>هل أنت متأكد من رفض هذا الطبيب؟</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-danger" id="confirmReject">تأكيد الرفض</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .doctor-avatar {
+        transition: transform 0.3s ease;
+    }
+    
+    .request-row:hover .doctor-avatar {
+        transform: scale(1.1);
+    }
+    
+    .request-row {
+        transition: background-color 0.3s ease;
+    }
+    
+    .request-row:hover {
+        background-color: rgba(102, 126, 234, 0.05);
+    }
+    
+    .btn-group .btn {
+        margin: 0 2px;
+    }
+    
+    .search-box input {
+        border-radius: 25px;
+        border: 2px solid #e9ecef;
+        padding: 8px 15px;
+        width: 250px;
+    }
+    
+    .search-box input:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+</style>
+
+@section Scripts {
+    <script>
+        let currentDoctorId = null;
+        
+        function approveDoctor(doctorId) {
+            currentDoctorId = doctorId;
+            $('#approveModal').modal('show');
+        }
+        
+        function rejectDoctor(doctorId) {
+            currentDoctorId = doctorId;
+            $('#rejectModal').modal('show');
+        }
+        
+        document.getElementById('confirmApprove').addEventListener('click', function() {
+            if (currentDoctorId) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '@Url.Action("ApproveDoctor", "Admin")';
+                
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'id';
+                input.value = currentDoctorId;
+                
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+        
+        document.getElementById('confirmReject').addEventListener('click', function() {
+            if (currentDoctorId) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '@Url.Action("RejectDoctor", "Admin")';
+                
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'id';
+                input.value = currentDoctorId;
+                
+                form.appendChild(input);
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+        
+        function filterRequests(status) {
+            const rows = document.querySelectorAll('.request-row');
+            rows.forEach(row => {
+                if (status === 'all' || row.dataset.status === status) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        
+        function deleteDoctorRequest(doctorId) {
+            if (confirm('هل أنت متأكد من حذف هذا الطلب؟ هذا الإجراء لا يمكن التراجع عنه.')) {
+                fetch(`/Admin/DeleteDoctorRequest/${doctorId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // إظهار رسالة نجاح
+                        const successAlert = document.createElement('div');
+                        successAlert.className = 'alert alert-success alert-dismissible fade show position-fixed';
+                        successAlert.style.top = '20px';
+                        successAlert.style.right = '20px';
+                        successAlert.style.zIndex = '9999';
+                        successAlert.innerHTML = `
+                            <i class="fas fa-check-circle me-2"></i>${data.message}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        `;
+                        document.body.appendChild(successAlert);
+                        
+                        // إعادة تحميل الصفحة بعد ثانيتين
+                        setTimeout(() => {
+                            location.reload();
+                        }, 2000);
+                    } else {
+                        // إظهار رسالة خطأ
+                        const errorAlert = document.createElement('div');
+                        errorAlert.className = 'alert alert-danger alert-dismissible fade show position-fixed';
+                        errorAlert.style.top = '20px';
+                        errorAlert.style.right = '20px';
+                        errorAlert.style.zIndex = '9999';
+                        errorAlert.innerHTML = `
+                            <i class="fas fa-exclamation-circle me-2"></i>${data.message}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        `;
+                        document.body.appendChild(errorAlert);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    const errorAlert = document.createElement('div');
+                    errorAlert.className = 'alert alert-danger alert-dismissible fade show position-fixed';
+                    errorAlert.style.top = '20px';
+                    errorAlert.style.right = '20px';
+                    errorAlert.style.zIndex = '9999';
+                    errorAlert.innerHTML = `
+                        <i class="fas fa-exclamation-circle me-2"></i>حدث خطأ أثناء حذف الطلب
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    `;
+                    document.body.appendChild(errorAlert);
+                });
+            }
+        }
+        
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('.request-row');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
+}
+

@@ -1,0 +1,503 @@
+@{
+    ViewData["Title"] = "إدارة الشراكات";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold text-primary mb-1">
+            <i class="fas fa-handshake me-2"></i>إدارة الشراكات
+        </h2>
+        <p class="text-muted mb-0">عرض وإدارة جميع طلبات الشراكة</p>
+    </div>
+    <div>
+        <button class="btn btn-primary" onclick="refreshPartnerships()">
+            <i class="fas fa-sync-alt me-2"></i>تحديث
+        </button>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row g-4 mb-4">
+    <div class="col-lg-3 col-md-6">
+        <div class="stats-card">
+            <div class="stats-icon text-warning">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stats-number" id="pendingCount">0</div>
+            <div class="stats-text">قيد المراجعة</div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="stats-card">
+            <div class="stats-icon text-success">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stats-number" id="approvedCount">0</div>
+            <div class="stats-text">مقبولة</div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="stats-card">
+            <div class="stats-icon text-danger">
+                <i class="fas fa-times-circle"></i>
+            </div>
+            <div class="stats-number" id="rejectedCount">0</div>
+            <div class="stats-text">مرفوضة</div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="stats-card">
+            <div class="stats-icon text-primary">
+                <i class="fas fa-handshake"></i>
+            </div>
+            <div class="stats-number" id="totalCount">0</div>
+            <div class="stats-text">إجمالي الطلبات</div>
+        </div>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="card mb-4">
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-md-3">
+                <label class="form-label fw-bold">حالة الطلب</label>
+                <select id="statusFilter" class="form-select">
+                    <option value="">جميع الحالات</option>
+                    <option value="Pending">قيد المراجعة</option>
+                    <option value="Approved">مقبول</option>
+                    <option value="Rejected">مرفوض</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">نوع الشراكة</label>
+                <select id="typeFilter" class="form-select">
+                    <option value="">جميع الأنواع</option>
+                    <option value="شراكة طبية">شراكة طبية</option>
+                    <option value="شراكة إعلانية">شراكة إعلانية</option>
+                    <option value="شراكة تقنية">شراكة تقنية</option>
+                    <option value="شراكة تجارية">شراكة تجارية</option>
+                    <option value="شراكة تدريبية">شراكة تدريبية</option>
+                    <option value="أخرى">أخرى</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">البحث</label>
+                <input type="text" id="searchInput" class="form-control" placeholder="اسم الشركة أو الشخص المسؤول">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label fw-bold">&nbsp;</label>
+                <div class="d-grid">
+                    <button class="btn btn-outline-secondary" onclick="clearFilters()">
+                        <i class="fas fa-eraser me-2"></i>مسح الفلاتر
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Partnerships Table -->
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">
+            <i class="fas fa-list me-2"></i>قائمة الشراكات
+        </h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0" id="partnershipsTable">
+                <thead>
+                    <tr>
+                        <th>الشركة</th>
+                        <th>الشخص المسؤول</th>
+                        <th>نوع الشراكة</th>
+                        <th>تاريخ الطلب</th>
+                        <th>الحالة</th>
+                        <th>عاجل</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="partnershipsTableBody">
+                    <!-- Data will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Partnership Details Modal -->
+<div class="modal fade" id="partnershipModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-info-circle me-2"></i>تفاصيل الشراكة
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body" id="partnershipDetails">
+                <!-- Details will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Status Update Modal -->
+<div class="modal fade" id="statusModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-edit me-2"></i>تحديث حالة الشراكة
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="statusForm">
+                    <input type="hidden" id="partnershipId">
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">الحالة الجديدة</label>
+                        <select id="newStatus" class="form-select" required>
+                            <option value="Pending">قيد المراجعة</option>
+                            <option value="Approved">مقبول</option>
+                            <option value="Rejected">مرفوض</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3" id="rejectionReasonDiv" style="display: none;">
+                        <label class="form-label fw-bold">سبب الرفض</label>
+                        <textarea id="rejectionReason" class="form-control" rows="3" placeholder="اذكر سبب رفض الطلب"></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">ملاحظات الإدارة</label>
+                        <textarea id="adminNotes" class="form-control" rows="3" placeholder="ملاحظات إضافية (اختياري)"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary" onclick="updateStatus()">
+                    <i class="fas fa-save me-2"></i>حفظ التغييرات
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let partnerships = [];
+        let filteredPartnerships = [];
+
+        // Load partnerships on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPartnerships();
+            
+            // Add event listeners for filters
+            document.getElementById('statusFilter').addEventListener('change', applyFilters);
+            document.getElementById('typeFilter').addEventListener('change', applyFilters);
+            document.getElementById('searchInput').addEventListener('input', applyFilters);
+            
+            // Show/hide rejection reason based on status
+            document.getElementById('newStatus').addEventListener('change', function() {
+                const rejectionDiv = document.getElementById('rejectionReasonDiv');
+                if (this.value === 'Rejected') {
+                    rejectionDiv.style.display = 'block';
+                } else {
+                    rejectionDiv.style.display = 'none';
+                }
+            });
+        });
+
+        // Load partnerships from API
+        async function loadPartnerships() {
+            try {
+                const response = await fetch('@Url.Action("GetAllPartnerships", "Partnership")');
+                partnerships = await response.json();
+                filteredPartnerships = [...partnerships];
+                updateStatistics();
+                renderTable();
+            } catch (error) {
+                console.error('Error loading partnerships:', error);
+                toastr.error('حدث خطأ في تحميل البيانات');
+            }
+        }
+
+        // Update statistics
+        function updateStatistics() {
+            const pending = partnerships.filter(p => p.status === 'Pending').length;
+            const approved = partnerships.filter(p => p.status === 'Approved').length;
+            const rejected = partnerships.filter(p => p.status === 'Rejected').length;
+            const total = partnerships.length;
+
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('approvedCount').textContent = approved;
+            document.getElementById('rejectedCount').textContent = rejected;
+            document.getElementById('totalCount').textContent = total;
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const typeFilter = document.getElementById('typeFilter').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+            filteredPartnerships = partnerships.filter(partnership => {
+                const matchesStatus = !statusFilter || partnership.status === statusFilter;
+                const matchesType = !typeFilter || partnership.partnershipType === typeFilter;
+                const matchesSearch = !searchTerm || 
+                    partnership.companyName.toLowerCase().includes(searchTerm) ||
+                    partnership.contactPersonName.toLowerCase().includes(searchTerm);
+
+                return matchesStatus && matchesType && matchesSearch;
+            });
+
+            renderTable();
+        }
+
+        // Clear filters
+        function clearFilters() {
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('typeFilter').value = '';
+            document.getElementById('searchInput').value = '';
+            filteredPartnerships = [...partnerships];
+            renderTable();
+        }
+
+        // Render table
+        function renderTable() {
+            const tbody = document.getElementById('partnershipsTableBody');
+            tbody.innerHTML = '';
+
+            if (filteredPartnerships.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="text-center py-4">
+                            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                            <p class="text-muted">لا توجد شراكات مطابقة للفلاتر المحددة</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            filteredPartnerships.forEach(partnership => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <div class="fw-bold">${partnership.companyName}</div>
+                        <small class="text-muted">${partnership.email}</small>
+                    </td>
+                    <td>
+                        <div>${partnership.contactPersonName}</div>
+                        <small class="text-muted">${partnership.position}</small>
+                    </td>
+                    <td>
+                        <span class="badge bg-info">${partnership.partnershipType}</span>
+                    </td>
+                    <td>
+                        <div>${formatDate(partnership.submissionDate)}</div>
+                    </td>
+                    <td>
+                        ${getStatusBadge(partnership.status)}
+                    </td>
+                    <td>
+                        ${partnership.isUrgent ? '<span class="badge bg-warning"><i class="fas fa-exclamation-triangle"></i> عاجل</span>' : '-'}
+                    </td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            <button class="btn btn-sm btn-outline-primary" onclick="viewDetails(${partnership.id})" title="عرض التفاصيل">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-success" onclick="updatePartnershipStatus(${partnership.id})" title="تحديث الحالة">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Get status badge
+        function getStatusBadge(status) {
+            switch (status) {
+                case 'Pending':
+                    return '<span class="badge bg-warning">قيد المراجعة</span>';
+                case 'Approved':
+                    return '<span class="badge bg-success">مقبول</span>';
+                case 'Rejected':
+                    return '<span class="badge bg-danger">مرفوض</span>';
+                default:
+                    return '<span class="badge bg-secondary">غير محدد</span>';
+            }
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('ar-SA', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+
+        // View partnership details
+        function viewDetails(id) {
+            const partnership = partnerships.find(p => p.id === id);
+            if (!partnership) return;
+
+            const detailsHtml = `
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <strong>اسم الشركة:</strong><br>
+                        ${partnership.companyName}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>الشخص المسؤول:</strong><br>
+                        ${partnership.contactPersonName} (${partnership.position})
+                    </div>
+                    <div class="col-md-6">
+                        <strong>البريد الإلكتروني:</strong><br>
+                        <a href="mailto:${partnership.email}">${partnership.email}</a>
+                    </div>
+                    <div class="col-md-6">
+                        <strong>رقم الهاتف:</strong><br>
+                        <a href="tel:${partnership.phoneNumber}">${partnership.phoneNumber}</a>
+                    </div>
+                    ${partnership.whatsAppNumber ? `
+                    <div class="col-md-6">
+                        <strong>واتساب:</strong><br>
+                        <a href="https://wa.me/${partnership.whatsAppNumber}" target="_blank">${partnership.whatsAppNumber}</a>
+                    </div>
+                    ` : ''}
+                    <div class="col-12">
+                        <strong>عنوان الشركة:</strong><br>
+                        ${partnership.companyAddress}
+                    </div>
+                    ${partnership.website ? `
+                    <div class="col-12">
+                        <strong>الموقع الإلكتروني:</strong><br>
+                        <a href="${partnership.website}" target="_blank">${partnership.website}</a>
+                    </div>
+                    ` : ''}
+                    <div class="col-md-6">
+                        <strong>نوع الشراكة:</strong><br>
+                        ${partnership.partnershipType}
+                    </div>
+                    ${partnership.proposedBudget ? `
+                    <div class="col-md-6">
+                        <strong>الميزانية المقترحة:</strong><br>
+                        ${partnership.proposedBudget} ريال
+                    </div>
+                    ` : ''}
+                    <div class="col-12">
+                        <strong>تفاصيل الشراكة:</strong><br>
+                        ${partnership.partnershipDetails}
+                    </div>
+                    ${partnership.companyDescription ? `
+                    <div class="col-12">
+                        <strong>وصف الشركة:</strong><br>
+                        ${partnership.companyDescription}
+                    </div>
+                    ` : ''}
+                    ${partnership.servicesOffered ? `
+                    <div class="col-12">
+                        <strong>الخدمات المقدمة:</strong><br>
+                        ${partnership.servicesOffered}
+                    </div>
+                    ` : ''}
+                    ${partnership.adminNotes ? `
+                    <div class="col-12">
+                        <strong>ملاحظات الإدارة:</strong><br>
+                        ${partnership.adminNotes}
+                    </div>
+                    ` : ''}
+                    ${partnership.rejectionReason ? `
+                    <div class="col-12">
+                        <strong>سبب الرفض:</strong><br>
+                        <div class="alert alert-danger">${partnership.rejectionReason}</div>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+
+            document.getElementById('partnershipDetails').innerHTML = detailsHtml;
+            new bootstrap.Modal(document.getElementById('partnershipModal')).show();
+        }
+
+        // Update partnership status
+        function updatePartnershipStatus(id) {
+            const partnership = partnerships.find(p => p.id === id);
+            if (!partnership) return;
+
+            document.getElementById('partnershipId').value = id;
+            document.getElementById('newStatus').value = partnership.status;
+            document.getElementById('rejectionReason').value = partnership.rejectionReason || '';
+            document.getElementById('adminNotes').value = partnership.adminNotes || '';
+
+            // Show/hide rejection reason
+            const rejectionDiv = document.getElementById('rejectionReasonDiv');
+            rejectionDiv.style.display = partnership.status === 'Rejected' ? 'block' : 'none';
+
+            new bootstrap.Modal(document.getElementById('statusModal')).show();
+        }
+
+        // Update status
+        async function updateStatus() {
+            const id = document.getElementById('partnershipId').value;
+            const status = document.getElementById('newStatus').value;
+            const rejectionReason = document.getElementById('rejectionReason').value;
+            const adminNotes = document.getElementById('adminNotes').value;
+
+            if (status === 'Rejected' && !rejectionReason.trim()) {
+                toastr.error('يجب إدخال سبب الرفض');
+                return;
+            }
+
+            try {
+                const formData = new FormData();
+                formData.append('id', id);
+                formData.append('status', status);
+                formData.append('rejectionReason', rejectionReason);
+                formData.append('adminNotes', adminNotes);
+
+                const response = await fetch('@Url.Action("UpdateStatus", "Partnership")', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    }
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    toastr.success(result.message);
+                    bootstrap.Modal.getInstance(document.getElementById('statusModal')).hide();
+                    loadPartnerships(); // Reload data
+                } else {
+                    toastr.error(result.message);
+                }
+            } catch (error) {
+                console.error('Error updating status:', error);
+                toastr.error('حدث خطأ في تحديث الحالة');
+            }
+        }
+
+        // Refresh partnerships
+        function refreshPartnerships() {
+            loadPartnerships();
+            toastr.info('تم تحديث البيانات');
+        }
+    </script>
+}
+

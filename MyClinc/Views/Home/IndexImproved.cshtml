@@ -1,0 +1,303 @@
+@{
+    ViewData["Title"] = "الصفحة الرئيسية";
+}
+<link href="~/css/HomeIndex.css" rel="stylesheet" />
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4 fade-in">
+                    أهلاً وسهلاً بيك... Doctor Hub
+                </h1>
+                <p class="lead mb-4 fade-in" style="font-size: 1.3rem; line-height: 1.8;">
+                    محتاج حد يسمعك؟ يفهمك؟ إحنا هنا عشان نرعاك طبياً ونفسياً، بخبرة وقلب مفتوح. 
+                    نرافقك خطوة بخطوة برعاية طبية، نفسية وجسدية... لأنك تستاهل الأفضل.
+                </p>
+                <div class="d-flex gap-3 fade-in flex-wrap">
+                    <a asp-controller="Consultation" asp-action="Book" class="btn btn-primary btn-lg px-4 py-3">
+                        <i class="fas fa-calendar-plus me-2"></i>احجز موعدك الآن
+                    </a>
+                    <a asp-controller="Services" asp-action="Index" class="btn btn-outline-primary btn-lg px-4 py-3">
+                        <i class="fas fa-medical-kit me-2"></i>شوف خدماتنا
+                    </a>
+                </div>
+                <p class="mt-3 text-light fade-in" style="font-size: 0.95rem;">
+                    <i class="fas fa-clock me-2"></i>املأ النموذج، ونتواصل وياك خلال ٢٤ ساعة.
+                </p>
+            </div>
+            <div class="col-lg-6 text-center slide-in-right">
+                <div class="hero-image">
+                    <img src="~/images/doctor-consultation.jpg" alt="استشارة طبية" 
+                         class="img-fluid rounded-3 shadow-lg" 
+                         style="max-height: 500px; object-fit: cover;">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Trust & Security Section -->
+<section class="section-padding bg-light">
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <h2 class="section-title">أمانك وخصوصيتك أولويتنا</h2>
+                <p class="section-subtitle">كل معلوماتك محفوظة بسرية تامة ونعتمد أعلى معايير الأمان الطبي... لأن ثقتك غالية علينا</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="stats-card text-center">
+                    <div class="stats-icon text-primary mb-3">
+                        <i class="fas fa-shield-alt fa-3x"></i>
+                    </div>
+                    <h5 class="fw-bold">حماية كاملة</h5>
+                    <p class="text-secondary">تشفير متقدم لجميع بياناتك الطبية والشخصية... أمانك مضمون</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="stats-card text-center">
+                    <div class="stats-icon text-success mb-3">
+                        <i class="fas fa-user-lock fa-3x"></i>
+                    </div>
+                    <h5 class="fw-bold">سرية تامة</h5>
+                    <p class="text-secondary">معلوماتك الطبية محمية وفق أعلى معايير الخصوصية... كلامك بيننا</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="stats-card text-center">
+                    <div class="stats-icon text-info mb-3">
+                        <i class="fas fa-certificate fa-3x"></i>
+                    </div>
+                    <h5 class="fw-bold">معتمد طبياً</h5>
+                    <p class="text-secondary">جميع أطبائنا مرخصون ومعتمدون رسمياً... خبرة تثق بيها</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="section-padding">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card">
+                    <div class="stats-icon text-primary">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stats-number">5000+</div>
+                    <div class="stats-text">مريض راضٍ ومبسوط</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card">
+                    <div class="stats-icon text-success">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <div class="stats-number">15+</div>
+                    <div class="stats-text">طبيب متخصص وخبير</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card">
+                    <div class="stats-icon text-info">
+                        <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <div class="stats-number">98%</div>
+                    <div class="stats-text">نسبة نجاح العلاج</div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stats-card">
+                    <div class="stats-icon text-warning">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stats-number">24/7</div>
+                    <div class="stats-text">خدمة متواصلة</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="section-padding bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="section-title">خدماتنا الطبية</h2>
+                <p class="section-subtitle">نقدم مجموعة شاملة من الخدمات الطبية المتخصصة بلمسة إنسانية دافئة... لأن صحتك تهمنا</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100">
+                    <img src="~/images/nutrition.jpg" class="card-img-top" alt="التغذية العلاجية" style="height: 200px; object-fit: cover;">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon text-success mb-3">
+                            <i class="fas fa-apple-alt fa-3x"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">غذاءك... علاجك الأول</h5>
+                        <p class="card-text">برامج غذائية متخصصة مصممة خصيصاً لعلاج السمنة والنحافة والأمراض المزمنة، مع متابعة مستمرة ونصائح عملية... لأن الصحة تبدأ من الطعام</p>
+                        <a asp-controller="Services" asp-action="Index" class="btn btn-outline-success">اعرف أكثر</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100">
+                    <img src="~/images/psychiatry.jpg" class="card-img-top" alt="الطب النفسي" style="height: 200px; object-fit: cover;">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon text-primary mb-3">
+                            <i class="fas fa-brain fa-3x"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">نسمعك... ونفهمك... ونعالجك</h5>
+                        <p class="card-text">استشارات نفسية متخصصة في بيئة آمنة ومريحة، لأن صحتك النفسية لا تقل أهمية عن صحتك الجسدية... نحن هنا لنسمعك</p>
+                        <a asp-controller="Services" asp-action="Index" class="btn btn-outline-primary">احجز جلسة</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100">
+                    <img src="~/images/surgery.jpg" class="card-img-top" alt="الجراحة العامة" style="height: 200px; object-fit: cover;">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon text-info mb-3">
+                            <i class="fas fa-cut fa-3x"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">جراحة بأمان وثقة</h5>
+                        <p class="card-text">عمليات جراحية عامة بأحدث التقنيات وأعلى معايير السلامة، مع فريق طبي متخصص ومتابعة شاملة... نعتني بيك من البداية للنهاية</p>
+                        <a asp-controller="Services" asp-action="Index" class="btn btn-outline-info">استشر الآن</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100">
+                    <img src="~/images/pediatrics.jpg" class="card-img-top" alt="طب الأطفال" style="height: 200px; object-fit: cover;">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon text-warning mb-3">
+                            <i class="fas fa-baby fa-3x"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">رعاية أطفالك بحب</h5>
+                        <p class="card-text">خدمات طب الأطفال الشاملة من الولادة حتى المراهقة، مع اهتمام خاص بالنمو الصحي والتطور الطبيعي... لأن أطفالك أغلى ما عندك</p>
+                        <a asp-controller="Services" asp-action="Index" class="btn btn-outline-warning">احجز للطفل</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100">
+                    <img src="~/images/womens_health.jpg" class="card-img-top" alt="صحة المرأة" style="height: 200px; object-fit: cover;">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon text-danger mb-3">
+                            <i class="fas fa-female fa-3x"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">صحة المرأة أولوية</h5>
+                        <p class="card-text">رعاية متخصصة في طب النساء والولادة، مع اهتمام خاص بالصحة الإنجابية ومتابعة الحمل والولادة... نرافقك في كل مرحلة</p>
+                        <a asp-controller="Services" asp-action="Index" class="btn btn-outline-danger">احجزي موعد</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="service-icon text-secondary mb-3">
+                            <i class="fas fa-stethoscope fa-3x"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">استشارة شاملة</h5>
+                        <p class="card-text">فحص طبي شامل وتشخيص دقيق لجميع الحالات، مع خطة علاجية مخصصة لكل مريض</p>
+                        <a asp-controller="Services" asp-action="Index" class="btn btn-outline-secondary">ابدأ الفحص</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us Section -->
+<section class="section-padding">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <img src="~/images/healthcare-professional.jpg" alt="فريق طبي متخصص" 
+                     class="img-fluid rounded-3 shadow-lg">
+            </div>
+            <div class="col-lg-6">
+                <h2 class="section-title text-start">ليش تختارنا؟</h2>
+                <div class="mb-4">
+                    <div class="d-flex align-items-start mb-3">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-heart text-danger fa-2x me-3"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold">رعاية بقلب مفتوح</h5>
+                            <p class="text-secondary">نتعامل مع كل مريض كأنه من العائلة، بحب واهتمام حقيقي</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-start mb-3">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-graduation-cap text-primary fa-2x me-3"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold">خبرة وكفاءة</h5>
+                            <p class="text-secondary">فريق طبي متخصص بسنوات من الخبرة والتدريب المستمر</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-start mb-3">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-clock text-success fa-2x me-3"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold">متاحين دائماً</h5>
+                            <p class="text-secondary">خدمة 24/7 للحالات الطارئة والاستشارات العاجلة</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-start">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-mobile-alt text-info fa-2x me-3"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold">سهولة الوصول</h5>
+                            <p class="text-secondary">استشارات أونلاين ومواعيد مرنة تناسب ظروفك</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="section-padding bg-primary text-white">
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="display-5 fw-bold mb-4">جاهز لتبدأ رحلة الشفاء؟</h2>
+                <p class="lead mb-4">
+                    لا تتردد، صحتك تستاهل الأفضل. احجز استشارتك اليوم وخلينا نساعدك تحصل على الرعاية اللي تستحقها.
+                </p>
+                <div class="d-flex gap-3 justify-content-center flex-wrap">
+                    <a asp-controller="Consultation" asp-action="Book" class="btn btn-light btn-lg px-4 py-3">
+                        <i class="fas fa-calendar-plus me-2"></i>احجز استشارتك الآن
+                    </a>
+                    <a href="tel:+9647715513344" class="btn btn-outline-light btn-lg px-4 py-3">
+                        <i class="fas fa-phone me-2"></i>اتصل بنا مباشرة
+                    </a>
+                </div>
+                <p class="mt-3" style="font-size: 0.95rem; opacity: 0.9;">
+                    <i class="fas fa-shield-alt me-2"></i>كل معلوماتك محفوظة بسرية تامة
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+

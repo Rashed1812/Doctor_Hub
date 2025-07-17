@@ -1,0 +1,387 @@
+@model List<DAL.Data.Models.Consultation>
+@{
+    ViewData["Title"] = "إدارة الفواتير";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="invoices-page">
+    <!-- Page Header -->
+    <div class="page-header mb-4">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h1 class="h3 mb-0 fw-bold">إدارة الفواتير</h1>
+                <p class="text-muted mb-0">إنشاء وإرسال فواتير الاستشارات المدفوعة</p>
+            </div>
+            <div class="col-md-6 text-end">
+                <span class="badge bg-success fs-6">
+                    <i class="fas fa-check-circle me-1"></i>@ViewBag.TotalInvoices فاتورة
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-xl-3 col-md-6">
+            <div class="stats-card card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="stats-icon bg-primary bg-gradient rounded-3 p-3 me-3">
+                            <i class="fas fa-file-invoice fa-2x text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="h2 fw-bold mb-0 text-primary">@ViewBag.TotalInvoices</h3>
+                            <p class="text-muted mb-0">إجمالي الفواتير</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="stats-card card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="stats-icon bg-success bg-gradient rounded-3 p-3 me-3">
+                            <i class="fas fa-dollar-sign fa-2x text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="h2 fw-bold mb-0 text-success">$@ViewBag.TotalAmount</h3>
+                            <p class="text-muted mb-0">إجمالي المبلغ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="stats-card card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="stats-icon bg-info bg-gradient rounded-3 p-3 me-3">
+                            <i class="fas fa-calendar-month fa-2x text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="h2 fw-bold mb-0 text-info">@ViewBag.ThisMonthInvoices</h3>
+                            <p class="text-muted mb-0">فواتير هذا الشهر</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="stats-card card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="stats-icon bg-warning bg-gradient rounded-3 p-3 me-3">
+                            <i class="fas fa-percentage fa-2x text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="h2 fw-bold mb-0 text-warning">100%</h3>
+                            <p class="text-muted mb-0">معدل الدفع</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Invoices Table -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-transparent border-0 p-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="card-title fw-bold mb-0">
+                    <i class="fas fa-list me-2 text-primary"></i>قائمة الفواتير
+                </h5>
+                <button class="btn btn-outline-primary btn-sm" onclick="refreshInvoices()">
+                    <i class="fas fa-sync-alt me-1"></i>تحديث
+                </button>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            @if (Model != null && Model.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="border-0 fw-bold">رقم الفاتورة</th>
+                                <th class="border-0 fw-bold">اسم المريض</th>
+                                <th class="border-0 fw-bold">نوع الاستشارة</th>
+                                <th class="border-0 fw-bold">رقم الهاتف</th>
+                                <th class="border-0 fw-bold">تاريخ الحجز</th>
+                                <th class="border-0 fw-bold">المبلغ</th>
+                                <th class="border-0 fw-bold">حالة الدفع</th>
+                                <th class="border-0 fw-bold">الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var consultation in Model)
+                            {
+                                <tr id="consultation-@consultation.ConsultationId">
+                                    <td class="align-middle">
+                                        <span class="badge bg-primary">INV-@consultation.ConsultationId.ToString("D4")</span>
+                                    </td>
+                                    <td class="align-middle">
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar-sm bg-light rounded-circle d-flex align-items-center justify-content-center me-3">
+                                                <i class="fas fa-user text-muted"></i>
+                                            </div>
+                                            <div>
+                                                <h6 class="mb-0 fw-bold">@consultation.PatientName</h6>
+                                                <small class="text-muted">@consultation.Gender</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle">
+                                        <span class="badge bg-info">@(consultation.MedicalSpecialty?.Name ?? "غير محدد")</span>
+                                    </td>
+                                    <td class="align-middle">
+                                        <a href="https://wa.me/@consultation.PhoneNumber" target="_blank" class="text-decoration-none">
+                                            <i class="fab fa-whatsapp text-success me-1"></i>@consultation.PhoneNumber
+                                        </a>
+                                    </td>
+                                    <td class="align-middle">
+                                        <small class="text-muted">@consultation.BookingDate.ToString("dd/MM/yyyy")</small>
+                                    </td>
+                                    <td class="align-middle">
+                                        <span class="fw-bold text-success">$@consultation.ConsultationFee</span>
+                                    </td>
+                                    <td class="align-middle">
+                                        <div class="dropdown">
+                                            @* <button class="btn btn-sm dropdown-toggle payment-status-btn *@
+                                            @*     @(consultation.PaymentStatus == DAL.Data.Models.PaymentStatus.Paid ? "btn-success" : *@
+                                            @*       consultation.PaymentStatus == DAL.Data.Models.PaymentStatus.Pending ? "btn-warning" : "btn-danger")" *@
+                                            @*         type="button" data-bs-toggle="dropdown"> *@
+                                            @*     @(consultation.PaymentStatus == DAL.Data.Models.PaymentStatus.Paid ? "مدفوع" : *@
+                                            @*         consultation.PaymentStatus == DAL.Data.Models.PaymentStatus.Pending ? "معلق" : "غير مدفوع") *@
+                                            @* </button> *@
+                                            @{
+                                                string badgeClass = consultation.PaymentStatus == DAL.Data.Models.PaymentStatus.Paid ? "bg-success" :
+                                                consultation.PaymentStatus == DAL.Data.Models.PaymentStatus.Pending ? "bg-warning text-dark" :
+                                                "bg-danger";
+
+                                                string badgeText = consultation.PaymentStatus ==  DAL.Data.Models.PaymentStatus.Paid ? "مدفوع" :
+                                                consultation.PaymentStatus == DAL.Data.Models.PaymentStatus.Pending ? "معلق" :
+                                                "غير مدفوع";
+                                            }
+
+                                            <span class="badge @badgeClass">
+                                                @badgeText
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="align-middle">
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                                    onclick="viewInvoiceHTML(@consultation.ConsultationId)"
+                                                    title="عرض الفاتورة">
+                                                <i class="fas fa-print me-1"></i>طباعة
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-success"
+                                                    onclick="sendWhatsAppInvoice(@consultation.ConsultationId)"
+                                                    title="إرسال عبر الواتساب">
+                                                <i class="fab fa-whatsapp me-1"></i>إرسال
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-danger"
+                                                    onclick="deleteInvoice(@consultation.ConsultationId)"
+                                                    title="حذف الفاتورة">
+                                                <i class="fas fa-trash me-1"></i>حذف
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <i class="fas fa-file-invoice fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">لا توجد فواتير متاحة</h5>
+                    <p class="text-muted">لم يتم العثور على استشارات مدفوعة لإنشاء فواتير لها.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Success/Error Messages -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="successToast" class="toast align-items-center text-white bg-success border-0" role="alert">
+        <div class="d-flex">
+            <div class="toast-body" id="successMessage"></div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+    <div id="errorToast" class="toast align-items-center text-white bg-danger border-0" role="alert">
+        <div class="d-flex">
+            <div class="toast-body" id="errorMessage"></div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .stats-card {
+        transition: transform 0.3s ease;
+    }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .avatar-sm {
+        width: 40px;
+        height: 40px;
+    }
+
+    .table tbody tr:hover {
+        background-color: rgba(0,123,255,0.05);
+    }
+
+    .btn-group .btn {
+        border-radius: 6px !important;
+        margin-left: 5px;
+    }
+
+    .payment-status-btn {
+        min-width: 80px;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        function viewInvoiceHTML(consultationId) {
+            window.open(`/Admin/InvoiceDisplay?consultationId=${consultationId}`, '_blank');
+        }
+
+        function sendWhatsAppInvoice(consultationId) {
+            fetch('/Admin/SendInvoiceWhatsApp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ consultationId: consultationId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showSuccessMessage(data.message);
+                    if (data.whatsappUrl) {
+                        window.open(data.whatsappUrl, '_blank');
+                    }
+                } else {
+                    showErrorMessage(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showErrorMessage('حدث خطأ أثناء إرسال رسالة الواتساب');
+            });
+        }
+
+        function updatePaymentStatus(consultationId, status) {
+            // تحويل النص إلى enum value
+            let statusValue;
+            switch(status) {
+                case 'Paid':
+                    statusValue = 1; // PaymentStatus.Paid
+                    break;
+                case 'Pending':
+                    statusValue = 0; // PaymentStatus.Pending
+                    break;
+                case 'Unpaid':
+                    statusValue = 2; // PaymentStatus.Unpaid
+                    break;
+                default:
+                    statusValue = 0;
+            }
+
+            fetch('/Admin/UpdatePaymentStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 
+                    consultationId: consultationId, 
+                    status: statusValue 
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showSuccessMessage(data.message || 'تم تحديث حالة الدفع بنجاح');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                } else {
+                    showErrorMessage(data.message || 'حدث خطأ أثناء تحديث حالة الدفع');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showErrorMessage('حدث خطأ أثناء تحديث حالة الدفع');
+            });
+        }
+
+        function deleteInvoice(consultationId) {
+            if (confirm('هل أنت متأكد من حذف هذه الفاتورة؟ هذا الإجراء لا يمكن التراجع عنه.')) {
+                fetch(`/Admin/DeleteConsultation/${consultationId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showSuccessMessage('تم حذف الفاتورة بنجاح');
+                        // إزالة الصف من الجدول
+                        const row = document.getElementById(`consultation-${consultationId}`);
+                        if (row) {
+                            row.remove();
+                        }
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1500);
+                    } else {
+                        showErrorMessage(data.message || 'حدث خطأ أثناء حذف الفاتورة');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showErrorMessage('حدث خطأ أثناء حذف الفاتورة');
+                });
+            }
+        }
+
+        function refreshInvoices() {
+            location.reload();
+        }
+
+        function showSuccessMessage(message) {
+            document.getElementById('successMessage').textContent = message;
+            const toast = new bootstrap.Toast(document.getElementById('successToast'));
+            toast.show();
+        }
+
+        function showErrorMessage(message) {
+            document.getElementById('errorMessage').textContent = message;
+            const toast = new bootstrap.Toast(document.getElementById('errorToast'));
+            toast.show();
+        }
+
+        // Initialize tooltips
+        document.addEventListener('DOMContentLoaded', function() {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+}
+

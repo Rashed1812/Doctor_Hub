@@ -1,0 +1,406 @@
+﻿@model DAL.Data.Models.Consultation
+@{
+    ViewData["Title"] = "تقرير الاستشارة";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="consultation-report-page">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">تقرير الاستشارة رقم @Model.ConsultationId</h2>
+            <p class="text-muted mb-0">تقرير طبي شامل للاستشارة</p>
+        </div>
+        <div>
+            <button class="btn btn-success me-2" onclick="enableEditing()" id="editBtn">
+                <i class="fas fa-edit me-2"></i>تعديل التقرير
+            </button>
+            <button class="btn btn-primary me-2" onclick="saveReport()" id="saveBtn" style="display: none;">
+                <i class="fas fa-save me-2"></i>حفظ التغييرات
+            </button>
+            <button class="btn btn-warning me-2" onclick="printReport()" id="printBtn">
+                <i class="fas fa-print me-2"></i>طباعة التقرير
+            </button>
+            <a href="@Url.Action("ConsultationDetails", "Admin", new { id = Model.ConsultationId })" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-right me-2"></i>العودة للتفاصيل
+            </a>
+        </div>
+    </div>
+
+    <!-- Editable Report Form -->
+    <form id="reportForm" method="post" action="@Url.Action("UpdateConsultationReport", "Admin")">
+        <input type="hidden" name="ConsultationId" value="@Model.ConsultationId" />
+
+        <!-- Report Content -->
+        <div class="report-content" id="reportContent">
+            <!-- Report Header -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <h1 class="fw-bold text-primary mb-2">🏥 Doctor Hub</h1>
+                        <h3 class="text-muted">تقرير استشارة طبية</h3>
+                        <hr class="my-3">
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <strong>رقم التقرير:</strong> RPT-@Model.ConsultationId.ToString("D4")
+                        </div>
+                        <div class="col-md-6">
+                            <strong>تاريخ التقرير:</strong> @DateTime.Now.ToString("dd/MM/yyyy")
+                        </div>
+                        <div class="col-md-6">
+                            <strong>رقم الاستشارة:</strong> @Model.ConsultationId
+                        </div>
+                        <div class="col-md-6">
+                            <strong>تاريخ الاستشارة:</strong> @Model.BookingDate.ToString("dd/MM/yyyy")
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Patient Information -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-user me-2"></i>بيانات المريض</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <strong>الاسم الكامل:</strong> @Model.PatientName
+                        </div>
+                        <div class="col-md-6">
+                            <strong>الجنس:</strong> @Model.Gender
+                        </div>
+                        <div class="col-md-6">
+                            <strong>رقم الهاتف:</strong> @Model.PhoneNumber
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medical Information -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-stethoscope me-2"></i>المعلومات الطبية</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <strong>التخصص:</strong> @(Model.MedicalSpecialty?.Name ?? "غير محدد")
+                        </div>
+                        <div class="col-md-6">
+                            <strong>حالة الاستشارة:</strong>
+                            <span class="badge @(Model.Status == "مكتمل" ? "bg-success" : "bg-warning")">
+                                @Model.Status.ToString()
+                            </span>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>رسوم الاستشارة:</strong> $@Model.ConsultationFee
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Consultation Details -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="fas fa-notes-medical me-2"></i>تفاصيل الاستشارة</h5>
+                </div>
+                <div class="card-body p-4">
+
+                    <div class="mb-3">
+                        <strong>التشخيص:</strong>
+                        <textarea class="form-control editable-field mt-2" rows="5" name="Diagnosis" readonly>@(Model.Diagnosis ?? "سيتم إضافة التشخيص بعد فحص المريض")</textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <strong>العلاج الموصى به:</strong>
+                        <textarea class="form-control editable-field mt-2" rows="5" name="RecommendedTreatment" readonly>@(Model.RecommendedTreatment ?? "سيتم تحديد العلاج المناسب بعد التشخيص")</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recommendations -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0"><i class="fas fa-lightbulb me-2"></i>التوصيات والنصائح</h5>
+                </div>
+                <div class="card-body p-4">
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>اتباع تعليمات الطبيب بدقة</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>تناول الأدوية في المواعيد المحددة</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>المتابعة الدورية مع الطبيب</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>الاتصال بالعيادة في حالة ظهور أعراض جديدة</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>الحفاظ على نمط حياة صحي</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Next Appointment -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0"><i class="fas fa-calendar-plus me-2"></i>المواعيد القادمة</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        يُنصح بحجز موعد للمتابعة خلال أسبوعين من تاريخ هذه الاستشارة
+                    </div>
+                    <p class="mb-0">
+                        <strong>للحجز:</strong> يرجى الاتصال على رقم العيادة أو استخدام النظام الإلكتروني
+                    </p>
+                </div>
+            </div>
+
+            <!-- Report Footer -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4 text-center">
+                    <hr class="my-3">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <strong>ختم العيادة:</strong>
+                            <div class="mt-3" style="height: 50px;">
+                                <div class="border rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                    <small class="text-center">ختم<br>العيادة</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <strong>التاريخ:</strong>
+                            <div class="mt-3 border-bottom" style="height: 50px;"></div>
+                            <small class="text-muted">@DateTime.Now.ToString("dd/MM/yyyy")</small>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <p class="text-muted mb-1">🏥Doctor Hub</p>
+                        <p class="text-muted mb-1">📞 للاستفسارات: +9647715513344</p>
+                        <p class="text-muted mb-1">📧 البريد الإلكتروني: info@myclinic.com</p>
+                        <p class="text-muted mb-0">🌐 الموقع الإلكتروني: www.myclinic.com</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@section Scripts {
+    <script>
+        function printReport() {
+            // إخفاء العناصر غير المرغوب فيها أثناء الطباعة
+            const elementsToHide = document.querySelectorAll('.btn, .page-header, .d-flex.justify-content-between, .navbar, .sidebar');
+            elementsToHide.forEach(el => el.style.display = 'none');
+            
+            // طباعة المحتوى
+            window.print();
+            
+            // إعادة إظهار العناصر بعد الطباعة
+            setTimeout(() => {
+                elementsToHide.forEach(el => el.style.display = '');
+            }, 1000);
+        }
+
+        function enableEditing() {
+            // Show save button, hide edit button
+            document.getElementById('editBtn').style.display = 'none';
+            document.getElementById('saveBtn').style.display = 'inline-block';
+
+            // Make text areas editable
+            const textareas = document.querySelectorAll('.editable-field');
+            textareas.forEach(textarea => {
+                textarea.removeAttribute('readonly');
+                textarea.style.backgroundColor = '#fff';
+                textarea.style.border = '2px solid #007bff';
+            });
+
+            // Show success message
+            showModernNotification('تم تفعيل وضع التعديل', 'success');
+        }
+
+        function saveReport() {
+            const form = document.getElementById('reportForm');
+            const consultationId = form.querySelector('input[name="ConsultationId"]').value;
+            const diagnosis = form.querySelector('textarea[name="Diagnosis"]').value;
+            const recommendedTreatment = form.querySelector('textarea[name="RecommendedTreatment"]').value;
+
+            const data = {
+                ConsultationId: consultationId,
+                Diagnosis: diagnosis,
+                RecommendedTreatment: recommendedTreatment
+            };
+
+            const saveBtn = document.getElementById('saveBtn');
+            const originalText = saveBtn.innerHTML;
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>جاري الحفظ...';
+            saveBtn.disabled = true;
+
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    showModernNotification('تم حفظ التقرير بنجاح', 'success');
+
+                    document.getElementById('editBtn').style.display = 'inline-block';
+                    document.getElementById('saveBtn').style.display = 'none';
+
+                    const textareas = document.querySelectorAll('.editable-field');
+                    textareas.forEach(textarea => {
+                        textarea.setAttribute('readonly', true);
+                        textarea.style.backgroundColor = '#f8f9fa';
+                        textarea.style.border = '1px solid #dee2e6';
+                    });
+                } else {
+                    showModernNotification('حدث خطأ أثناء الحفظ', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error during save:', error);
+                showModernNotification('حدث خطأ أثناء الحفظ', 'error');
+            })
+            .finally(() => {
+                saveBtn.innerHTML = originalText;
+                saveBtn.disabled = false;
+            });
+        }
+
+        function showModernNotification(message, type) {
+            // إنشاء عنصر التوست الحديث
+            const toast = document.createElement('div');
+            toast.className = `toast align-items-center text-white bg-${type === 'success' ? 'success' : 'danger'} border-0 position-fixed`;
+            toast.style.top = '20px';
+            toast.style.right = '20px';
+            toast.style.zIndex = '9999';
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'assertive');
+            toast.setAttribute('aria-atomic', 'true');
+            
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} me-2"></i>
+                        ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // إظهار التوست
+            const bsToast = new bootstrap.Toast(toast, {
+                autohide: true,
+                delay: 3000
+            });
+            bsToast.show();
+            
+            // إزالة التوست بعد الإخفاء
+            toast.addEventListener('hidden.bs.toast', () => {
+                toast.remove();
+            });
+        }
+    </script>
+
+    <style>
+        @@media print {
+            /* إخفاء جميع العناصر غير المرغوب فيها أثناء الطباعة */
+            .btn, 
+            .page-header, 
+            .d-flex.justify-content-between,
+            .navbar,
+            .sidebar,
+            nav,
+            .breadcrumb,
+            .alert,
+            .toast,
+            .modal,
+            .dropdown-menu {
+                display: none !important;
+            }
+
+            /* تحسين مظهر الكروت أثناء الطباعة */
+            .card {
+                border: 1px solid #dee2e6 !important;
+                box-shadow: none !important;
+                break-inside: avoid;
+                margin-bottom: 15px !important;
+            }
+
+            .card-header {
+                background-color: #f8f9fa !important;
+                color: #000 !important;
+                -webkit-print-color-adjust: exact;
+            }
+
+            /* تحسين حجم الخط للطباعة */
+            body {
+                font-size: 12px !important;
+                line-height: 1.4 !important;
+            }
+
+            h1, h2, h3, h4, h5, h6 {
+                color: #000 !important;
+            }
+
+            /* تحسين مظهر الجداول */
+            table {
+                border-collapse: collapse !important;
+            }
+
+            /* إزالة الخلفيات الملونة */
+            .bg-primary,
+            .bg-success,
+            .bg-info,
+            .bg-warning,
+            .bg-secondary {
+                background-color: #f8f9fa !important;
+                color: #000 !important;
+            }
+
+            /* تحسين مظهر النصوص */
+            .text-white {
+                color: #000 !important;
+            }
+
+            /* تحسين الهوامش */
+            .container,
+            .container-fluid {
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            /* إخفاء الأيقونات غير الضرورية */
+            .fas,
+            .fab {
+                display: none !important;
+            }
+
+            /* تحسين مظهر المحتوى الرئيسي */
+            .report-content {
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+        }
+
+        /* تحسين مظهر التوست */
+        .toast {
+            min-width: 300px;
+        }
+
+        .toast-body {
+            font-weight: 500;
+        }
+    </style>
+}

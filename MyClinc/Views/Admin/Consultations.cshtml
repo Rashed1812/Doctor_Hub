@@ -1,0 +1,318 @@
+@model IEnumerable<DAL.Data.Models.Consultation>
+@{
+    ViewData["Title"] = "إدارة الاستشارات";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="consultations-page">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">إدارة الاستشارات</h2>
+            <p class="text-muted mb-0">متابعة وإدارة جميع الاستشارات المحجوزة في النظام</p>
+        </div>
+        <div>
+            <button class="btn btn-outline-primary me-2" onclick="filterConsultations(\'all\')">
+                <i class="fas fa-list me-1"></i>جميع الاستشارات
+            </button>
+            <button class="btn btn-outline-warning me-2" onclick="filterConsultations(\'pending\')">
+                <i class="fas fa-clock me-1"></i>قيد الانتظار
+            </button>
+            <button class="btn btn-outline-success" onclick="filterConsultations(\'completed\')">
+                <i class="fas fa-check me-1"></i>مكتملة
+            </button>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center p-3">
+                    <i class="fas fa-calendar-alt fa-2x text-primary mb-2"></i>
+                    <h4 class="fw-bold mb-1">@Model.Count()</h4>
+                    <small class="text-muted">إجمالي الاستشارات</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center p-3">
+                    <i class="fas fa-clock fa-2x text-warning mb-2"></i>
+                    <h4 class="fw-bold mb-1">@Model.Count(c => c.Status == "قيد المراجعة")</h4>
+                    <small class="text-muted">قيد الانتظار</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center p-3">
+                    <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
+                    <h4 class="fw-bold mb-1">@Model.Count(c => c.Status == "مكتمل")</h4>
+                    <small class="text-muted">مكتملة</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center p-3">
+                    <i class="fas fa-dollar-sign fa-2x text-info mb-2"></i>
+                    <h4 class="fw-bold mb-1">$@Model.Sum(c => c.ConsultationFee)</h4>
+                    <small class="text-muted">إجمالي الإيرادات</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Consultations Table -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-transparent border-0 p-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="card-title fw-bold mb-0">
+                    <i class="fas fa-table me-2"></i>قائمة الاستشارات
+                </h5>
+                <div class="search-box">
+                    <input type="text" class="form-control" placeholder="البحث في الاستشارات..." id="searchInput">
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0" id="consultationsTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="border-0 fw-bold">المريض</th>
+                            <th class="border-0 fw-bold">التخصص</th>
+                            <th class="border-0 fw-bold">التاريخ والوقت</th>
+                            <th class="border-0 fw-bold">الحالة</th>
+                            <th class="border-0 fw-bold">السعر</th>
+                            <th class="border-0 fw-bold">الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var consultation in Model)
+                        {
+                            <tr class="consultation-row" data-status="@consultation.Status.ToString().ToLower()">
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="patient-avatar bg-primary bg-gradient rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                            <i class="fas fa-user text-white"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0 fw-bold">@consultation.PatientName</h6>
+                                            <small class="text-muted">@consultation.PhoneNumber</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-success">@(consultation.MedicalSpecialty?.Name ?? "غير محدد")</span>
+                                </td>
+                                <td>
+                                    <span class="fw-bold">@consultation.BookingDate.ToString("dd/MM/yyyy")</span>
+                                    <small class="text-muted d-block">@consultation.BookingDate.ToString("hh:mm tt")</small>
+                                </td>
+                                <td>
+                                    <span class="badge @(consultation.Status == "قيد المراجعة" ? "bg-warning text-dark" : "bg-success")">
+                                        <i class="fas @(consultation.Status == "قيد المراجعة" ? "fa-clock" : "fa-check") me-1"></i>@consultation.Status.ToString()
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="fw-bold text-success">$@consultation.ConsultationFee</span>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a class="btn btn-sm btn-outline-info"
+                                           title="عرض التفاصيل"
+                                           asp-controller="Admin"
+                                           asp-action="ConsultationDetails"
+                                           asp-route-id="@consultation.ConsultationId">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+
+                                        @if (consultation.Status == "قيد المراجعة")
+                                        {
+                                            <button class="btn btn-sm btn-outline-success" title="تأكيد" onclick="updateConsultationStatus(@consultation.ConsultationId, 'مكتمل')">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-danger" title="إلغاء" onclick="updateConsultationStatus(@consultation.ConsultationId, 'ملغاة')">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        }
+                                        else if (consultation.Status == "مكتمل")
+                                        {                                            <button class="btn btn-sm btn-outline-primary" title="فاتورة" onclick="window.open(`/Admin/InvoiceDisplay?consultationId=@consultation.ConsultationId`, `_blank`);">
+                                                <i class="fas fa-file-invoice"></i>
+                                            </button>                                      }
+                                    </div>
+                                </td>
+
+                                
+							</tr>
+						}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="row g-4 mt-4">
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0 p-4">
+                    <h5 class="card-title fw-bold mb-0">
+                        <i class="fas fa-chart-pie me-2 text-primary"></i>توزيع الاستشارات حسب التخصص
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="specialty-stats">
+                        @foreach (var specialtyGroup in Model.GroupBy(c => c.MedicalSpecialty?.Name ?? "غير محدد").OrderByDescending(g => g.Count()))
+                        {
+                            <div class="stat-item d-flex justify-content-between align-items-center mb-3 p-3 bg-light rounded">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-apple-alt fa-2x text-success me-3"></i>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold">@specialtyGroup.Key</h6>
+                                        <small class="text-muted">@specialtyGroup.Count() استشارة</small>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <span class="h5 fw-bold text-success">@((specialtyGroup.Count() * 100.0 / Model.Count()).ToString("F1"))%</span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        #toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4caf50;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-size: 16px;
+            display: none;
+            z-index: 9999;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+            #toast.error {
+                background-color: #e74c3c;
+            }
+    </style>
+
+    <div id="toast"></div>
+
+    <script>
+        function showToast(message, isSuccess = true) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = isSuccess ? '' : 'error';
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+
+        function filterConsultations(status) {
+            const rows = document.querySelectorAll(".consultation-row");
+            rows.forEach(row => {
+                if (status === 'all' || row.dataset.status === status) {
+                    row.style.display = 'table-row';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        document.getElementById('searchInput').addEventListener('keyup', function () {
+            const filter = this.value.toLowerCase();
+            const rows = document.querySelectorAll(".consultation-row");
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(filter)) {
+                    row.style.display = 'table-row';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        function updateConsultationStatus(id, status) {
+            fetch('/Admin/UpdateConsultationStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                },
+                body: JSON.stringify({ consultationId: id, status: status })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showToast('تم تحديث الحالة بنجاح');
+                        setTimeout(() => location.reload(), 2000);
+                    } else {
+                        showToast('فشل في تحديث الحالة: ' + data.message, false);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showToast('حدث خطأ أثناء تحديث الحالة', false);
+                });
+        }
+
+        // Chart.js for consultations by month
+        const ctx = document.getElementById('consultationsChart').getContext('2d');
+        const consultationsData = @Html.Raw(Json.Serialize(Model
+        .GroupBy(c => c.BookingDate.ToString("yyyy-MM"))
+        .OrderBy(g => g.Key)
+        .Select(g => new { Month = g.Key, Count = g.Count() })));
+
+        const labels = consultationsData.map(d => d.Month);
+        const data = consultationsData.map(d => d.Count);
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'عدد الاستشارات',
+                    data: data,
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'عدد الاستشارات'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'الشهر'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+}
+
+
+

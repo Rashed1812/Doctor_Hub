@@ -1,0 +1,284 @@
+@{
+    ViewData["Title"] = "اتصل بنا";
+}
+
+<div class="contact-page">
+    <!-- Page Header -->
+    <div class="page-header text-center py-5 mb-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: -30px -30px 30px -30px; border-radius: 15px; color: white;">
+        <h1 class="display-4 fw-bold mb-3">اتصل بنا</h1>
+        <p class="lead">نحن هنا لمساعدتك، تواصل معنا في أي وقت</p>
+    </div>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>@ViewBag.Message
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row g-5">
+        <!-- Contact Form -->
+        <div class="col-lg-8">
+            <div class="contact-form-section">
+                <h2 class="fw-bold mb-4">أرسل لنا رسالة</h2>
+                <p class="text-muted mb-4">املأ النموذج أدناه وسنتواصل معك في أقرب وقت ممكن</p>
+                
+                <form method="post" class="contact-form">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="name" class="form-label fw-bold">الاسم الكامل <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control form-control-lg" id="name" name="name" required 
+                                   placeholder="أدخل اسمك الكامل">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email" class="form-label fw-bold">البريد الإلكتروني <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control form-control-lg" id="email" name="email" required 
+                                   placeholder="أدخل بريدك الإلكتروني">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="phone" class="form-label fw-bold">رقم الهاتف</label>
+                            <input type="tel" class="form-control form-control-lg" id="phone" name="phone" 
+                                   placeholder="أدخل رقم هاتفك">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="subject" class="form-label fw-bold">الموضوع</label>
+                            <select class="form-select form-select-lg" id="subject" name="subject">
+                                <option value="">اختر الموضوع</option>
+                                <option value="consultation">استفسار عن الاستشارات</option>
+                                <option value="appointment">حجز موعد</option>
+                                <option value="courses">استفسار عن الكورسات</option>
+                                <option value="join">الانضمام كطبيب</option>
+                                <option value="technical">مشكلة تقنية</option>
+                                <option value="other">أخرى</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label for="message" class="form-label fw-bold">الرسالة <span class="text-danger">*</span></label>
+                            <textarea class="form-control" id="message" name="message" rows="6" required 
+                                      placeholder="اكتب رسالتك هنا..."></textarea>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane me-2"></i>إرسال الرسالة
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="col-lg-4">
+            <div class="contact-info-section">
+                <h3 class="fw-bold mb-4">معلومات التواصل</h3>
+                
+                <div class="contact-info-card p-4 mb-4" style="background: rgba(102, 126, 234, 0.1); border-radius: 15px;">
+                    <div class="contact-item mb-4">
+                        <div class="d-flex align-items-center">
+                            <div class="contact-icon me-3">
+                                <i class="fas fa-map-marker-alt fa-2x text-primary"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">العنوان</h6>
+                                <p class="text-muted mb-0">شارع التحرير، وسط البلد<br>القاهرة، مصر</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item mb-4">
+                        <div class="d-flex align-items-center">
+                            <div class="contact-icon me-3">
+                                <i class="fas fa-phone fa-2x text-success"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">الهاتف</h6>
+                                <p class="text-muted mb-0">+9647715513344</p>
+                                <small class="text-muted">متاح 24/7</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item mb-4">
+                        <div class="d-flex align-items-center">
+                            <div class="contact-icon me-3">
+                                <i class="fas fa-envelope fa-2x text-info"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">البريد الإلكتروني</h6>
+                                <p class="text-muted mb-0">info@myclinic.com</p>
+                                <small class="text-muted">نرد خلال 24 ساعة</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="d-flex align-items-center">
+                            <div class="contact-icon me-3">
+                                <i class="fas fa-clock fa-2x text-warning"></i>
+                            </div>
+                            @* <div> *@
+                            @*     <h6 class="fw-bold mb-1">ساعات العمل</h6> *@
+                            @*     <p class="text-muted mb-0"> *@
+                            @*         السبت - الخميس: 9:00 ص - 9:00 م<br> *@
+                            @*         الجمعة: 2:00 م - 9:00 م *@
+                            @*     </p> *@
+                            @* </div> *@
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Media -->
+                <div class="social-media-section">
+                    <h5 class="fw-bold mb-3">تابعنا على</h5>
+                    <div class="social-links d-flex gap-3">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-facebook fa-2x text-primary"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter fa-2x text-info"></i>
+                        </a>
+                        <a href="https://www.instagram.com/dr.marwan_alani/" class="social-link">
+                            <i class="fab fa-instagram fa-2x text-danger"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-linkedin fa-2x text-primary"></i>
+                        </a>
+                        <a href="https://www.youtube.com/@@Dr.Marwan-alani" class="social-link">
+                            <i class="fab fa-youtube fa-2x text-danger"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Emergency Contact -->
+                @* <div class="emergency-contact mt-4 p-4 bg-danger text-white rounded"> *@
+                @*     <h6 class="fw-bold mb-2"> *@
+                @*         <i class="fas fa-exclamation-triangle me-2"></i>حالات الطوارئ *@
+                @*     </h6> *@
+                @*     <p class="mb-2">للحالات الطارئة اتصل فوراً:</p> *@
+                @*     <h5 class="fw-bold">+20 100 000 0000</h5> *@
+                @* </div> *@
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="faq-section py-5 mt-5" style="background: rgba(118, 75, 162, 0.1); margin: 0 -30px; border-radius: 15px;">
+        <div class="container">
+            <h3 class="text-center fw-bold mb-5">الأسئلة الشائعة</h3>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item border-0 mb-3">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                    كيف يمكنني حجز موعد؟
+                                </button>
+                            </h2>
+                            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    يمكنك حجز موعد من خلال النقر على زر "احجز استشارة" في الصفحة الرئيسية أو الاتصال بنا مباشرة على الرقم المذكور أعلاه.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item border-0 mb-3">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                    ما هي تكلفة الاستشارة؟
+                                </button>
+                            </h2>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    تختلف تكلفة الاستشارة حسب التخصص: التغذية العلاجية $30، الجراحة العامة $50، الطب النفسي $40.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item border-0 mb-3">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                    هل تتوفر استشارات أونلاين؟
+                                </button>
+                            </h2>
+                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    نعم، نوفر استشارات أونلاين عبر الفيديو كول لجميع التخصصات المتاحة.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="accordion-item border-0">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                                    كيف يمكنني الانضمام كطبيب؟
+                                </button>
+                            </h2>
+                            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    يمكنك التقديم للانضمام من خلال صفحة "انضم إلينا" وملء النموذج المطلوب مع المستندات اللازمة.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions text-center py-5">
+        <h3 class="fw-bold mb-4">أو يمكنك</h3>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a asp-controller="Consultation" asp-action="Book" class="btn btn-primary btn-lg">
+                <i class="fas fa-calendar-plus me-2"></i>احجز استشارة
+            </a>
+            @* <a asp-controller="Consultation" asp-action="Quick" class="btn btn-outline-primary btn-lg"> *@
+            @*     <i class="fas fa-comments me-2"></i>استشارة سريعة *@
+            @* </a> *@
+            <a href="tel:+9647715513344" class="btn btn-success btn-lg">
+                <i class="fas fa-phone me-2"></i>اتصل الآن
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .contact-form .form-control, .contact-form .form-select {
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+    
+    .contact-form .form-control:focus, .contact-form .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+    
+    .contact-item {
+        transition: transform 0.3s ease;
+    }
+    
+    .contact-item:hover {
+        transform: translateX(10px);
+    }
+    
+    .social-link {
+        transition: transform 0.3s ease;
+    }
+    
+    .social-link:hover {
+        transform: scale(1.2);
+    }
+    
+    .accordion-button {
+        background: rgba(102, 126, 234, 0.1);
+        border-radius: 10px !important;
+    }
+    
+    .accordion-button:not(.collapsed) {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+    }
+</style>
+

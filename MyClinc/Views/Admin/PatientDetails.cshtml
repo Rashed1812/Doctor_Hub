@@ -1,0 +1,439 @@
+@model DAL.Data.Models.Consultation
+@{
+    ViewData["Title"] = "تفاصيل المريض";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="patient-details-page">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">تفاصيل المريض</h2>
+            <p class="text-muted mb-0">عرض شامل لجميع بيانات المريض والاستشارات</p>
+        </div>
+        <div>
+            <a href="@Url.Action("DownloadConfirmationPDF", "Admin", new { consultationId = Model.ConsultationId })" 
+               class="btn btn-outline-primary me-2">
+                <i class="fas fa-download me-1"></i>تحميل رسالة التأكيد
+            </a>
+            <button class="btn btn-success" onclick="sendConfirmationWhatsApp(@Model.ConsultationId)">
+                <i class="fab fa-whatsapp me-1"></i>إرسال تأكيد
+            </button>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Patient Basic Information -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-transparent border-0 p-4">
+                    <h5 class="card-title fw-bold mb-0">
+                        <i class="fas fa-user me-2 text-primary"></i>البيانات الأساسية
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <label class="info-label">الاسم الكامل</label>
+                                <div class="info-value">@Model.PatientName</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <label class="info-label">رقم الهاتف</label>
+                                <div class="info-value">
+                                    <i class="fas fa-phone me-1 text-success"></i>@Model.PhoneNumber
+                                    <a href="tel:@Model.PhoneNumber" class="btn btn-sm btn-outline-success ms-2">
+                                        <i class="fas fa-phone me-1"></i>اتصال
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <label class="info-label">تاريخ الميلاد</label>
+                                <div class="info-value">@(Model.BirthDate.ToString("dd/MM/yyyy") ?? "غير محدد")</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <label class="info-label">الجنس</label>
+                                <div class="info-value">@(Model.Gender ?? "غير محدد")</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            @* <div class="info-item"> *@
+                            @*     <label class="info-label">العمر</label> *@
+                            @*     <div class="info-value"> *@
+                            @*         @if (Model.BirthDate.HasValue) *@
+                            @*         { *@
+                            @*             var age = DateTime.Now.Year - Model.BirthDate.Value.Year; *@
+                            @*             if (DateTime.Now.DayOfYear < Model.BirthDate.Value.DayOfYear) *@
+                            @*                 age--; *@
+                            @*             <span>@age سنة</span> *@
+                            @*         } *@
+                            @*         else *@
+                            @*         { *@
+                            @*             <span>غير محدد</span> *@
+                            @*         } *@
+                            @*     </div> *@
+                            @* </div> *@
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <label class="info-label">الحالة الاجتماعية</label>
+                                <div class="info-value">@(Model.MaritalStatus ?? "غير محدد")</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Residence Information -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-transparent border-0 p-4">
+                    <h5 class="card-title fw-bold mb-0">
+                        <i class="fas fa-globe me-2 text-success"></i>معلومات الإقامة
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <label class="info-label">بلد الولادة</label>
+                                <div class="info-value">@(Model.BirthCountry ?? "غير محدد")</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <label class="info-label">بلد السكن الحالي</label>
+                                <div class="info-value">@(Model.CurrentCountry ?? "غير محدد")</div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="info-item">
+                                <label class="info-label">جهة العمل أو الدراسة</label>
+                                <div class="info-value">@(Model.WorkOrStudyPlace ?? "غير محدد")</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Consultation Information -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0 p-4">
+                    <h5 class="card-title fw-bold mb-0">
+                        <i class="fas fa-stethoscope me-2 text-info"></i>معلومات الاستشارة
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <label class="info-label">نوع الاستشارة</label>
+                                <div class="info-value">@(Model.MedicalSpecialty?.Name ?? "غير محدد")</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <label class="info-label">تاريخ الحجز</label>
+                                <div class="info-value">@Model.BookingDate.ToString("dd/MM/yyyy - hh:mm tt")</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <label class="info-label">رسوم الاستشارة</label>
+                                <div class="info-value text-primary fw-bold">$@Model.ConsultationFee</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <label class="info-label">حالة الاستشارة</label>
+                                <div class="info-value">
+                                    @if (Model.Status == "قيد المراجعة")
+                                    {
+                                        <span class="badge bg-warning">@Model.Status</span>
+                                    }
+                                    else if (Model.Status == "مؤكد")
+                                    {
+                                        <span class="badge bg-success">@Model.Status</span>
+                                    }
+                                    else if (Model.Status == "مكتمل")
+                                    {
+                                        <span class="badge bg-primary">@Model.Status</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">@Model.Status</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <label class="info-label">حالة الدفع</label>
+                                <div class="info-value">
+                                    @if (Model.PaymentStatus == DAL.Data.Models.PaymentStatus.Paid)
+                                    {
+                                        <span class="badge bg-success">مدفوع</span>
+                                    }
+                                    else if (Model.PaymentStatus == DAL.Data.Models.PaymentStatus.Pending)
+                                    {
+                                        <span class="badge bg-warning">في انتظار الدفع</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">فشل الدفع</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-item">
+                                <label class="info-label">رقم الاستشارة</label>
+                                <div class="info-value">#@Model.ConsultationId.ToString("D4")</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions Sidebar -->
+        <div class="col-lg-4">
+            <!-- Quick Actions -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-transparent border-0 p-4">
+                    <h5 class="card-title fw-bold mb-0">
+                        <i class="fas fa-bolt me-2 text-warning"></i>إجراءات سريعة
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="d-grid gap-2">
+                        @if (Model.Status != "مؤكد")
+                        {
+                            <button class="btn btn-success" onclick="confirmConsultation(@Model.ConsultationId)">
+                                <i class="fas fa-check me-2"></i>تأكيد الاستشارة
+                            </button>
+                        }
+                        
+                        <button class="btn btn-primary" onclick="updateConsultationStatus(@Model.ConsultationId)">
+                            <i class="fas fa-edit me-2"></i>تحديث الحالة
+                        </button>
+                        
+                        @if (Model.PaymentStatus != DAL.Data.Models.PaymentStatus.Paid)
+                        {
+                            <button class="btn btn-info" onclick="updatePaymentStatus(@Model.ConsultationId)">
+                                <i class="fas fa-credit-card me-2"></i>تحديث حالة الدفع
+                            </button>
+                        }
+                        
+                        <button class="btn btn-outline-primary" onclick="sendConfirmationWhatsApp(@Model.ConsultationId)">
+                            <i class="fab fa-whatsapp me-2"></i>إرسال رسالة تأكيد
+                        </button>
+                        
+                        <a href="@Url.Action("Consultations", "Admin")" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-right me-2"></i>العودة للقائمة
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0 p-4">
+                    <h5 class="card-title fw-bold mb-0">
+                        <i class="fas fa-phone me-2 text-success"></i>معلومات التواصل
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="contact-methods">
+                        <div class="contact-method mb-3">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <i class="fas fa-phone text-primary me-2"></i>
+                                    <span class="fw-bold">مكالمة هاتفية</span>
+                                </div>
+                                <a href="tel:@Model.PhoneNumber" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-phone me-1"></i>اتصال
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method mb-3">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <i class="fab fa-whatsapp text-success me-2"></i>
+                                    <span class="fw-bold">واتساب</span>
+                                </div>
+                                <a href="https://wa.me/@Model.PhoneNumber.Replace("+", "").Replace(" ", "")" 
+                                   target="_blank" class="btn btn-sm btn-outline-success">
+                                    <i class="fab fa-whatsapp me-1"></i>رسالة
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <i class="fas fa-sms text-info me-2"></i>
+                                    <span class="fw-bold">رسالة نصية</span>
+                                </div>
+                                <a href="sms:@Model.PhoneNumber" class="btn btn-sm btn-outline-info">
+                                    <i class="fas fa-sms me-1"></i>إرسال
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .info-item {
+        margin-bottom: 1rem;
+    }
+    
+    .info-label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #6c757d;
+        margin-bottom: 0.25rem;
+        display: block;
+    }
+    
+    .info-value {
+        font-size: 1rem;
+        color: #333;
+        font-weight: 500;
+    }
+    
+    .contact-method {
+        padding: 0.75rem;
+        border-radius: 8px;
+        background: #f8f9fa;
+        transition: all 0.3s ease;
+    }
+    
+    .contact-method:hover {
+        background: #e9ecef;
+        transform: translateY(-1px);
+    }
+    
+    .card {
+        transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        function confirmConsultation(consultationId) {
+            if (confirm('هل أنت متأكد من تأكيد هذه الاستشارة؟')) {
+                fetch('/Admin/ConfirmConsultation', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ consultationId: consultationId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        location.reload();
+                    } else {
+                        alert('خطأ: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('حدث خطأ أثناء تأكيد الاستشارة');
+                });
+            }
+        }
+
+        function sendConfirmationWhatsApp(consultationId) {
+            fetch('/Admin/SendConfirmationWhatsApp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ consultationId: consultationId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Open WhatsApp in a new tab
+                    window.open(data.whatsappUrl, '_blank');
+                } else {
+                    alert('خطأ: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('حدث خطأ أثناء إرسال رسالة التأكيد');
+            });
+        }
+
+        function updateConsultationStatus(consultationId) {
+            const newStatus = prompt('أدخل الحالة الجديدة:', 'مؤكد');
+            if (newStatus) {
+                fetch('/Admin/UpdateConsultationStatus', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ consultationId: consultationId, status: newStatus })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        location.reload();
+                    } else {
+                        alert('خطأ: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('حدث خطأ أثناء تحديث الحالة');
+                });
+            }
+        }
+
+        function updatePaymentStatus(consultationId) {
+            const status = confirm('هل تم الدفع؟') ? 1 : 0; // 1 = Paid, 0 = Pending
+            
+            fetch('/Admin/UpdatePaymentStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ consultationId: consultationId, status: status })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    location.reload();
+                } else {
+                    alert('خطأ: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('حدث خطأ أثناء تحديث حالة الدفع');
+            });
+        }
+    </script>
+}
+

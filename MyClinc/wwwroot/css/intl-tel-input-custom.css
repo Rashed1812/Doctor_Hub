@@ -1,0 +1,177 @@
+/* تحسينات لمكتبة intl-tel-input - إصلاح مشكلة التكرار */
+.iti {
+    width: 100% !important;
+    display: block !important;
+}
+
+.iti__flag-container {
+    border-radius: 8px 0 0 8px;
+    border: 1px solid #ced4da;
+    border-left: none;
+    position: relative;
+}
+
+.iti__selected-flag {
+    padding: 0 8px 0 12px;
+    background: #f8f9fa;
+    border-radius: 8px 0 0 8px;
+    display: flex !important;
+    align-items: center;
+}
+
+.iti__selected-flag:hover {
+    background: #e9ecef;
+}
+
+/* إصلاح مشكلة التكرار - إخفاء العناصر المكررة */
+.iti__selected-flag .iti__dial-code {
+    display: none !important; /* إخفاء كود الدولة من المنطقة المحددة */
+}
+
+.iti input[type=tel] {
+    border-radius: 0 8px 8px 0 !important;
+    border-right: none !important;
+    padding-right: 12px !important;
+    padding-left: 50px !important; /* مساحة لعلم الدولة */
+}
+
+.iti input[type=tel]:focus {
+    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25) !important;
+    border-color: #60a5fa !important;
+}
+
+.iti input[type=tel].is-invalid {
+    border-color: #dc3545 !important;
+}
+
+.iti input[type=tel].is-valid {
+    border-color: #10b981 !important;
+}
+
+.iti__country-list {
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border: 1px solid #dee2e6;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 9999;
+}
+
+.iti__country {
+    padding: 8px 12px;
+    border-bottom: 1px solid #f1f3f4;
+    display: flex;
+    align-items: center;
+}
+
+.iti__country:hover {
+    background: #f8f9fa;
+}
+
+.iti__country.iti__highlight {
+    background: #e3f2fd;
+}
+
+.iti__flag {
+    margin-left: 8px;
+    flex-shrink: 0;
+}
+
+.iti__dial-code {
+    color: #6c757d;
+    font-weight: 500;
+    margin-left: 8px;
+}
+
+.iti__country-name {
+    color: #495057;
+    font-weight: 400;
+    flex: 1;
+}
+
+/* تحسينات للتصميم المتجاوب */
+@media (max-width: 768px) {
+    .iti__flag-container {
+        width: 60px;
+    }
+    
+    .iti__selected-flag {
+        padding: 0 4px 0 8px;
+    }
+    
+    .iti__arrow {
+        margin-right: 4px;
+    }
+    
+    .iti input[type=tel] {
+        padding-left: 45px !important;
+    }
+}
+
+/* تحسين مظهر رسائل الخطأ */
+#phoneError {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #dc3545;
+    margin-top: 0.25rem;
+}
+
+/* تحسين التوافق مع Bootstrap */
+.form-control-lg.iti input[type=tel] {
+    font-size: 1.25rem;
+    padding: 0.5rem 0.75rem 0.5rem 55px;
+    line-height: 1.5;
+}
+
+.iti.form-control-lg .iti__selected-flag {
+    padding: 0.5rem 0.75rem;
+}
+
+/* إصلاح مشكلة العرض في RTL */
+.iti--separate-dial-code .iti__selected-flag {
+    background-color: #f8f9fa;
+}
+
+.iti--separate-dial-code .iti__selected-dial-code {
+    color: #495057;
+    font-weight: 600;
+    display: none !important; /* منع التكرار */
+}
+
+/* تحسين الألوان للتوافق مع التصميم الجديد */
+.iti__country-list {
+    background: white;
+    color: #495057;
+}
+
+.iti__search-input {
+    padding: 8px 12px;
+    border: none;
+    border-bottom: 1px solid #dee2e6;
+    font-size: 14px;
+}
+
+.iti__search-input:focus {
+    outline: none;
+    border-bottom-color: #2563eb;
+}
+
+/* إضافة تحسينات للتوافق مع النظام الجديد */
+.iti__flag-container:hover {
+    background: #e9ecef;
+}
+
+.iti__selected-flag:focus {
+    outline: 2px solid #60a5fa;
+    outline-offset: 2px;
+}
+
+/* منع أي تداخل أو تكرار في العرض */
+.iti .iti__dial-code {
+    display: none !important;
+}
+
+.iti__country .iti__dial-code {
+    display: inline !important;
+}
+

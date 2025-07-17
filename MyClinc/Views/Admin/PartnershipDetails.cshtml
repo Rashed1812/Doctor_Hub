@@ -1,0 +1,309 @@
+@model DAL.Data.Models.Partnership
+
+@{
+    ViewData["Title"] = "تفاصيل طلب الشراكة";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h4 class="fw-bold text-primary mb-1">
+                    <i class="fas fa-handshake me-2"></i>تفاصيل طلب الشراكة
+                </h4>
+                <p class="text-muted mb-0">عرض تفاصيل طلب الشراكة المقدم من @Model.CompanyName</p>
+            </div>
+            <div>
+                <a asp-action="Partnerships" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-right me-2"></i>العودة لقائمة الشراكات
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-light">
+        <h6 class="mb-0 fw-bold">معلومات الشركة</h6>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">اسم الشركة:</p>
+                <p>@Model.CompanyName</p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">الموقع الإلكتروني:</p>
+                <p>@Model.Website</p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">عنوان الشركة:</p>
+                <p>@Model.CompanyAddress</p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">وصف الشركة:</p>
+                <p>@Model.CompanyDescription</p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">الخدمات المقدمة:</p>
+                <p>@Model.ServicesOffered</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-light">
+        <h6 class="mb-0 fw-bold">معلومات الاتصال</h6>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">الشخص المسؤول:</p>
+                <p>@Model.ContactPersonName</p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">المنصب:</p>
+                <p>@Model.Position</p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">البريد الإلكتروني:</p>
+                <p>@Model.Email</p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">رقم الهاتف:</p>
+                <p>@Model.PhoneNumber</p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">رقم الواتساب:</p>
+                <p>@Model.WhatsAppNumber</p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">طريقة التواصل المفضلة:</p>
+                <p>@Model.PreferredContactMethod</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-light">
+        <h6 class="mb-0 fw-bold">تفاصيل الشراكة</h6>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">نوع الشراكة:</p>
+                <p>@Model.PartnershipType</p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">تاريخ التقديم:</p>
+                <p>@Model.SubmissionDate.ToShortDateString()</p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">الحالة:</p>
+                <p>
+                    @if (Model.Status == DAL.Data.Models.PartnershipStatus.Pending)
+                    {
+                        <span class="badge bg-warning">@Model.Status</span>
+                    }
+                    else if (Model.Status == DAL.Data.Models.PartnershipStatus.Approved)
+                    {
+                        <span class="badge bg-success">@Model.Status</span>
+                    }
+                    else if (Model.Status == DAL.Data.Models.PartnershipStatus.Rejected)
+                    {
+                        <span class="badge bg-danger">@Model.Status</span>
+                    }
+                    else
+                    {
+                        <span>@Model.Status</span>
+                    }
+                </p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">هل الطلب عاجل؟:</p>
+                <p>@(Model.IsUrgent ? "نعم" : "لا")</p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">الميزانية المقترحة:</p>
+                <p>@(Model.ProposedBudget.HasValue ? Model.ProposedBudget.Value.ToString("N0") + " دينار عراقي" : "غير محدد")</p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">مصدر التعرف على الخدمة:</p>
+                <p>@Model.ReferenceSource</p>
+            </div>
+            <div class="col-12 mb-3">
+                <p class="fw-bold mb-1">تفاصيل الشراكة المطلوبة:</p>
+                <p>@Model.PartnershipDetails</p>
+            </div>
+            @if (!string.IsNullOrEmpty(Model.RejectionReason))
+            {
+                <div class="col-12 mb-3">
+                    <p class="fw-bold mb-1 text-danger">سبب الرفض:</p>
+                    <p class="text-danger">@Model.RejectionReason</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="card-footer bg-light">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="d-flex align-items-center">
+                <label class="fw-bold me-3">تحديث حالة الشراكة:</label>
+                <select id="statusSelect" class="form-select me-3" style="width: auto;">
+                    <option value="Pending" @@(Model.Status == DAL.Data.Models.PartnershipStatus.Pending ? "selected" : "")>قيد المراجعة</option>
+                    <option value="Approved" @@(Model.Status == DAL.Data.Models.PartnershipStatus.Approved ? "selected" : "")>مقبول</option>
+                    <option value="Rejected" @@(Model.Status == DAL.Data.Models.PartnershipStatus.Rejected ? "selected" : "")>مرفوض</option>
+                </select>
+                <button class="btn btn-primary" onclick="updatePartnershipStatus(@Model.Id)">
+                    <i class="fas fa-save me-2"></i>تحديث الحالة
+                </button>
+            </div>
+        </div>
+        <div class="col-md-4 text-end">
+            @if (Model.Status == DAL.Data.Models.PartnershipStatus.Pending)
+            {
+                <button class="btn btn-success me-2" onclick="quickApprove(@Model.Id)">
+                    <i class="fas fa-check me-2"></i>قبول سريع
+                </button>
+                <button class="btn btn-danger" onclick="quickReject(@Model.Id)">
+                    <i class="fas fa-times me-2"></i>رفض سريع
+                </button>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    // Update partnership status
+    function updatePartnershipStatus(id) {
+        const selectedStatus = document.getElementById('statusSelect').value;
+        const currentStatus = '@Model.Status.ToString()';
+        
+        if (selectedStatus === currentStatus) {
+            showNotification('الحالة لم تتغير', 'warning');
+            return;
+        }
+        
+        let reason = '';
+        if (selectedStatus === 'Rejected') {
+            reason = prompt('يرجى إدخال سبب الرفض:');
+            if (!reason) {
+                return;
+            }
+        }
+        
+        if (confirm(`هل أنت متأكد من تحديث حالة الشراكة إلى: ${getStatusText(selectedStatus)}؟`)) {
+            const requestData = {
+                id: id,
+                status: selectedStatus,
+                reason: reason
+            };
+            
+            fetch('/Admin/UpdatePartnershipStatus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification('تم تحديث حالة الشراكة بنجاح', 'success');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
+                } else {
+                    showNotification('حدث خطأ أثناء تحديث الحالة', 'error');
+                }
+            })
+            .catch(error => {
+                showNotification('حدث خطأ أثناء تحديث الحالة', 'error');
+            });
+        }
+    }
+    
+    // Quick approve
+    function quickApprove(id) {
+        if (confirm("هل أنت متأكد من قبول طلب الشراكة هذا؟")) {
+            updatePartnershipStatusDirect(id, 'Approved');
+        }
+    }
+    
+    // Quick reject
+    function quickReject(id) {
+        const reason = prompt("يرجى إدخال سبب الرفض:");
+        if (reason) {
+            updatePartnershipStatusDirect(id, 'Rejected', reason);
+        }
+    }
+    
+    // Direct status update
+    function updatePartnershipStatusDirect(id, status, reason = '') {
+        const requestData = {
+            id: id,
+            status: status,
+            reason: reason
+        };
+        
+        fetch('/Admin/UpdatePartnershipStatus', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification(`تم ${status === 'Approved' ? 'قبول' : 'رفض'} طلب الشراكة بنجاح`, 'success');
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
+            } else {
+                showNotification('حدث خطأ أثناء تحديث الحالة', 'error');
+            }
+        })
+        .catch(error => {
+            showNotification('حدث خطأ أثناء تحديث الحالة', 'error');
+        });
+    }
+    
+    // Get status text in Arabic
+    function getStatusText(status) {
+        switch(status) {
+            case 'Pending': return 'قيد المراجعة';
+            case 'Approved': return 'مقبول';
+            case 'Rejected': return 'مرفوض';
+            default: return status;
+        }
+    }
+    
+    // Notification function
+    function showNotification(message, type) {
+        const notification = document.createElement('div');
+        notification.className = `alert alert-${type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'danger'} alert-dismissible fade show position-fixed`;
+        notification.style.top = '20px';
+        notification.style.right = '20px';
+        notification.style.zIndex = '9999';
+        notification.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.remove();
+        }, 5000);
+    }
+</script>
+}
+
+

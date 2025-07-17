@@ -1,0 +1,829 @@
+/* تصميم طبي أبيض ولبني */
+:root {
+    --primary-white: #ffffff;
+    --cream-white: #fefefe;
+    --light-cream: #f9f9f9;
+    --soft-cream: #f5f5f5;
+    --medical-cream: #faf8f5;
+    --text-dark: #2c3e50;
+    --text-medium: #5a6c7d;
+    --text-light: #8b9dc3;
+    --accent-blue: #e8f4fd;
+    --border-light: #e9ecef;
+    --shadow-light: rgba(0, 0, 0, 0.05);
+    --shadow-medium: rgba(0, 0, 0, 0.1);
+    --navbar-height: 80px;
+    --medical-green: #e8f5e8;
+    --medical-blue-light: #f0f8ff;
+}
+
+* {
+    font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, var(--primary-white) 0%, var(--light-cream) 50%, var(--medical-cream) 100%);
+    color: var(--text-dark);
+    line-height: 1.7;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-size: 16px;
+}
+
+/* Enhanced Navbar Styles */
+.navbar {
+    background: linear-gradient(135deg, var(--primary-white) 0%, var(--cream-white) 100%);
+    box-shadow: 0 2px 15px var(--shadow-light);
+    padding: 1rem 0;
+    transition: all 0.3s ease;
+    height: var(--navbar-height);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.navbar.scrolled {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 4px 20px var(--shadow-medium);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--text-dark) !important;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+    color: var(--text-medium) !important;
+    transform: translateY(-1px);
+}
+
+.navbar-nav .nav-link {
+    color: var(--text-dark) !important;
+    font-weight: 500;
+    font-size: 1.1rem;
+    padding: 0.75rem 1.25rem !important;
+    margin: 0 0.25rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--text-medium) !important;
+    background-color: var(--light-cream);
+    transform: translateY(-2px);
+}
+
+.navbar-nav .nav-link.active {
+    color: var(--text-dark) !important;
+    background-color: var(--soft-cream);
+    font-weight: 600;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-white) 0%, var(--medical-cream) 50%, var(--light-cream) 100%);
+    padding: 120px 0 80px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('/images/medical_assets/medical_image_1.jpeg') center/cover;
+    opacity: 0.03;
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+    text-shadow: 0 2px 4px var(--shadow-light);
+}
+
+.hero-subtitle {
+    font-size: 1.4rem;
+    color: var(--text-medium);
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+    font-weight: 400;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn-primary-custom {
+    background: linear-gradient(135deg, var(--text-dark) 0%, var(--text-medium) 100%);
+    border: none;
+    color: white;
+    padding: 15px 35px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 4px 15px var(--shadow-medium);
+}
+
+.btn-primary-custom:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px var(--shadow-medium);
+    color: white;
+}
+
+.btn-secondary-custom {
+    background: var(--primary-white);
+    border: 2px solid var(--text-dark);
+    color: var(--text-dark);
+    padding: 13px 35px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-secondary-custom:hover {
+    background: var(--text-dark);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px var(--shadow-medium);
+}
+
+/* Services Section */
+.services-section {
+    padding: 100px 0;
+    background: var(--primary-white);
+}
+
+.section-title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.section-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-medium);
+    text-align: center;
+    margin-bottom: 4rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.service-card {
+    background: var(--cream-white);
+    border-radius: 20px;
+    padding: 2.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-light);
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--text-dark) 0%, var(--text-medium) 100%);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.service-card:hover::before {
+    transform: scaleX(1);
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px var(--shadow-medium);
+    background: var(--primary-white);
+}
+
+.service-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    background: var(--light-cream);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: var(--text-dark);
+    transition: all 0.3s ease;
+}
+
+.service-card:hover .service-icon {
+    background: var(--text-dark);
+    color: white;
+    transform: scale(1.1);
+}
+
+.service-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+}
+
+.service-description {
+    color: var(--text-medium);
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+/* About Section */
+.about-section {
+    padding: 100px 0;
+    background: linear-gradient(135deg, var(--light-cream) 0%, var(--medical-cream) 100%);
+}
+
+.about-content {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+}
+
+.about-text {
+    flex: 1;
+}
+
+.about-image {
+    flex: 1;
+    text-align: center;
+}
+
+.about-image img {
+    max-width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px var(--shadow-medium);
+    transition: transform 0.3s ease;
+}
+
+.about-image img:hover {
+    transform: scale(1.05);
+}
+
+.about-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+}
+
+.about-description {
+    font-size: 1.1rem;
+    color: var(--text-medium);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+}
+
+.about-features {
+    list-style: none;
+    padding: 0;
+}
+
+.about-features li {
+    padding: 0.75rem 0;
+    color: var(--text-medium);
+    font-size: 1.1rem;
+    position: relative;
+    padding-left: 2rem;
+}
+
+.about-features li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--text-dark);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Footer */
+.footer {
+    background: linear-gradient(135deg, var(--text-dark) 0%, var(--text-medium) 100%);
+    color: white;
+    padding: 60px 0 30px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-section h5 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: white;
+}
+
+.footer-section p,
+.footer-section a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    line-height: 1.6;
+    transition: color 0.3s ease;
+}
+
+.footer-section a:hover {
+    color: white;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 2rem;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.2rem;
+    }
+    
+    .section-title {
+        font-size: 2.2rem;
+    }
+    
+    .about-content {
+        flex-direction: column;
+        gap: 2rem;
+    }
+    
+    .hero-buttons {
+        justify-content: center;
+    }
+    
+    .navbar-nav {
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .service-card {
+        padding: 2rem;
+    }
+    
+    .btn-primary-custom,
+    .btn-secondary-custom {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+}
+
+/* Animation Classes */
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.slide-in-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: all 0.6s ease;
+}
+
+.slide-in-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.slide-in-right {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: all 0.6s ease;
+}
+
+.slide-in-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Medical Icons Styling */
+.medical-icon {
+    filter: brightness(0) saturate(100%) invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+    transition: all 0.3s ease;
+}
+
+.service-card:hover .medical-icon {
+    filter: brightness(0) saturate(100%) invert(100%) sepia(0%) saturate(7500%) hue-rotate(109deg) brightness(105%) contrast(105%);
+}
+
+
+
+/* Custom styling for consultation booking button in navbar */
+.navbar-nav .nav-link.btn.btn-primary {
+    background: linear-gradient(135deg, var(--text-dark) 0%, var(--text-medium) 100%) !important;
+    color: var(--primary-white) !important;
+    border: none !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 25px !important;
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    box-shadow: 0 4px 15px rgba(44, 62, 80, 0.2) !important;
+    transition: all 0.3s ease !important;
+    margin-right: 1rem !important;
+}
+
+.navbar-nav .nav-link.btn.btn-primary:hover {
+    background: linear-gradient(135deg, var(--text-medium) 0%, var(--text-light) 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(44, 62, 80, 0.3) !important;
+    color: var(--primary-white) !important;
+}
+
+.navbar-nav .nav-link.btn.btn-primary:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 2px 10px rgba(44, 62, 80, 0.2) !important;
+}
+
+
+/* Enhanced Social Media Links Styling */
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 1rem;
+}
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, var(--primary-white) 0%, var(--light-cream) 100%);
+    color: var(--text-dark);
+    border-radius: 50%;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px var(--shadow-light);
+    border: 1px solid var(--border-light);
+}
+
+.social-links a:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px var(--shadow-medium);
+    color: var(--text-medium);
+    background: linear-gradient(135deg, var(--light-cream) 0%, var(--medical-cream) 100%);
+}
+
+.social-links a i {
+    font-size: 1.2rem;
+}
+
+/* Specific colors for different social media platforms */
+.social-links a[href*="instagram"]:hover {
+    background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+    color: white;
+}
+
+.social-links a[href*="tiktok"]:hover {
+    background: linear-gradient(45deg, #ff0050, #000000);
+    color: white;
+}
+
+.social-links a[href*="youtube"]:hover {
+    background: linear-gradient(45deg, #ff0000, #cc0000);
+    color: white;
+}
+
+.social-links a[href*="telegram"]:hover {
+    background: linear-gradient(45deg, #0088cc, #0066aa);
+    color: white;
+}
+
+.social-links a[href*="whatsapp"]:hover {
+    background: linear-gradient(45deg, #25d366, #128c7e);
+    color: white;
+}
+
+/* Floating Social Media Widget */
+.floating-social {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.floating-social a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    color: white;
+}
+
+.floating-social .whatsapp {
+    background: linear-gradient(45deg, #25d366, #128c7e);
+}
+
+.floating-social .telegram {
+    background: linear-gradient(45deg, #0088cc, #0066aa);
+}
+
+.floating-social a:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 768px) {
+    .floating-social {
+        right: 10px;
+    }
+    
+    .floating-social a {
+        width: 45px;
+        height: 45px;
+    }
+}
+
+
+/* Doctor Join Request Page Styling */
+.doctor-join-page {
+    background: linear-gradient(135deg, var(--primary-white) 0%, var(--light-cream) 100%);
+    min-height: 100vh;
+}
+
+.application-form-section {
+    background: var(--primary-white);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 30px var(--shadow-light);
+    border: 1px solid var(--border-light);
+}
+
+.form-section {
+    background: var(--cream-white);
+    border-radius: 15px;
+    padding: 2rem;
+    border: 1px solid var(--border-light);
+    transition: all 0.3s ease;
+}
+
+.form-section:hover {
+    box-shadow: 0 5px 20px var(--shadow-light);
+    transform: translateY(-2px);
+}
+
+.form-control {
+    border: 2px solid var(--border-light);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: var(--primary-white);
+}
+
+.form-control:focus {
+    border-color: var(--text-medium);
+    box-shadow: 0 0 0 0.2rem rgba(90, 108, 125, 0.25);
+    background: var(--primary-white);
+}
+
+.form-control-lg {
+    padding: 1rem 1.25rem;
+    font-size: 1.1rem;
+    border-radius: 12px;
+}
+
+.form-label {
+    color: var(--text-dark);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.specialty-item {
+    background: var(--primary-white);
+    border: 2px solid var(--border-light) !important;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.specialty-item:hover {
+    border-color: var(--text-medium) !important;
+    background: var(--light-cream);
+    transform: translateY(-1px);
+}
+
+.specialty-item .form-check-input:checked ~ .form-check-label {
+    color: var(--text-dark);
+    font-weight: 700;
+}
+
+.specialty-item .form-check-input:checked {
+    background-color: var(--text-medium);
+    border-color: var(--text-medium);
+}
+
+.benefits-card {
+    background: linear-gradient(135deg, var(--medical-cream) 0%, var(--light-cream) 100%) !important;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 5px 15px var(--shadow-light);
+}
+
+.info-sidebar .card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px var(--shadow-light);
+    background: var(--primary-white);
+}
+
+.form-actions .btn {
+    border-radius: 25px;
+    padding: 1rem 2rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--text-dark) 0%, var(--text-medium) 100%);
+    border: none;
+    color: var(--primary-white);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--text-medium) 0%, var(--text-light) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(44, 62, 80, 0.3);
+}
+
+.btn-outline-secondary {
+    border: 2px solid var(--text-medium);
+    color: var(--text-medium);
+    background: transparent;
+}
+
+.btn-outline-secondary:hover {
+    background: var(--text-medium);
+    color: var(--primary-white);
+    transform: translateY(-2px);
+}
+
+/* File upload styling */
+input[type="file"] {
+    border: 2px dashed var(--border-light);
+    background: var(--light-cream);
+    padding: 1rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+input[type="file"]:hover {
+    border-color: var(--text-medium);
+    background: var(--cream-white);
+}
+
+/* Terms checkbox styling */
+.form-check-input {
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid var(--text-medium);
+    border-radius: 4px;
+}
+
+.form-check-input:checked {
+    background-color: var(--text-medium);
+    border-color: var(--text-medium);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .application-form-section {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+    
+    .form-section {
+        padding: 1.5rem;
+    }
+    
+    .hero-section {
+        padding: 100px 0 60px;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+}
+
+/* Animation improvements */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.slide-in-right {
+    opacity: 0;
+    transform: translateX(30px);
+    transition: all 0.8s ease;
+}
+
+.slide-in-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Form validation styling */
+.text-danger {
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.is-invalid {
+    border-color: #dc3545;
+}
+
+.is-valid {
+    border-color: #28a745;
+}
+
+/* Progress indicator */
+.form-progress {
+    background: var(--light-cream);
+    height: 4px;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.form-progress-bar {
+    background: linear-gradient(90deg, var(--text-dark), var(--text-medium));
+    height: 100%;
+    transition: width 0.3s ease;
+}
+

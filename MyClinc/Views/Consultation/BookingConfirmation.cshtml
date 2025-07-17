@@ -1,0 +1,93 @@
+@{
+    ViewData["Title"] = "تأكيد الحجز";
+}
+
+<div class="booking-confirm-container">
+    <div class="booking-confirm-card">
+        <div class="booking-card-body">
+            <i class="fas fa-check-circle booking-icon"></i>
+            <h2 class="booking-title">تم إرسال طلب الخدمة بنجاح!</h2>
+            <p class="booking-text">
+                لاتمام عملية الدفع وتأكيد حجز استشارتك، يرجى التواصل معنا عبر الواتساب على الرقم التالي:
+            </p>
+            <a href="https://wa.me/9647715513344" target="_blank" class="booking-whatsapp-btn">
+                <i class="fab fa-whatsapp"></i> تواصل عبر الواتساب
+            </a>
+            <p class="booking-note">
+                سيتم مراجعة طلبك والتواصل معك في أقرب وقت ممكن.
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    /* تنسيق عام */
+    /* الحاوية الرئيسية */
+    .booking-confirm-container {
+        max-width: 100%;
+        padding: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* الكارد */
+    .booking-confirm-card {
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        max-width: 600px;
+        width: 100%;
+        text-align: center;
+    }
+
+    /* الأيقونة */
+    .booking-icon {
+        color: #28a745;
+        font-size: 4rem;
+        margin-bottom: 1rem;
+    }
+
+    /* العنوان */
+    .booking-title {
+        font-size: 1.8rem;
+        color: #007bff;
+        margin-bottom: 1rem;
+    }
+
+    /* النص */
+    .booking-text {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+        color: #333;
+    }
+
+    /* الزر */
+    .booking-whatsapp-btn {
+        display: inline-block;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 8px;
+        background-color: #25D366;
+        color: white;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+        .booking-whatsapp-btn:hover {
+            background-color: #1ebe5d;
+        }
+
+    /* الملاحظة */
+    .booking-note {
+        font-size: 0.9rem;
+        color: #888;
+        margin-top: 1rem;
+    }
+
+</style>
+
+

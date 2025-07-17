@@ -1,0 +1,283 @@
+@model MyClinc.Models.WhatsAppTestMessageViewModel
+@{
+    ViewData["Title"] = "إدارة بوت الواتساب";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">
+                        <i class="fab fa-whatsapp text-success me-2"></i>
+                        إدارة بوت الواتساب
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <!-- Bot Status -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="card-title">
+                                        <i class="fas fa-circle text-success me-2"></i>
+                                        حالة البوت
+                                    </h6>
+                                    <p class="card-text">البوت يعمل بشكل طبيعي</p>
+                                    <small class="text-muted">آخر تحديث: @DateTime.Now.ToString("yyyy-MM-dd HH:mm")</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="card-title">
+                                        <i class="fas fa-users me-2"></i>
+                                        المستخدمين النشطين
+                                    </h6>
+                                    <p class="card-text">0 مستخدم نشط</p>
+                                    <small class="text-muted">في آخر 24 ساعة</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Test Message Section -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0">
+                                        <i class="fas fa-paper-plane me-2"></i>
+                                        إرسال رسالة تجريبية
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <form asp-action="SendTestMessage" method="post">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label asp-for="PhoneNumber" class="form-label">رقم الهاتف <span class="text-danger">*</span></label>
+                                                    <input asp-for="PhoneNumber" id="phoneNumberDoctor" name="PhoneNumber" class="form-control form-control-lg" type="tel" required />
+                                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                                    <div id="phoneErrorDoctor" class="text-danger mt-1" style="display: none;"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="message" class="form-label">الرسالة</label>
+                                                    <input type="text" class="form-control" id="message" name="message" 
+                                                           placeholder="أدخل الرسالة التجريبية" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="form-label">&nbsp;</label>
+                                                    <button type="submit" class="btn btn-success w-100">
+                                                        <i class="fab fa-whatsapp me-1"></i>
+                                                        إرسال
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Test Flows Section -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0">
+                                        <i class="fas fa-vial me-2"></i>
+                                        اختبار تدفقات البوت
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="d-grid">
+                                                <button type="button" class="btn btn-primary" onclick="testConsultation()">
+                                                    <i class="fas fa-calendar-check me-2"></i>
+                                                    اختبار حجز استشارة
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="d-grid">
+                                                <button type="button" class="btn btn-success" onclick="testDoctorJoin()">
+                                                    <i class="fas fa-user-md me-2"></i>
+                                                    اختبار انضمام طبيب
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="d-grid">
+                                                <button type="button" class="btn btn-info" onclick="testPartnership()">
+                                                    <i class="fas fa-handshake me-2"></i>
+                                                    اختبار طلب شراكة
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <small class="text-muted">
+                                            <i class="fas fa-info-circle me-1"></i>
+                                            افتح وحدة تحكم المتصفح (F12) لمراقبة نتائج الاختبار
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bot Features -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0">
+                                        <i class="fas fa-cogs me-2"></i>
+                                        ميزات البوت
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="feature-item text-center p-3">
+                                                <i class="fas fa-calendar-check fa-2x text-primary mb-2"></i>
+                                                <h6>حجز استشارات</h6>
+                                                <p class="text-muted">يمكن للمرضى حجز استشارات طبية عبر الواتساب</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="feature-item text-center p-3">
+                                                <i class="fas fa-user-md fa-2x text-success mb-2"></i>
+                                                <h6>انضمام أطباء</h6>
+                                                <p class="text-muted">يمكن للأطباء التقديم للانضمام عبر الواتساب</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="feature-item text-center p-3">
+                                                <i class="fas fa-handshake fa-2x text-info mb-2"></i>
+                                                <h6>طلبات شراكة</h6>
+                                                <p class="text-muted">يمكن للشركات طلب شراكات تجارية عبر الواتساب</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Webhook Configuration -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="card-title mb-0">
+                                        <i class="fas fa-link me-2"></i>
+                                        إعدادات Webhook
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label class="form-label">رابط Webhook</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" 
+                                                           value="https://yourdomain.com/api/whatsappbot/webhook" 
+                                                           readonly>
+                                                    <button class="btn btn-outline-secondary" type="button" 
+                                                            onclick="copyToClipboard(this)">
+                                                        <i class="fas fa-copy"></i>
+                                                    </button>
+                                                </div>
+                                                <small class="text-muted">قم بنسخ هذا الرابط وإضافته في إعدادات WhatsApp Business API</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="form-label">حالة Webhook</label>
+                                                <div class="d-flex align-items-center">
+                                                    <span class="badge bg-success me-2">مفعل</span>
+                                                    <button class="btn btn-sm btn-outline-primary">
+                                                        <i class="fas fa-sync-alt me-1"></i>
+                                                        تحديث
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js"></script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const phoneInput = document.getElementById('phoneNumberDoctor');
+            const phoneError = document.getElementById('phoneErrorDoctor');
+            let iti = null;
+
+            if (phoneInput) {
+                iti = window.intlTelInput(phoneInput, {
+                    initialCountry: 'auto',
+                    nationalMode: false, // ليظهر الكود داخل الـ input
+                    separateDialCode: true,
+                    utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
+                    geoIpLookup: function (callback) {
+                        fetch('https://ipapi.co/json')
+                            .then(res => res.json())
+                            .then(data => callback(data.country_code))
+                            .catch(() => callback('YE')); // الافتراضي في حال فشل geoIP
+                    }
+                });
+
+                function validatePhoneNumber() {
+                    if (iti.isValidNumber()) {
+                        phoneInput.value = iti.getNumber(); // الرقم الكامل مع كود الدولة
+                        phoneError.style.display = 'none';
+                        phoneInput.classList.remove('is-invalid');
+                        phoneInput.classList.add('is-valid');
+                    } else {
+                        phoneInput.value = '';
+                        phoneError.textContent = 'رقم الهاتف غير صالح.';
+                        phoneError.style.display = 'block';
+                        phoneInput.classList.add('is-invalid');
+                        phoneInput.classList.remove('is-valid');
+                    }
+                }
+
+                // ✅ تحقّق عند فقدان التركيز على الحقل
+                phoneInput.addEventListener('blur', validatePhoneNumber);
+
+                // ✅ تأكيد صحة الرقم عند الإرسال
+                phoneInput.form.addEventListener('submit', function (e) {
+                    if (!iti.isValidNumber()) {
+                        e.preventDefault(); // يمنع الإرسال لو الرقم غير صحيح
+                        validatePhoneNumber();
+                    } else {
+                        phoneInput.value = iti.getNumber(); // تأكد من إرسال الرقم بصيغة دولية
+                    }
+                });
+            }
+        });
+    </script>
+}

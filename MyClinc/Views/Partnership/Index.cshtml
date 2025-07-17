@@ -1,0 +1,334 @@
+@{
+    ViewData["Title"] = "انضم إلى فريقنا";
+}
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-6 hero-content">
+                <h1 class="hero-title fade-in">
+                    انضم إلى فريقنا
+                    <span style="color: var(--text-medium);">الطبي المتميز</span>
+                </h1>
+                <p class="hero-subtitle fade-in">
+                    كن جزءاً من فريق طبي متخصص يقدم أفضل الخدمات الطبية. 
+                    نحن نبحث عن أطباء ومختصين يشاركوننا رؤيتنا في تقديم رعاية طبية متميزة.
+                </p>
+                <div class="hero-buttons fade-in">
+                    <a asp-controller="Partnership" asp-action="Create" class="btn-primary-custom">
+                        <i class="fas fa-user-plus me-2"></i>تقدم بطلب للشراكة
+                    </a>
+                    <a asp-controller="About" asp-action="Index" class="btn-secondary-custom">
+                        <i class="fas fa-info-circle me-2"></i>تعرف على فريقنا
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center slide-in-right">
+                <div class="hero-image">
+                    <img src="~/images/medical_assets/healthcare_professional_1.jpg" alt="فريق طبي متخصص" 
+                         class="img-fluid rounded-3 shadow-lg" 
+                         style="max-height: 500px; object-fit: cover; border-radius: 20px !important;">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="services-section">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="section-title">إنجازاتنا في أرقام</h2>
+                <p class="section-subtitle">نفخر بما حققناه من نجاحات مع فريقنا الطبي المتميز</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="service-card text-center fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="service-title" style="font-size: 2.5rem; margin-bottom: 0.5rem;">24/7</h3>
+                    <p class="service-description">خدمة متواصلة على مدار الساعة</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="service-card text-center fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <h3 class="service-title" style="font-size: 2.5rem; margin-bottom: 0.5rem;">98%</h3>
+                    <p class="service-description">نسبة رضا المرضى</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="service-card text-center fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="service-title" style="font-size: 2.5rem; margin-bottom: 0.5rem;">5000+</h3>
+                    <p class="service-description">مريض تم علاجهم بنجاح</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="service-card text-center fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3 class="service-title" style="font-size: 2.5rem; margin-bottom: 0.5rem;">15+</h3>
+                    <p class="service-description">طبيب متخصص في الفريق</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Partnership Benefits Section -->
+<section class="about-section">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="section-title">مزايا الانضمام إلى فريقنا</h2>
+                <p class="section-subtitle">نوفر بيئة عمل مثالية تساعدك على تحقيق أهدافك المهنية</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h5 class="service-title">نمو مهني مضمون</h5>
+                    <p class="service-description">برامج تطوير مستمرة وفرص تدريبية متقدمة لتطوير مهاراتك الطبية والمهنية</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h5 class="service-title">بيئة عمل داعمة</h5>
+                    <p class="service-description">فريق متعاون ومتفهم يدعم بعضه البعض لتحقيق أفضل النتائج للمرضى</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h5 class="service-title">تقنيات حديثة</h5>
+                    <p class="service-description">أحدث المعدات والتقنيات الطبية المتطورة لضمان تقديم أفضل رعاية طبية</p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <h5 class="service-title">مكافآت تنافسية</h5>
+                    <p class="service-description">نظام مكافآت عادل ومحفز يقدر جهودك ويكافئ تميزك في العمل</p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <h5 class="service-title">توازن الحياة والعمل</h5>
+                    <p class="service-description">جداول عمل مرنة تتيح لك التوازن بين حياتك المهنية والشخصية</p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h5 class="service-title">التعليم المستمر</h5>
+                    <p class="service-description">دعم كامل للمؤتمرات والدورات التدريبية لمواكبة أحدث التطورات الطبية</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Partnership Types Section -->
+<section class="services-section">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="section-title">أنواع الشراكات المتاحة</h2>
+                <p class="section-subtitle">نقدم فرص متنوعة للانضمام إلى فريقنا حسب تخصصك وخبرتك</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="service-card h-100 fade-in">
+                    <div class="d-flex align-items-start">
+                        <div class="service-icon me-3" style="width: 60px; height: 60px; flex-shrink: 0;">
+                            <i class="fas fa-hospital"></i>
+                        </div>
+                        <div>
+                            <h5 class="service-title">الشراكة الطبية الكاملة</h5>
+                            <p class="service-description">انضمام كامل للفريق الطبي مع جميع المزايا والحقوق</p>
+                            <ul class="about-features">
+                                <li>راتب ثابت ومكافآت أداء</li>
+                                <li>تأمين صحي شامل</li>
+                                <li>إجازات مدفوعة الأجر</li>
+                                <li>برامج تدريبية متقدمة</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="service-card h-100 fade-in">
+                    <div class="d-flex align-items-start">
+                        <div class="service-icon me-3" style="width: 60px; height: 60px; flex-shrink: 0;">
+                            <i class="fas fa-user-clock"></i>
+                        </div>
+                        <div>
+                            <h5 class="service-title">العمل بدوام جزئي</h5>
+                            <p class="service-description">مرونة في أوقات العمل مع الحفاظ على جودة الخدمة</p>
+                            <ul class="about-features">
+                                <li>جداول عمل مرنة</li>
+                                <li>أجر بالساعة تنافسي</li>
+                                <li>إمكانية العمل عن بُعد</li>
+                                <li>مشاركة في الأرباح</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Requirements Section -->
+<section class="about-section">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="section-title">متطلبات الانضمام</h2>
+                <p class="section-subtitle">المؤهلات والخبرات المطلوبة للانضمام إلى فريقنا الطبي</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="service-card h-100 fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h5 class="service-title">المؤهلات الأساسية</h5>
+                    <ul class="about-features">
+                        <li>شهادة طبية معتمدة من جامعة معترف بها</li>
+                        <li>ترخيص مزاولة المهنة ساري المفعول</li>
+                        <li>خبرة لا تقل عن سنتين في التخصص</li>
+                        <li>إجادة اللغة العربية والإنجليزية</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="service-card h-100 fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <h5 class="service-title">المهارات المطلوبة</h5>
+                    <ul class="about-features">
+                        <li>مهارات تواصل ممتازة مع المرضى</li>
+                        <li>القدرة على العمل ضمن فريق</li>
+                        <li>الالتزام بأخلاقيات المهنة الطبية</li>
+                        <li>مرونة في أوقات العمل</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Information Section -->
+<section class="services-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="service-card text-center">
+                    <h3 class="service-title" style="color: var(--text-dark); margin-bottom: 2rem;">تواصل معنا</h3>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="service-icon" style="margin-bottom: 1rem;">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <h6 class="service-title" style="font-size: 1.1rem;">البريد الإلكتروني</h6>
+                            <p class="service-description">partnership@doctor-hub.com</p>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="service-icon" style="margin-bottom: 1rem;">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <h6 class="service-title" style="font-size: 1.1rem;">الهاتف</h6>
+                            <p class="service-description">+967 123 50 966</p>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="service-icon" style="margin-bottom: 1rem;">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <h6 class="service-title" style="font-size: 1.1rem;">واتساب</h6>
+                            <a href="https://wa.me/9647715513344" class="btn-secondary-custom" style="padding: 8px 16px; font-size: 0.9rem;">
+                                <i class="fab fa-whatsapp me-1"></i>تواصل الآن
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="hero-section" style="padding: 80px 0; min-height: auto;">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-8 mx-auto hero-content">
+                <h2 class="hero-title" style="font-size: 2.5rem; margin-bottom: 1.5rem;">هل أنت مستعد للانضمام؟</h2>
+                <p class="hero-subtitle" style="margin-bottom: 2rem;">انضم إلى فريقنا الطبي المتميز وكن جزءاً من رحلة تقديم أفضل رعاية طبية</p>
+                <div class="hero-buttons">
+                    <a asp-controller="Partnership" asp-action="Create" class="btn-primary-custom">
+                        <i class="fas fa-user-plus me-2"></i>تقدم بطلب الانضمام
+                    </a>
+                    <a asp-controller="Services" asp-action="Index" class="btn-secondary-custom">
+                        <i class="fas fa-stethoscope me-2"></i>تعرف على خدماتنا
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Animation on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px"
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll(".fade-in, .slide-in-left, .slide-in-right").forEach(el => {
+        observer.observe(el);
+    });
+</script>
+

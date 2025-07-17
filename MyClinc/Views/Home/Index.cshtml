@@ -1,0 +1,346 @@
+@{
+    ViewData["Title"] = "الصفحة الرئيسية";
+}
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6 hero-content">
+                <h1 class="hero-title fade-in">
+                    أهلاً بك في عيادتك الطبية
+                    <span style="color: var(--text-medium);">Doctor Hub</span>
+                </h1>
+                <p class="hero-subtitle fade-in">
+                    نقدم لك أفضل الخدمات الطبية والاستشارات المتخصصة بأحدث التقنيات والمعايير العالمية. 
+                    نرافقك خطوة بخطوة برعاية طبية شاملة، نفسية وجسدية، بخبرة وقلب مفتوح.
+                </p>
+                <div class="hero-buttons fade-in">
+                    <a asp-controller="Consultation" asp-action="Book" class="btn-primary-custom">
+                        <i class="fas fa-calendar-plus me-2"></i>احجز استشارتك الآن
+                    </a>
+                    <a asp-controller="Services" asp-action="Index" class="btn-secondary-custom">
+                        <i class="fas fa-medical-kit me-2"></i>تعرف على خدماتنا
+                    </a>
+                </div>
+                <p class="mt-4" style="color: var(--text-light); font-size: 1rem;">
+                    <i class="fas fa-clock me-2"></i>املأ النموذج، ونتواصل معك خلال ٢٤ ساعة
+                </p>
+            </div>
+            <div class="col-lg-6 text-center slide-in-right">
+                <div class="hero-image">
+                    <img src="~/images/medical_assets/healthcare_professional_1.jpg" alt="فريق طبي متخصص" 
+                         class="img-fluid rounded-3 shadow-lg" 
+                         style="max-height: 500px; object-fit: cover; border-radius: 20px !important;">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Trust & Security Section -->
+<section class="services-section">
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8 text-center">
+                <h2 class="section-title">أمانك وخصوصيتك أولويتنا</h2>
+                <p class="section-subtitle">كل معلوماتك محفوظة بسرية تامة ونعتمد أعلى معايير الأمان الطبي العالمية</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <img src="~/images/medical_assets/medical_icon_1.png" alt="حماية طبية" class="medical-icon" style="width: 40px; height: 40px;">
+                    </div>
+                    <h5 class="service-title">حماية كاملة للبيانات</h5>
+                    <p class="service-description">تشفير متقدم لجميع بياناتك الطبية والشخصية وفق أعلى معايير الأمان الدولية</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-user-lock"></i>
+                    </div>
+                    <h5 class="service-title">سرية تامة</h5>
+                    <p class="service-description">معلوماتك الطبية محمية وفق أعلى معايير الخصوصية والسرية المهنية</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h5 class="service-title">معتمد طبياً</h5>
+                    <p class="service-description">جميع أطبائنا مرخصون ومعتمدون رسمياً من الجهات الطبية المختصة</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="about-section">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="section-title">خدماتنا الطبية المتخصصة</h2>
+                <p class="section-subtitle">نقدم مجموعة شاملة من الخدمات الطبية المتخصصة بأحدث التقنيات</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-apple-alt"></i>
+                    </div>
+                    <h5 class="service-title">التغذية العلاجية</h5>
+                    <p class="service-description">برامج غذائية متخصصة ومدروسة علمياً لعلاج السمنة والنحافة والأمراض المزمنة مع متابعة دورية</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-procedures"></i>
+                    </div>
+                    <h5 class="service-title">الجراحة العامة</h5>
+                    <p class="service-description">عمليات جراحية متقدمة بأحدث التقنيات والمعايير العالمية مع فريق طبي متخصص</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h5 class="service-title">الطب النفسي</h5>
+                    <p class="service-description">علاج الاضطرابات النفسية والعلاج السلوكي المعرفي مع جلسات فردية وجماعية</p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-baby"></i>
+                    </div>
+                    <h5 class="service-title">طب الأطفال</h5>
+                    <p class="service-description">رعاية طبية شاملة للأطفال من الولادة حتى المراهقة مع برامج التطعيم والمتابعة</p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-female"></i>
+                    </div>
+                    <h5 class="service-title">طب النساء والولادة</h5>
+                    <p class="service-description">رعاية صحية متكاملة للمرأة في جميع مراحل الحياة مع متابعة الحمل والولادة</p>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-stethoscope"></i>
+                    </div>
+                    <h5 class="service-title">الطب العام</h5>
+                    <p class="service-description">فحوصات شاملة وتشخيص دقيق للأمراض العامة مع خطط علاجية مخصصة</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="services-section">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="service-card text-center fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="service-title" style="font-size: 2.5rem; margin-bottom: 0.5rem;">5000+</h3>
+                    <p class="service-description">مريض راضٍ عن خدماتنا</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="service-card text-center fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h3 class="service-title" style="font-size: 2.5rem; margin-bottom: 0.5rem;">15+</h3>
+                    <p class="service-description">طبيب متخصص ومعتمد</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="service-card text-center fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3 class="service-title" style="font-size: 2.5rem; margin-bottom: 0.5rem;">98%</h3>
+                    <p class="service-description">نسبة نجاح العلاج</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="service-card text-center fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="service-title" style="font-size: 2.5rem; margin-bottom: 0.5rem;">24/7</h3>
+                    <p class="service-description">خدمة متواصلة</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="about-section">
+    <div class="container">
+        <div class="about-content">
+            <div class="about-text slide-in-left">
+                <h2 class="about-title">لماذا تختار Doctor Hub؟</h2>
+                <p class="about-description">
+                    نحن ملتزمون بتقديم أفضل رعاية طبية لمرضانا من خلال فريق طبي متخصص وخبرة تمتد لسنوات طويلة في المجال الطبي. 
+                    نؤمن بأن كل مريض يستحق الحصول على أفضل رعاية ممكنة.
+                </p>
+                <ul class="about-features">
+                    <li>أطباء معتمدون بخبرة تزيد عن 15 عاماً في التخصصات المختلفة</li>
+                    <li>أحدث الأجهزة والتقنيات الطبية المتطورة</li>
+                    <li>اهتمام شخصي ومتابعة دقيقة لكل مريض</li>
+                    <li>بيئة آمنة ومعايير عالية للجودة والنظافة</li>
+                    <li>خدمة عملاء متميزة ومتاحة على مدار الساعة</li>
+                </ul>
+                <a asp-controller="About" asp-action="Index" class="btn-primary-custom mt-3">
+                    <i class="fas fa-info-circle me-2"></i>تعرف علينا أكثر
+                </a>
+            </div>
+            <div class="about-image slide-in-right">
+                <img src="~/images/medical_assets/clinic_interior_1.jpg" alt="عيادة طبية حديثة" 
+                     class="img-fluid">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Customer Reviews Section -->
+<section class="services-section">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="section-title">آراء عملائنا</h2>
+                <p class="section-subtitle">ماذا يقول مرضانا عن تجربتهم معنا</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card fade-in">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="service-icon me-3" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div>
+                            <h6 class="service-title mb-1" style="font-size: 1.1rem;">أحمد محمد</h6>
+                            <small style="color: var(--text-light);">مريض</small>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <i class="fas fa-star" style="color: #ffc107;"></i>
+                        <i class="fas fa-star" style="color: #ffc107;"></i>
+                        <i class="fas fa-star" style="color: #ffc107;"></i>
+                        <i class="fas fa-star" style="color: #ffc107;"></i>
+                        <i class="fas fa-star" style="color: #ffc107;"></i>
+                    </div>
+                    <p class="service-description">"خدمة ممتازة ومتابعة دقيقة من الدكتور. استفدت كثيراً من برنامج التغذية العلاجية وحققت نتائج رائعة."</p>
+                    <small style="color: var(--text-light);">منذ أسبوعين</small>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card fade-in">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="service-icon me-3" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div>
+                            <h6 class="service-title mb-1" style="font-size: 1.1rem;">فاطمة علي</h6>
+                            <small style="color: var(--text-light);">مريضة</small>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <i class="fas fa-star" style="color: #ffc107;"></i>
+                        <i class="fas fa-star" style="color: #ffc107;"></i>
+                        <i class="fas fa-star" style="color: #ffc107;"></i>
+                        <i class="fas fa-star" style="color: #ffc107;"></i>
+                        <i class="fas fa-star" style="color: #ffc107;"></i>
+                    </div>
+                    <p class="service-description">"أشكر الدكتور على الاهتمام والمتابعة المستمرة. العلاج النفسي ساعدني كثيراً في تحسين حالتي."</p>
+                    <small style="color: var(--text-light);">منذ شهر</small>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="service-card fade-in">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="service-icon me-3" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div>
+                            <h6 class="service-title mb-1" style="font-size: 1.1rem;">محمد سالم</h6>
+                            <small style="color: var(--text-light);">مريض</small>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <i class="fas fa-star" style="color: #ffc107;"></i>
+                        <i class="fas fa-star" style="color: #ffc107;"></i>
+                        <i class="fas fa-star" style="color: #ffc107;"></i>
+                        <i class="fas fa-star" style="color: #ffc107;"></i>
+                        <i class="far fa-star" style="color: #ffc107;"></i>
+                    </div>
+                    <p class="service-description">"تجربة جيدة جداً مع Doctor Hub. الطاقم الطبي محترف والخدمة سريعة ومنظمة."</p>
+                    <small style="color: var(--text-light);">منذ 3 أسابيع</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="hero-section" style="padding: 80px 0; min-height: auto;">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-8 mx-auto hero-content">
+                <h2 class="hero-title" style="font-size: 2.5rem; margin-bottom: 1.5rem;">هل تحتاج لاستشارة طبية؟</h2>
+                <p class="hero-subtitle" style="margin-bottom: 2rem;">احجز موعدك الآن واحصل على أفضل رعاية طبية متخصصة</p>
+                <a asp-controller="Consultation" asp-action="Book" class="btn-primary-custom">
+                    <i class="fas fa-calendar-plus me-2"></i>احجز استشارة الآن
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Animation on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px"
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll(".fade-in, .slide-in-left, .slide-in-right").forEach(el => {
+        observer.observe(el);
+    });
+</script>
+

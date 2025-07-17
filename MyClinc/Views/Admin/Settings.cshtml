@@ -1,0 +1,490 @@
+@{
+    ViewData["Title"] = "إعدادات النظام";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="settings-page">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">إعدادات النظام</h2>
+            <p class="text-muted mb-0">تخصيص وإدارة إعدادات الموقع والنظام</p>
+        </div>
+        <button class="btn btn-primary" onclick="saveAllSettings()">
+            <i class="fas fa-save me-2"></i>حفظ جميع الإعدادات
+        </button>
+    </div>
+
+    <div class="row g-4">
+        <!-- General Settings -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0 p-4">
+                    <h5 class="card-title fw-bold mb-0">
+                        <i class="fas fa-cog me-2 text-primary"></i>الإعدادات العامة
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <form id="generalSettingsForm">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">اسم الموقع</label>
+                            <input type="text" class="form-control" name="siteName" value="عيادة الدكتور محمد أحمد">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">وصف الموقع</label>
+                            <textarea class="form-control" name="siteDescription" rows="3">عيادة متخصصة في التغذية العلاجية والجراحة العامة والطب النفسي</textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">البريد الإلكتروني للتواصل</label>
+                            <input type="email" class="form-control" name="contactEmail" value="info@myclinic.com">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">رقم الهاتف</label>
+                            <input type="text" class="form-control" name="phoneNumber" value="+9647715513344">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">العنوان</label>
+                            <input type="text" class="form-control" name="address" value="القاهرة، مصر">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">ساعات العمل</label>
+                            <input type="text" class="form-control" name="workingHours" value="السبت - الخميس: 9:00 ص - 6:00 م">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Appointment Settings -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0 p-4">
+                    <h5 class="card-title fw-bold mb-0">
+                        <i class="fas fa-calendar-alt me-2 text-success"></i>إعدادات المواعيد
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <form id="appointmentSettingsForm">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">مدة الاستشارة (بالدقائق)</label>
+                            <input type="number" class="form-control" name="consultationDuration" value="30" min="15" max="120">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">الحد الأقصى للحجوزات اليومية</label>
+                            <input type="number" class="form-control" name="maxDailyBookings" value="20" min="1" max="50">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">أيام العمل</label>
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="workingDays" value="saturday" checked>
+                                        <label class="form-check-label">السبت</label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="workingDays" value="sunday" checked>
+                                        <label class="form-check-label">الأحد</label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="workingDays" value="monday" checked>
+                                        <label class="form-check-label">الاثنين</label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="workingDays" value="tuesday" checked>
+                                        <label class="form-check-label">الثلاثاء</label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="workingDays" value="wednesday" checked>
+                                        <label class="form-check-label">الأربعاء</label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="workingDays" value="thursday" checked>
+                                        <label class="form-check-label">الخميس</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <label class="form-label fw-bold">بداية العمل</label>
+                                <input type="time" class="form-control" name="startTime" value="09:00">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-bold">نهاية العمل</label>
+                                <input type="time" class="form-control" name="endTime" value="18:00">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notification Settings -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0 p-4">
+                    <h5 class="card-title fw-bold mb-0">
+                        <i class="fas fa-bell me-2 text-warning"></i>إعدادات الإشعارات
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <form id="notificationSettingsForm">
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="emailNotifications" checked>
+                                <label class="form-check-label fw-bold">إشعارات البريد الإلكتروني</label>
+                            </div>
+                            <small class="text-muted">إرسال إشعارات عبر البريد الإلكتروني للحجوزات الجديدة</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="smsNotifications" checked>
+                                <label class="form-check-label fw-bold">إشعارات الرسائل النصية</label>
+                            </div>
+                            <small class="text-muted">إرسال رسائل نصية للمرضى قبل المواعيد</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="adminNotifications" checked>
+                                <label class="form-check-label fw-bold">إشعارات الإدارة</label>
+                            </div>
+                            <small class="text-muted">إشعارات للمدير عند وجود طلبات جديدة</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">وقت الإشعار قبل الموعد (بالساعات)</label>
+                            <input type="number" class="form-control" name="reminderHours" value="24" min="1" max="72">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">قالب رسالة التذكير</label>
+                            <textarea class="form-control" name="reminderTemplate" rows="3">مرحباً {اسم_المريض}، لديك موعد غداً في {وقت_الموعد} مع {اسم_الطبيب}</textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Settings -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0 p-4">
+                    <h5 class="card-title fw-bold mb-0">
+                        <i class="fas fa-credit-card me-2 text-info"></i>إعدادات الدفع
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <form id="paymentSettingsForm">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">العملة الافتراضية</label>
+                            <select class="form-select" name="defaultCurrency">
+                                <option value="USD" selected>دولار أمريكي (USD)</option>
+                                <option value="EGP">جنيه مصري (EGP)</option>
+                                <option value="SAR">ريال سعودي (SAR)</option>
+                                <option value="AED">درهم إماراتي (AED)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="onlinePayment" checked>
+                                <label class="form-check-label fw-bold">الدفع الإلكتروني</label>
+                            </div>
+                            <small class="text-muted">تفعيل الدفع عبر الإنترنت</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="cashPayment" checked>
+                                <label class="form-check-label fw-bold">الدفع النقدي</label>
+                            </div>
+                            <small class="text-muted">قبول الدفع النقدي في العيادة</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">رسوم الخدمة (%)</label>
+                            <input type="number" class="form-control" name="serviceFee" value="5" min="0" max="20" step="0.1">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">الحد الأدنى للدفع</label>
+                            <input type="number" class="form-control" name="minimumPayment" value="10" min="1">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Settings -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0 p-4">
+                    <h5 class="card-title fw-bold mb-0">
+                        <i class="fas fa-shield-alt me-2 text-danger"></i>إعدادات الأمان
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <form id="securitySettingsForm">
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="twoFactorAuth">
+                                <label class="form-check-label fw-bold">المصادقة الثنائية</label>
+                            </div>
+                            <small class="text-muted">تفعيل المصادقة الثنائية للحسابات الإدارية</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="loginLogging" checked>
+                                <label class="form-check-label fw-bold">تسجيل عمليات الدخول</label>
+                            </div>
+                            <small class="text-muted">حفظ سجل بجميع عمليات تسجيل الدخول</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">مدة انتهاء الجلسة (بالدقائق)</label>
+                            <input type="number" class="form-control" name="sessionTimeout" value="60" min="15" max="480">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">الحد الأقصى لمحاولات تسجيل الدخول</label>
+                            <input type="number" class="form-control" name="maxLoginAttempts" value="5" min="3" max="10">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-outline-warning w-100" onclick="changeAdminPassword()">
+                                <i class="fas fa-key me-2"></i>تغيير كلمة مرور المدير
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Backup Settings -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0 p-4">
+                    <h5 class="card-title fw-bold mb-0">
+                        <i class="fas fa-database me-2 text-secondary"></i>إعدادات النسخ الاحتياطي
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <form id="backupSettingsForm">
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="autoBackup" checked>
+                                <label class="form-check-label fw-bold">النسخ الاحتياطي التلقائي</label>
+                            </div>
+                            <small class="text-muted">إنشاء نسخ احتياطية تلقائياً</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">تكرار النسخ الاحتياطي</label>
+                            <select class="form-select" name="backupFrequency">
+                                <option value="daily" selected>يومياً</option>
+                                <option value="weekly">أسبوعياً</option>
+                                <option value="monthly">شهرياً</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">وقت النسخ الاحتياطي</label>
+                            <input type="time" class="form-control" name="backupTime" value="02:00">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">الاحتفاظ بالنسخ لمدة (أيام)</label>
+                            <input type="number" class="form-control" name="retentionDays" value="30" min="7" max="365">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-outline-primary w-100 mb-2" onclick="createBackup()">
+                                <i class="fas fa-download me-2"></i>إنشاء نسخة احتياطية الآن
+                            </button>
+                            <button type="button" class="btn btn-outline-success w-100" onclick="restoreBackup()">
+                                <i class="fas fa-upload me-2"></i>استعادة من نسخة احتياطية
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Information -->
+    <div class="row g-4 mt-2">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0 p-4">
+                    <h5 class="card-title fw-bold mb-0">
+                        <i class="fas fa-info-circle me-2 text-primary"></i>معلومات النظام
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-4">
+                        <div class="col-md-3">
+                            <div class="system-info-item text-center p-3 bg-light rounded">
+                                <i class="fas fa-code fa-2x text-primary mb-2"></i>
+                                <h6 class="fw-bold">إصدار النظام</h6>
+                                <span class="text-muted">v2.1.0</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="system-info-item text-center p-3 bg-light rounded">
+                                <i class="fas fa-calendar fa-2x text-success mb-2"></i>
+                                <h6 class="fw-bold">آخر تحديث</h6>
+                                <span class="text-muted">24/06/2025</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="system-info-item text-center p-3 bg-light rounded">
+                                <i class="fas fa-server fa-2x text-info mb-2"></i>
+                                <h6 class="fw-bold">حالة الخادم</h6>
+                                <span class="badge bg-success">متصل</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="system-info-item text-center p-3 bg-light rounded">
+                                <i class="fas fa-hdd fa-2x text-warning mb-2"></i>
+                                <h6 class="fw-bold">مساحة التخزين</h6>
+                                <span class="text-muted">75% مستخدمة</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Change Password Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">تغيير كلمة مرور المدير</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="changePasswordForm">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">كلمة المرور الحالية</label>
+                        <input type="password" class="form-control" name="currentPassword" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">كلمة المرور الجديدة</label>
+                        <input type="password" class="form-control" name="newPassword" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">تأكيد كلمة المرور الجديدة</label>
+                        <input type="password" class="form-control" name="confirmPassword" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary" onclick="updatePassword()">تحديث كلمة المرور</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .system-info-item {
+        transition: transform 0.3s ease;
+    }
+    
+    .system-info-item:hover {
+        transform: translateY(-3px);
+    }
+    
+    .form-check-input:checked {
+        background-color: #667eea;
+        border-color: #667eea;
+    }
+    
+    .card {
+        transition: box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        function saveAllSettings() {
+            // Collect all form data
+            const forms = ['generalSettingsForm', 'appointmentSettingsForm', 'notificationSettingsForm', 
+                          'paymentSettingsForm', 'securitySettingsForm', 'backupSettingsForm'];
+            
+            const allSettings = {};
+            
+            forms.forEach(formId => {
+                const form = document.getElementById(formId);
+                const formData = new FormData(form);
+                allSettings[formId] = Object.fromEntries(formData);
+            });
+            
+            console.log('Saving settings:', allSettings);
+            
+            // Show success message
+            alert('تم حفظ الإعدادات بنجاح!');
+        }
+        
+        function changeAdminPassword() {
+            $('#changePasswordModal').modal('show');
+        }
+        
+        function updatePassword() {
+            const form = document.getElementById('changePasswordForm');
+            const formData = new FormData(form);
+            
+            if (formData.get('newPassword') !== formData.get('confirmPassword')) {
+                alert('كلمات المرور غير متطابقة!');
+                return;
+            }
+            
+            console.log('Updating password...');
+            $('#changePasswordModal').modal('hide');
+            alert('تم تحديث كلمة المرور بنجاح!');
+        }
+        
+        function createBackup() {
+            if (confirm('هل تريد إنشاء نسخة احتياطية الآن؟')) {
+                console.log('Creating backup...');
+                alert('تم إنشاء النسخة الاحتياطية بنجاح!');
+            }
+        }
+        
+        function restoreBackup() {
+            if (confirm('هل تريد استعادة البيانات من نسخة احتياطية؟ سيتم استبدال البيانات الحالية.')) {
+                console.log('Restoring backup...');
+                alert('تم استعادة البيانات بنجاح!');
+            }
+        }
+    </script>
+}
+

@@ -1,0 +1,337 @@
+@model IEnumerable<DAL.Data.Models.MedicalSpecialty>
+@{
+    ViewData["Title"] = "خدماتنا الطبية";
+}
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-6 hero-content">
+                <h1 class="hero-title fade-in">
+                    خدماتنا الطبية
+                    <span style="color: var(--text-medium);">المتخصصة</span>
+                </h1>
+                <p class="hero-subtitle fade-in">
+                    نقدم مجموعة شاملة من الخدمات الطبية المتخصصة بأعلى معايير الجودة والمهنية. 
+                    فريقنا الطبي المتخصص جاهز لتقديم أفضل رعاية طبية لك ولعائلتك.
+                </p>
+                <div class="hero-buttons fade-in">
+                    <a asp-controller="Consultation" asp-action="Book" class="btn-primary-custom">
+                        <i class="fas fa-calendar-plus me-2"></i>احجز استشارتك الآن
+                    </a>
+                    <a asp-controller="About" asp-action="Index" class="btn-secondary-custom">
+                        <i class="fas fa-info-circle me-2"></i>تعرف على فريقنا
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center slide-in-right">
+                <div class="hero-image">
+                    <img src="~/images/medical_assets/doctor_consultation_1.jpg" alt="استشارة طبية متخصصة" 
+                         class="img-fluid rounded-3 shadow-lg" 
+                         style="max-height: 500px; object-fit: cover; border-radius: 20px !important;">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Grid Section -->
+<section class="services-section">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="section-title">خدماتنا الطبية الشاملة</h2>
+                <p class="section-subtitle">نقدم رعاية طبية متكاملة في جميع التخصصات بأحدث التقنيات والمعايير العالمية</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            @if (Model != null && Model.Any())
+            {
+                @foreach (var specialty in Model)
+                {
+                    <div class="col-lg-4 col-md-6">
+                        <div class="service-card fade-in">
+                            <div class="service-icon">
+                                @if (!string.IsNullOrEmpty(specialty.IconClass))
+                                {
+                                    <i class="@specialty.IconClass"></i>
+                                }
+                                else
+                                {
+                                    <i class="fas fa-stethoscope"></i>
+                                }
+                            </div>
+                            
+                            <h5 class="service-title">@specialty.Name</h5>
+                            
+                            @if (!string.IsNullOrEmpty(specialty.Description))
+                            {
+                                <p class="service-description">@specialty.Description</p>
+                            }
+                            
+                            @if (specialty.Price.HasValue)
+                            {
+                                <div class="price-section">
+                                    <span class="price-amount">$@specialty.Price</span>
+                                    <small class="price-label">للاستشارة الواحدة</small>
+                                </div>
+                            }
+                            
+                            <div class="service-actions">
+                                <a asp-controller="Consultation" asp-action="Book" asp-route-specialtyId="@specialty.Id" class="btn-primary-custom">
+                                    <i class="fas fa-calendar-plus me-2"></i>احجز الآن
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <!-- Default Services -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card fade-in">
+                        <div class="service-icon">
+                            <i class="fas fa-apple-alt"></i>
+                        </div>
+                        <h5 class="service-title">التغذية العلاجية</h5>
+                        <p class="service-description">برامج غذائية متخصصة ومدروسة علمياً لعلاج السمنة والنحافة والأمراض المزمنة مع متابعة دورية شاملة</p>
+                        <div class="price-section">
+                            <span class="price-amount">$30</span>
+                            <small class="price-label">للاستشارة الواحدة</small>
+                        </div>
+                        <div class="service-actions">
+                            <a asp-controller="Consultation" asp-action="Book" class="btn-primary-custom">
+                                <i class="fas fa-calendar-plus me-2"></i>احجز الآن
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card fade-in">
+                        <div class="service-icon">
+                            <i class="fas fa-procedures"></i>
+                        </div>
+                        <h5 class="service-title">الجراحة العامة</h5>
+                        <p class="service-description">عمليات جراحية متقدمة بأحدث التقنيات والمعايير العالمية مع فريق طبي متخصص وخبرة واسعة</p>
+                        <div class="price-section">
+                            <span class="price-amount">$50</span>
+                            <small class="price-label">للاستشارة الواحدة</small>
+                        </div>
+                        <div class="service-actions">
+                            <a asp-controller="Consultation" asp-action="Book" class="btn-primary-custom">
+                                <i class="fas fa-calendar-plus me-2"></i>احجز الآن
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card fade-in">
+                        <div class="service-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h5 class="service-title">الطب النفسي</h5>
+                        <p class="service-description">علاج الاضطرابات النفسية والعلاج السلوكي المعرفي مع جلسات فردية وجماعية متخصصة</p>
+                        <div class="price-section">
+                            <span class="price-amount">$40</span>
+                            <small class="price-label">للاستشارة الواحدة</small>
+                        </div>
+                        <div class="service-actions">
+                            <a asp-controller="Consultation" asp-action="Book" class="btn-primary-custom">
+                                <i class="fas fa-calendar-plus me-2"></i>احجز الآن
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card fade-in">
+                        <div class="service-icon">
+                            <i class="fas fa-baby"></i>
+                        </div>
+                        <h5 class="service-title">طب الأطفال</h5>
+                        <p class="service-description">رعاية طبية شاملة للأطفال من الولادة حتى المراهقة مع برامج التطعيم والمتابعة الدورية</p>
+                        <div class="price-section">
+                            <span class="price-amount">$35</span>
+                            <small class="price-label">للاستشارة الواحدة</small>
+                        </div>
+                        <div class="service-actions">
+                            <a asp-controller="Consultation" asp-action="Book" class="btn-primary-custom">
+                                <i class="fas fa-calendar-plus me-2"></i>احجز الآن
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card fade-in">
+                        <div class="service-icon">
+                            <i class="fas fa-female"></i>
+                        </div>
+                        <h5 class="service-title">طب النساء والولادة</h5>
+                        <p class="service-description">رعاية صحية متكاملة للمرأة في جميع مراحل الحياة مع متابعة الحمل والولادة والرعاية النسائية</p>
+                        <div class="price-section">
+                            <span class="price-amount">$45</span>
+                            <small class="price-label">للاستشارة الواحدة</small>
+                        </div>
+                        <div class="service-actions">
+                            <a asp-controller="Consultation" asp-action="Book" class="btn-primary-custom">
+                                <i class="fas fa-calendar-plus me-2"></i>احجز الآن
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="service-card fade-in">
+                        <div class="service-icon">
+                            <i class="fas fa-stethoscope"></i>
+                        </div>
+                        <h5 class="service-title">الطب العام</h5>
+                        <p class="service-description">فحوصات شاملة وتشخيص دقيق للأمراض العامة مع خطط علاجية مخصصة ومتابعة مستمرة</p>
+                        <div class="price-section">
+                            <span class="price-amount">$25</span>
+                            <small class="price-label">للاستشارة الواحدة</small>
+                        </div>
+                        <div class="service-actions">
+                            <a asp-controller="Consultation" asp-action="Book" class="btn-primary-custom">
+                                <i class="fas fa-calendar-plus me-2"></i>احجز الآن
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Our Services Section -->
+<section class="about-section">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="section-title">لماذا تختار خدماتنا الطبية؟</h2>
+                <p class="section-subtitle">نتميز بمجموعة من المزايا التي تجعلنا الخيار الأفضل لرعايتك الطبية</p>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="service-card text-center fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h5 class="service-title">خبرة معتمدة</h5>
+                    <p class="service-description">أطباء معتمدون بخبرة تزيد عن 15 عاماً في التخصصات المختلفة</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="service-card text-center fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h5 class="service-title">متاح 24/7</h5>
+                    <p class="service-description">خدمة طبية متاحة على مدار الساعة لضمان حصولك على الرعاية عند الحاجة</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="service-card text-center fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h5 class="service-title">سرية تامة</h5>
+                    <p class="service-description">حماية كاملة لخصوصية المرضى وسرية المعلومات الطبية</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="service-card text-center fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h5 class="service-title">جودة عالية</h5>
+                    <p class="service-description">معدل رضا المرضى 98% مع أعلى معايير الجودة والمهنية</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="hero-section" style="padding: 80px 0; min-height: auto;">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-8 mx-auto hero-content">
+                <h2 class="hero-title" style="font-size: 2.5rem; margin-bottom: 1.5rem;">جاهز لبدء رحلة العلاج؟</h2>
+                <p class="hero-subtitle" style="margin-bottom: 2rem;">احجز استشارتك الآن واحصل على أفضل رعاية طبية متخصصة من فريقنا المتميز</p>
+                <div class="hero-buttons">
+                    <a asp-controller="Consultation" asp-action="Book" class="btn-primary-custom">
+                        <i class="fas fa-calendar-plus me-2"></i>احجز استشارة الآن
+                    </a>
+                    <a asp-controller="Partnership" asp-action="Index" class="btn-secondary-custom">
+                        <i class="fas fa-handshake me-2"></i>انضم كطبيب
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Custom styles for services page */
+    .price-section {
+        background: var(--light-cream);
+        border-radius: 10px;
+        padding: 15px;
+        margin: 20px 0;
+        text-align: center;
+    }
+    
+    .price-amount {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        display: block;
+    }
+    
+    .price-label {
+        color: var(--text-medium);
+        font-size: 0.9rem;
+    }
+    
+    .service-actions {
+        margin-top: 1.5rem;
+    }
+    
+    .service-actions .btn-primary-custom {
+        width: 100%;
+        padding: 12px 20px;
+    }
+</style>
+
+<script>
+    // Animation on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px"
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll(".fade-in, .slide-in-left, .slide-in-right").forEach(el => {
+        observer.observe(el);
+    });
+</script>
+

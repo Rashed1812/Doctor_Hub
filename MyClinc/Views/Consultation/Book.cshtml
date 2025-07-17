@@ -1,0 +1,798 @@
+@model DAL.Data.Models.Consultation
+@{
+    ViewData["Title"] = "احجز استشارة";
+}
+
+<link href="~/css/HomeIndex.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/css/intlTelInput.css">
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-50">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-4 fade-in">
+                    احجز استشارة طبية
+                </h1>
+                <p class="lead mb-4 fade-in">
+                    املأ النموذج أدناه لحجز استشارتك مع Doctor Hub
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Content -->
+<section class="section-padding bg-light">
+    <div class="container">
+        <div class="row g-5">
+            <!-- Booking Form -->
+            <div class="col-lg-8">
+                <div class="booking-form-container">
+                    <!-- Progress Bar -->
+                    <div class="progress-container mb-4">
+                        <div class="progress" style="height: 8px; border-radius: 10px;">
+                            <div class="progress-bar bg-primary" id="progressBar" role="progressbar" style="width: 25%; transition: width 0.3s ease;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <div class="step-indicators mt-3 d-flex justify-content-between">
+                            <div class="step-indicator active" data-step="1">
+                                <div class="step-circle">1</div>
+                                <div class="step-label">البيانات الشخصية</div>
+                            </div>
+                            <div class="step-indicator" data-step="2">
+                                <div class="step-circle">2</div>
+                                <div class="step-label">معلومات الإقامة</div>
+                            </div>
+                            <div class="step-indicator" data-step="3">
+                                <div class="step-circle">3</div>
+                                <div class="step-label">المعلومات الطبية</div>
+                            </div>
+                            <div class="step-indicator" data-step="4">
+                                <div class="step-circle">4</div>
+                                <div class="step-label">نوع الاستشارة</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form asp-action="Book" method="post" class="booking-form" id="multiStepForm">
+                        <!-- Step 1: Personal Information -->
+                        <div class="form-step active" id="step1">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body p-4">
+                                    <h4 class="card-title fw-bold mb-4 text-primary">
+                                        <i class="fas fa-user me-2"></i>المعلومات الشخصية الأساسية
+                                    </h4>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label asp-for="PatientName" class="form-label fw-bold">الاسم الكامل <span class="text-danger">*</span></label>
+                                            <input asp-for="PatientName" class="form-control form-control-lg" placeholder="أدخل اسمك الكامل" required>
+                                            <span asp-validation-for="PatientName" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label asp-for="PhoneNumber" class="form-label fw-bold">رقم الهاتف <span class="text-danger">*</span></label>
+                                            <input asp-for="PhoneNumber" id="phoneNumber" class="form-control form-control-lg" type="tel" placeholder="أدخل رقم هاتفك" required>
+                                            <input type="hidden" id="fullPhoneNumber" name="FullPhoneNumber" />
+                                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                            <div id="phoneError" class="text-danger mt-1" style="display: none;"></div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label asp-for="BirthDate" class="form-label fw-bold">تاريخ الميلاد <span class="text-danger">*</span></label>
+                                            <input asp-for="BirthDate" type="date" class="form-control form-control-lg" required>
+                                            <span asp-validation-for="BirthDate" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label asp-for="Gender" class="form-label fw-bold">الجنس</label>
+                                            <select asp-for="Gender" class="form-select form-select-lg">
+                                                <option value="">اختر الجنس</option>
+                                                <option value="ذكر">ذكر</option>
+                                                <option value="أنثى">أنثى</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label asp-for="MaritalStatus" class="form-label fw-bold">الحالة الاجتماعية</label>
+                                            <select asp-for="MaritalStatus" class="form-select form-select-lg">
+                                                <option value="">اختر الحالة الاجتماعية</option>
+                                                <option value="أعزب">أعزب</option>
+                                                <option value="متزوج">متزوج</option>
+                                                <option value="مطلق">مطلق</option>
+                                                <option value="أرمل">أرمل</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Residence Information -->
+                        <div class="form-step" id="step2">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body p-4">
+                                    <h4 class="card-title fw-bold mb-4 text-success">
+                                        <i class="fas fa-globe me-2"></i>معلومات الإقامة والعمل
+                                    </h4>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label asp-for="BirthCountry" class="form-label fw-bold">بلد الولادة <span class="text-danger">*</span></label>
+                                            <input asp-for="BirthCountry" class="form-control form-control-lg" placeholder="أدخل بلد الولادة" required>
+                                            <span asp-validation-for="BirthCountry" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label asp-for="CurrentCountry" class="form-label fw-bold">بلد السكن الحالي <span class="text-danger">*</span></label>
+                                            <input asp-for="CurrentCountry" class="form-control form-control-lg" placeholder="أدخل بلد السكن الحالي" required>
+                                            <span asp-validation-for="CurrentCountry" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-12">
+                                            <label asp-for="WorkOrStudyPlace" class="form-label fw-bold">جهة العمل أو الدراسة</label>
+                                            <input asp-for="WorkOrStudyPlace" class="form-control form-control-lg" placeholder="أدخل جهة العمل أو الدراسة">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Medical Information -->
+                        <div class="form-step" id="step3">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body p-4">
+                                    <h4 class="card-title fw-bold mb-4 text-danger">
+                                        <i class="fas fa-heartbeat me-2"></i>المعلومات الطبية والصحية
+                                    </h4>
+
+                                    <!-- الأمراض المزمنة والحساسية -->
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-12">
+                                            <label asp-for="ChronicDiseases" class="form-label fw-bold">هل تعاني من أمراض مزمنة؟</label>
+                                            <textarea asp-for="ChronicDiseases" class="form-control" rows="3" placeholder="مثل: السكري، ضغط الدم، أمراض القلب، الربو... أو اكتب 'لا يوجد'"></textarea>
+                                        </div>
+                                        <div class="col-12">
+                                            <label asp-for="Allergies" class="form-label fw-bold">هل لديك حساسية تجاه أدوية معينة أو مواد غذائية؟</label>
+                                            <textarea asp-for="Allergies" class="form-control" rows="3" placeholder="مثل: البنسلين، المكسرات، الألبان... أو اكتب 'لا يوجد'"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- العمليات الجراحية والأدوية -->
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-12">
+                                            <label asp-for="PastSurgeries" class="form-label fw-bold">هل أجريت عمليات جراحية سابقة؟</label>
+                                            <textarea asp-for="PastSurgeries" class="form-control" rows="3" placeholder="اذكر نوع العملية وتاريخها... أو اكتب 'لا يوجد'"></textarea>
+                                        </div>
+                                        <div class="col-12">
+                                            <label asp-for="CurrentMedications" class="form-label fw-bold">هل تتناول أدوية حالياً؟</label>
+                                            <textarea asp-for="CurrentMedications" class="form-control" rows="3" placeholder="اذكر أسماء الأدوية والجرعات... أو اكتب 'لا يوجد'"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- الأمراض المعدية والتاريخ العائلي -->
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-12">
+                                            <label asp-for="InfectiousDiseases" class="form-label fw-bold">هل سبق أن أُصبت بأمراض معدية؟</label>
+                                            <textarea asp-for="InfectiousDiseases" class="form-control" rows="2" placeholder="مثل: التهاب الكبد، السل، كوفيد-19... أو اكتب 'لا يوجد'"></textarea>
+                                        </div>
+                                        <div class="col-12">
+                                            <label asp-for="FamilyDiseases" class="form-label fw-bold">هل يوجد أمراض وراثية في العائلة؟</label>
+                                            <textarea asp-for="FamilyDiseases" class="form-control" rows="2" placeholder="مثل: أمراض القلب، السكري، السرطان، الضغط... أو اكتب 'لا يوجد'"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- مشاكل الأجهزة -->
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-12">
+                                            <label class="form-label fw-bold">هل تعاني من مشاكل في الأجهزة التالية؟</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check">
+                                                <input name="HasRespiratoryIssues" class="form-check-input" type="checkbox" value="true" id="HasRespiratoryIssues">
+                                                <input name="HasRespiratoryIssues" type="hidden" value="false">
+                                                <label for="HasRespiratoryIssues" class="form-check-label">مشاكل في الجهاز التنفسي</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check">
+                                                <input name="HasDigestiveIssues" class="form-check-input" type="checkbox" value="true" id="HasDigestiveIssues">
+                                                <input name="HasDigestiveIssues" type="hidden" value="false">
+                                                <label for="HasDigestiveIssues" class="form-check-label">مشاكل في الجهاز الهضمي</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check">
+                                                <input name="HasNeurologicalIssues" class="form-check-input" type="checkbox" value="true" id="HasNeurologicalIssues">
+                                                <input name="HasNeurologicalIssues" type="hidden" value="false">
+                                                <label for="HasNeurologicalIssues" class="form-check-label">مشاكل في الجهاز العصبي</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check">
+                                                <input name="HasUrinaryOrReproductiveIssues" class="form-check-input" type="checkbox" value="true" id="HasUrinaryOrReproductiveIssues">
+                                                <input name="HasUrinaryOrReproductiveIssues" type="hidden" value="false">
+                                                <label for="HasUrinaryOrReproductiveIssues" class="form-check-label">مشاكل في الجهاز البولي أو التناسلي</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- الصحة النفسية -->
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-12">
+                                            <label asp-for="MentalHealthIssues" class="form-label fw-bold">هل تعاني أو عانيت سابقاً من مشاكل نفسية؟</label>
+                                            <textarea asp-for="MentalHealthIssues" class="form-control" rows="2" placeholder="مثل: اكتئاب، قلق، اضطرابات النوم... أو اكتب 'لا يوجد'"></textarea>
+                                        </div>
+                                        <div class="col-12">
+                                            <label asp-for="PsychiatricMedications" class="form-label fw-bold">هل تأخذ أدوية نفسية؟</label>
+                                            <textarea asp-for="PsychiatricMedications" class="form-control" rows="2" placeholder="اذكر أسماء الأدوية والجرعات... أو اكتب 'لا يوجد'"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- الفحوصات والتطعيمات -->
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label asp-for="PreviousTestsResults" class="form-label fw-bold">نتائج تحاليل أو أشعة أو فحوصات سابقة</label>
+                                            <textarea asp-for="PreviousTestsResults" class="form-control" rows="3" placeholder="اذكر أهم النتائج أو الفحوصات التي أجريتها مؤخراً... أو اكتب 'لا يوجد'"></textarea>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label asp-for="LastVaccinationDate" class="form-label fw-bold">تاريخ آخر تطعيم</label>
+                                            <input asp-for="LastVaccinationDate" type="date" class="form-control form-control-lg">
+                                            <small class="form-text text-muted">مثل: تطعيم كورونا أو التهاب الكبد</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Consultation Type -->
+                        <div class="form-step" id="step4">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body p-4">
+                                    <h4 class="card-title fw-bold mb-4 text-info">
+                                        <i class="fas fa-stethoscope me-2"></i>نوع الاستشارة والتأكيد
+                                    </h4>
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label asp-for="MedicalSpecialtyId" class="form-label fw-bold">نوع الاستشارة <span class="text-danger">*</span></label>
+                                            <select asp-for="MedicalSpecialtyId" class="form-select form-select-lg" required>
+                                                <option value="">اختر نوع الاستشارة</option>
+                                                @foreach (var specialty in ViewBag.MedicalSpecialties)
+                                                {
+                                                    <option value="@specialty.Value" data-fee="@specialty.Text">@specialty.Text</option>
+                                                }
+                                            </select>
+                                            <span asp-validation-for="MedicalSpecialtyId" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-12 consultation-fee-display" style="display: none;">
+                                            <div class="alert alert-info">
+                                                <i class="fas fa-dollar-sign me-2"></i>
+                                                <strong>رسوم الاستشارة: <span id="feeAmount" class="text-primary"></span></strong>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-4">
+                                        <h5 class="fw-bold mb-3 text-warning">
+                                            <i class="fas fa-file-alt me-2"></i>ملخص بيانات الحجز
+                                        </h5>
+                                        <div id="summaryContent" class="summary-content p-4 border rounded bg-light">
+                                            <p class="text-muted mb-0">سيتم عرض ملخص بياناتك هنا</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Buttons -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" class="btn btn-secondary btn-lg" id="prevBtn" style="display: none;">
+                                <i class="fas fa-arrow-right me-2"></i>السابق
+                            </button>
+                            <button type="button" class="btn btn-primary btn-lg" id="nextBtn">
+                                التالي<i class="fas fa-arrow-left ms-2"></i>
+                            </button>
+                            <button type="submit" class="btn btn-success btn-lg" id="submitBtn" style="display: none;">
+                                تأكيد الحجز<i class="fas fa-check ms-2"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Sidebar Summary -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm sticky-top">
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold mb-4">ملخص الحجز</h5>
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="doctor-avatar me-3">
+                                <i class="fas fa-user-md fa-2x text-primary"></i>
+                            </div>
+                            <div>
+                                <h6 class="mb-0 fw-bold">Doctor Hub</h6>
+                            </div>
+                        </div>
+                        <hr>
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2">
+                                <i class="fas fa-calendar-alt me-2 text-primary"></i>
+                                <small>متاح يومياً</small>
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-video me-2 text-success"></i>
+                                <small>استشارات عن بعد (أونلاين)</small>
+                            </li>
+                            <li class="mb-0">
+                                <i class="fas fa-shield-alt me-2 text-info"></i>
+                                <small>خصوصية وأمان كامل</small>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .min-vh-50 {
+        min-height: 50vh;
+    }
+    
+    .booking-form-container {
+        background: white;
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+
+    /* Progress Bar Styling */
+    .progress-container {
+        margin-bottom: 2rem;
+    }
+
+    .step-indicators {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+    }
+
+    .step-indicator {
+        text-align: center;
+        flex: 1;
+        position: relative;
+    }
+
+    .step-circle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: #e9ecef;
+        color: #6c757d;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 0.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .step-indicator.active .step-circle {
+        background-color: #2c5aa0;
+        color: white;
+    }
+
+    .step-indicator.completed .step-circle {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .step-label {
+        font-size: 0.85rem;
+        color: #6c757d;
+        font-weight: 500;
+    }
+
+    .step-indicator.active .step-label {
+        color: #2c5aa0;
+        font-weight: bold;
+    }
+
+    .step-indicator.completed .step-label {
+        color: #28a745;
+        font-weight: bold;
+    }
+
+    /* Form Steps */
+    .form-step {
+        display: none;
+    }
+
+    .form-step.active {
+        display: block;
+    }
+
+    /* Summary Content */
+    .summary-content {
+        min-height: 100px;
+        border-radius: 10px;
+    }
+
+    /* Doctor Avatar */
+    .doctor-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: rgba(44, 90, 160, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* International Phone Input Styling */
+    .iti {
+        width: 100% !important;
+    }
+
+    .iti__flag-container {
+        border-radius: 8px 0 0 8px;
+    }
+
+    .iti__selected-flag {
+        padding: 0 8px 0 12px;
+        background: #f8f9fa;
+        border-radius: 8px 0 0 8px;
+        border: 1px solid #ced4da;
+        border-right: none;
+    }
+
+    .iti__selected-flag:hover {
+        background: #e9ecef;
+    }
+
+    .iti input[type=tel] {
+        border-radius: 0 8px 8px 0 !important;
+        border-left: none !important;
+        padding-left: 12px !important;
+    }
+
+    .iti input[type=tel]:focus {
+        box-shadow: 0 0 0 0.2rem rgba(44, 90, 160, 0.25) !important;
+        border-color: #2c5aa0 !important;
+    }
+
+    .iti input[type=tel].is-invalid {
+        border-color: #dc3545 !important;
+    }
+
+    .iti input[type=tel].is-valid {
+        border-color: #198754 !important;
+    }
+
+    .iti__country-list {
+        border-radius: 8px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        border: 1px solid #dee2e6;
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .iti__country {
+        padding: 8px 12px;
+        border-bottom: 1px solid #f1f3f4;
+    }
+
+    .iti__country:hover {
+        background: #f8f9fa;
+    }
+
+    .iti__country.iti__highlight {
+        background: #e3f2fd;
+    }
+
+    .iti__flag {
+        margin-right: 8px;
+    }
+
+    .iti__dial-code {
+        color: #6c757d;
+        font-weight: 500;
+    }
+
+    .iti__country-name {
+        color: #495057;
+        font-weight: 400;
+    }
+
+    /* Phone Error Styling */
+    #phoneError {
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    /* Form Control Large with ITI */
+    .form-control-lg.iti input[type=tel] {
+        font-size: 1.25rem;
+        padding: 0.5rem 0.75rem;
+        line-height: 1.5;
+    }
+
+    .iti.form-control-lg .iti__selected-flag {
+        padding: 0.5rem 0.75rem;
+    }
+
+    /* RTL Support */
+    .iti--separate-dial-code .iti__selected-flag {
+        background-color: #f8f9fa;
+    }
+
+    .iti--separate-dial-code .iti__selected-dial-code {
+        color: #495057;
+        font-weight: 600;
+    }
+
+    /* Search Input */
+    .iti__search-input {
+        padding: 8px 12px;
+        border: none;
+        border-bottom: 1px solid #dee2e6;
+        font-size: 14px;
+    }
+
+    .iti__search-input:focus {
+        outline: none;
+        border-bottom-color: #2c5aa0;
+    }
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .booking-form-container {
+            padding: 1.5rem;
+        }
+        
+        .step-label {
+            font-size: 0.75rem;
+        }
+
+        .step-circle {
+            width: 30px;
+            height: 30px;
+            font-size: 0.9rem;
+        }
+
+        .iti__flag-container {
+            width: 60px;
+        }
+
+        .iti__selected-flag {
+            padding: 0 4px 0 8px;
+        }
+
+        .iti__arrow {
+            margin-left: 4px;
+        }
+    }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/intlTelInput.min.js"></script>
+<script>
+    let currentStep = 1;
+    const totalSteps = 4;
+    let phoneInput;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize international telephone input
+        const phoneInputElement = document.querySelector("#phoneNumber");
+        phoneInput = window.intlTelInput(phoneInputElement, {
+            initialCountry: "iq", // Default to Iraq
+            preferredCountries: ["iq", "sa", "ae", "eg", "jo", "lb", "sy"],
+            separateDialCode: true,
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/utils.js",
+            formatOnDisplay: true,
+            nationalMode: false,
+            autoPlaceholder: "aggressive",
+            customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
+                return "مثال: " + selectedCountryPlaceholder;
+            }
+        });
+
+        // Handle phone number validation
+        phoneInputElement.addEventListener('blur', function() {
+            validatePhoneNumber();
+        });
+
+        phoneInputElement.addEventListener('input', function() {
+            // Clear previous errors
+            document.getElementById('phoneError').style.display = 'none';
+            phoneInputElement.classList.remove('is-invalid');
+        });
+
+        updateStepDisplay();
+
+        // Next button click
+        document.getElementById('nextBtn').addEventListener('click', function() {
+            if (validateCurrentStep()) {
+                if (currentStep < totalSteps) {
+                    currentStep++;
+                    updateStepDisplay();
+                    updateSummary();
+                }
+            }
+        });
+
+        // Previous button click
+        document.getElementById('prevBtn').addEventListener('click', function() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStepDisplay();
+            }
+        });
+
+        // Form submission
+        document.getElementById('multiStepForm').addEventListener('submit', function(e) {
+            if (!validatePhoneNumber()) {
+                e.preventDefault();
+                return false;
+            }
+
+            // Set the full phone number in hidden field
+            const fullNumber = phoneInput.getNumber();
+            document.getElementById('fullPhoneNumber').value = fullNumber;
+            document.getElementById('phoneNumber').value = fullNumber;
+        });
+
+        // Consultation type change
+        document.getElementById('MedicalSpecialtyId').addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const fee = selectedOption.getAttribute('data-fee');
+
+            if (fee) {
+                document.getElementById('feeAmount').textContent = '$' + fee;
+                document.querySelector('.consultation-fee-display').style.display = 'block';
+            } else {
+                document.querySelector('.consultation-fee-display').style.display = 'none';
+            }
+
+            updateSummary();
+        });
+
+        // Update summary when inputs change
+        const inputs = document.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.addEventListener('change', updateSummary);
+        });
+    });
+
+    function validatePhoneNumber() {
+        const phoneInputElement = document.querySelector("#phoneNumber");
+        const phoneError = document.getElementById('phoneError');
+
+        if (phoneInput.isValidNumber()) {
+            phoneInputElement.classList.remove('is-invalid');
+            phoneInputElement.classList.add('is-valid');
+            phoneError.style.display = 'none';
+            return true;
+        } else {
+            phoneInputElement.classList.remove('is-valid');
+            phoneInputElement.classList.add('is-invalid');
+
+            const errorCode = phoneInput.getValidationError();
+            let errorMessage = 'رقم الهاتف غير صحيح';
+
+            switch (errorCode) {
+                case intlTelInputUtils.validationError.INVALID_COUNTRY_CODE:
+                    errorMessage = 'كود الدولة غير صحيح';
+                    break;
+                case intlTelInputUtils.validationError.TOO_SHORT:
+                    errorMessage = 'رقم الهاتف قصير جداً';
+                    break;
+                case intlTelInputUtils.validationError.TOO_LONG:
+                    errorMessage = 'رقم الهاتف طويل جداً';
+                    break;
+                case intlTelInputUtils.validationError.IS_POSSIBLE_LOCAL_ONLY:
+                    errorMessage = 'رقم الهاتف محلي فقط، يرجى إضافة كود الدولة';
+                    break;
+                default:
+                    errorMessage = 'رقم الهاتف غير صحيح، يرجى التحقق من الرقم';
+            }
+
+            phoneError.textContent = errorMessage;
+            phoneError.style.display = 'block';
+            return false;
+        }
+    }
+
+    function updateStepDisplay() {
+        // Hide all steps
+        document.querySelectorAll('.form-step').forEach(step => {
+            step.style.display = 'none';
+        });
+
+        // Show current step
+        document.getElementById('step' + currentStep).style.display = 'block';
+
+        // Update progress bar
+        const progressBar = document.getElementById('progressBar');
+        const progressPercentage = (currentStep / totalSteps) * 100;
+        progressBar.style.width = progressPercentage + '%';
+        progressBar.setAttribute('aria-valuenow', progressPercentage);
+
+        // Update step indicators
+        document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
+            if (index + 1 === currentStep) {
+                indicator.classList.add('active');
+            } else {
+                indicator.classList.remove('active');
+            }
+            if (index + 1 < currentStep) {
+                indicator.classList.add('completed');
+            } else {
+                indicator.classList.remove('completed');
+            }
+        });
+
+        // Update navigation buttons
+        document.getElementById('prevBtn').style.display = currentStep > 1 ? 'block' : 'none';
+        document.getElementById('nextBtn').style.display = currentStep < totalSteps ? 'block' : 'none';
+        document.getElementById('submitBtn').style.display = currentStep === totalSteps ? 'block' : 'none';
+    }
+
+    function validateCurrentStep() {
+        const currentStepElement = document.getElementById('step' + currentStep);
+        const requiredFields = currentStepElement.querySelectorAll('[required]');
+        let isValid = true;
+
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                field.classList.add('is-invalid');
+                isValid = false;
+            } else {
+                field.classList.remove('is-invalid');
+            }
+        });
+
+        // Special validation for phone number in step 1
+        if (currentStep === 1) {
+            const phoneField = document.getElementById('phoneNumber');
+            if (phoneField && phoneField.value.trim()) {
+                if (!validatePhoneNumber()) {
+                    isValid = false;
+                }
+            }
+        }
+
+        if (!isValid) {
+            alert('يرجى ملء جميع الحقول المطلوبة بشكل صحيح');
+        }
+
+        return isValid;
+    }
+
+    function updateSummary() {
+        const summaryContent = document.getElementById('summaryContent');
+        const patientName = document.getElementById('PatientName').value;
+        const phoneNumber = phoneInput ? phoneInput.getNumber() : document.getElementById('phoneNumber').value;
+        const specialtySelect = document.getElementById('MedicalSpecialtyId');
+        const specialtyText = specialtySelect.options[specialtySelect.selectedIndex].text;
+
+        let summaryHtml = '';
+
+        if (patientName) {
+            summaryHtml += `<div class="mb-2"><strong>الاسم:</strong> ${patientName}</div>`;
+        }
+
+        if (phoneNumber) {
+            summaryHtml += `<div class="mb-2"><strong>الهاتف:</strong> ${phoneNumber}</div>`;
+        }
+
+        if (specialtySelect.value) {
+            summaryHtml += `<div class="mb-2"><strong>نوع الاستشارة:</strong> ${specialtyText}</div>`;
+        }
+
+        if (summaryHtml) {
+            summaryContent.innerHTML = summaryHtml;         
+        } else {
+            summaryContent.innerHTML = '<p class="text-muted mb-0">سيتم عرض ملخص بياناتك هنا</p>';
+        }
+    }
+</script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

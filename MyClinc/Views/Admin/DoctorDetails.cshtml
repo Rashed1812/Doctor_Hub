@@ -1,0 +1,199 @@
+@model DAL.Data.Models.DoctorJoinRequest
+
+@{
+    ViewData["Title"] = "تفاصيل طلب الطبيب";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h4 class="fw-bold text-primary mb-1">
+                    <i class="fas fa-user-md me-2"></i>تفاصيل طلب الطبيب
+                </h4>
+                <p class="text-muted mb-0">عرض تفاصيل طلب الانضمام المقدم من الدكتور @Model.FullName</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-light">
+        <h6 class="mb-0 fw-bold">المعلومات الشخصية</h6>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">الاسم الكامل:</p>
+                <p>@Model.FullName</p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">البريد الإلكتروني:</p>
+                <p>@Model.Email</p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">رقم الهاتف:</p>
+                <p>@Model.PhoneNumber</p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">سنوات الخبرة:</p>
+                <p>@Model.ExperienceYears</p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">المؤهل التعليمي:</p>
+                <p>@Model.EducationalDegree</p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">رقم الترخيص:</p>
+                <p>@Model.LicenseNumber</p>
+            </div>
+            <div class="col-12 mb-3">
+                <p class="fw-bold mb-1">نبذة شخصية:</p>
+                <p>@Model.Biography</p>
+            </div>
+            <div class="col-12 mb-3">
+                <p class="fw-bold mb-1">الشهادات والدورات:</p>
+                <p>@(string.IsNullOrEmpty(Model.CertificatesAndCourses) ? "لا يوجد" : Model.CertificatesAndCourses)</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-light">
+        <h6 class="mb-0 fw-bold">المستندات المرفقة</h6>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <p class="fw-bold mb-1">شهادة التخرج:</p>
+                <a href="@Model.GraduationCertificatePath" target="_blank" class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-file-alt me-2"></i>عرض الملف
+                </a>
+            </div>
+            <div class="col-md-4 mb-3">
+                <p class="fw-bold mb-1">شهادة التخصص:</p>
+                <a href="@Model.CertificateFilePath" target="_blank" class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-file-alt me-2"></i>عرض الملف
+                </a>
+            </div>
+            <div class="col-md-4 mb-3">
+                <p class="fw-bold mb-1">رخصة المزاولة:</p>
+                <a href="@Model.LicenseFilePath" target="_blank" class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-file-alt me-2"></i>عرض الملف
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-4">
+    <div class="card-header bg-light">
+        <h6 class="mb-0 fw-bold">حالة الطلب</h6>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">تاريخ التقديم:</p>
+                <p>@Model.SubmissionDate.ToShortDateString()</p>
+            </div>
+            <div class="col-md-6 mb-3">
+                <p class="fw-bold mb-1">الحالة:</p>
+                <p>
+                    @if (Model.Status == DAL.Data.Models.JoinRequestStatus.Pending)
+                    {
+                        <span class="badge bg-warning">قيد المراجعة</span>
+                    }
+                    else if (Model.Status == DAL.Data.Models.JoinRequestStatus.Approved)
+                    {
+                        <span class="badge bg-success">مقبول</span>
+                    }
+                    else if (Model.Status == DAL.Data.Models.JoinRequestStatus.Rejected)
+                    {
+                        <span class="badge bg-danger">مرفوض</span>
+                    }
+                </p>
+            </div>
+            @if (Model.JoinDate.HasValue)
+            {
+                <div class="col-md-6 mb-3">
+                    <p class="fw-bold mb-1">تاريخ الانضمام:</p>
+                    <p>@Model.JoinDate.Value.ToShortDateString()</p>
+                </div>
+            }
+            @if (!string.IsNullOrEmpty(Model.AdminNotes))
+            {
+                <div class="col-12 mb-3">
+                    <p class="fw-bold mb-1">ملاحظات الإدارة:</p>
+                    <p>@Model.AdminNotes</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="card-footer bg-light text-end">
+    @if (Model.Status == DAL.Data.Models.JoinRequestStatus.Pending)
+    {
+        <button class="btn btn-success me-2" onclick="approveDoctor(@Model.Id)">
+            <i class="fas fa-check me-2"></i>قبول
+        </button>
+        <button class="btn btn-danger" onclick="rejectDoctor(@Model.Id)">
+            <i class="fas fa-times me-2"></i>رفض
+        </button>
+    }
+</div>
+
+@section Scripts {
+<script>
+    function approveDoctor(id) {
+        if (confirm("هل أنت متأكد من قبول طلب الطبيب هذا؟")) {
+            fetch(`/Admin/ApproveDoctor/${id}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "RequestVerificationToken": $("input[name=\"__RequestVerificationToken\"]").val()
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = "/Admin/DoctorRequests";
+                } else {
+                    alert("حدث خطأ أثناء قبول الطلب.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("حدث خطأ أثناء قبول الطلب.");
+            });
+        }
+    }
+
+    function rejectDoctor(id) {
+        const reason = prompt("يرجى إدخال سبب الرفض:");
+        if (reason) {
+            fetch(`/Admin/RejectDoctor/${id}?reason=${encodeURIComponent(reason)}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "RequestVerificationToken": $("input[name=\"__RequestVerificationToken\"]").val()
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = "/Admin/DoctorRequests";
+                } else {
+                    alert("حدث خطأ أثناء رفض الطلب.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("حدث خطأ أثناء رفض الطلب.");
+            });
+        }
+    }
+</script>
+}
+
+

@@ -1,0 +1,938 @@
+﻿@model DAL.Data.Models.Consultation
+@{
+    ViewData["Title"] = "تفاصيل الاستشارة";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="consultation-details-page">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">تفاصيل الاستشارة رقم @Model.ConsultationId</h2>
+            <p class="text-muted mb-0">عرض تفاصيل الاستشارة الطبية الكاملة</p>
+        </div>
+        <div>
+            <a href="@Url.Action("Consultations", "Admin")" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-right me-2"></i>العودة للقائمة
+            </a>
+        </div>
+    </div>
+
+    <!-- Consultation Status Card -->
+    <div class="row g-4 mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0 p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title fw-bold mb-0">
+                            <i class="fas fa-info-circle me-2 text-primary"></i>حالة الاستشارة
+                        </h5>
+                        <div class="d-flex gap-2">
+                            <span class="badge @(Model.Status == "قيد المراجعة" ? "bg-warning text-dark" : Model.Status == "مكتمل" ? "bg-success" : "bg-danger") fs-6">
+                                <i class="fas @(Model.Status == "قيد المراجعة"? "fa-clock" : Model.Status == "مكتمل"? "fa-check" : "fa-times") me-1"></i>
+                                @Model.Status.ToString()
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        @* <div class="col-md-6"> *@
+                        @*     <button class="btn btn-success w-100" onclick="confirmConsultation(@Model.ConsultationId)"> *@
+                        @*         <i class="fas fa-check me-2"></i>تأكيد الاستشارة *@
+                        @*     </button> *@
+                        @* </div> *@
+                        @* <div class="col-md-6"> *@
+                        @*     <button class="btn btn-danger w-100" onclick="cancelConsultation(@Model.ConsultationId)"> *@
+                        @*         <i class="fas fa-times me-2"></i>إلغاء الاستشارة *@
+                        @*     </button> *@
+                        @* </div> *@
+                        @* <div class="col-md-6"> *@
+                        @*     <button class="btn btn-warning w-100" onclick="editPayment(@Model.ConsultationId)"> *@
+                        @*         <i class="fas fa-edit me-2"></i>تعديل الدفع *@
+                        @*     </button> *@
+                        @* </div> *@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Details -->
+    <div class="row g-4">
+        <!-- Patient Information -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-transparent border-0 p-4">
+                    <h5 class="card-title fw-bold mb-0">
+                        <i class="fas fa-user me-2 text-primary"></i>بيانات المريض
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="patient-info">
+                        <div class="info-item mb-3">
+                            <label class="fw-bold text-muted">الاسم الكامل:</label>
+                            <p class="mb-0 fs-5">@Model.PatientName</p>
+                        </div>
+                        <div class="info-item mb-3">
+                            <label class="fw-bold text-muted">الجنس:</label>
+                            <p class="mb-0">
+                                <i class="fas @(Model.Gender == "ذكر" ? "fa-mars text-primary" : "fa-venus text-danger") me-1"></i>
+                                @Model.Gender
+                            </p>
+                        </div>
+                        <div class="info-item mb-3">
+                            <label class="fw-bold text-muted">رقم الهاتف:</label>
+                            <p class="mb-0">
+                                <i class="fas fa-phone me-1 text-success"></i>
+                                <a href="tel:@Model.PhoneNumber" class="text-decoration-none">@Model.PhoneNumber</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Consultation Information -->
+        <div class="col-lg-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-transparent border-0 p-4">
+                    <h5 class="card-title fw-bold mb-0">
+                        <i class="fas fa-stethoscope me-2 text-success"></i>بيانات الاستشارة
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="consultation-info">
+                        <div class="info-item mb-3">
+                            <label class="fw-bold text-muted">التخصص:</label>
+                            <p class="mb-0">
+                                <span class="badge bg-primary">@(Model.MedicalSpecialty?.Name ?? "غير محدد")</span>
+                            </p>
+                        </div>
+                        <div class="info-item mb-3">
+                            <label class="fw-bold text-muted">تاريخ الحجز:</label>
+                            <p class="mb-0">
+                                <i class="fas fa-calendar me-1 text-info"></i>
+                                @Model.BookingDate.ToString("dd/MM/yyyy - hh:mm tt")
+                            </p>
+                        </div>
+                        <div class="info-item mb-3">
+                            <label class="fw-bold text-muted">رسوم الاستشارة:</label>
+                            <p class="mb-0">
+                                <span class="fw-bold text-success fs-5">$@Model.ConsultationFee</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Medical Details -->
+    <div class="row g-4 mt-2">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0 p-4">
+                    <h5 class="card-title fw-bold mb-0">
+                        <i class="fas fa-notes-medical me-2 text-warning"></i>التفاصيل الطبية
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <label class="fw-bold text-muted">وصف الحالة:</label>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="fw-bold text-muted">أمراض مزمنة:</label>
+                            <div class="bg-light p-3 rounded mt-2">
+                                <p class="mb-0">@(Model.ChronicDiseases ?? "لا يوجد")</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="fw-bold text-muted">حساسية تجاه أدوية أو أغذية:</label>
+                            <div class="bg-light p-3 rounded mt-2">
+                                <p class="mb-0">@(Model.Allergies ?? "لا يوجد")</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="fw-bold text-muted">عمليات جراحية سابقة:</label>
+                            <div class="bg-light p-3 rounded mt-2">
+                                <p class="mb-0">@(Model.PastSurgeries ?? "لا يوجد")</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="fw-bold text-muted">أدوية حالية:</label>
+                            <div class="bg-light p-3 rounded mt-2">
+                                <p class="mb-0">@(Model.CurrentMedications ?? "لا يوجد")</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="fw-bold text-muted">أمراض معدية سابقة:</label>
+                            <div class="bg-light p-3 rounded mt-2">
+                                <p class="mb-0">@(Model.InfectiousDiseases ?? "لا يوجد")</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="fw-bold text-muted">مشاكل في الجهاز التنفسي:</label>
+                            <div class="bg-light p-3 rounded mt-2">
+                                <p class="mb-0">@(Model.HasRespiratoryIssues.HasValue ? (Model.HasRespiratoryIssues.Value ? "نعم" : "لا") : "غير محدد")</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="fw-bold text-muted">مشاكل في الجهاز الهضمي:</label>
+                            <div class="bg-light p-3 rounded mt-2">
+                                <p class="mb-0">@(Model.HasDigestiveIssues.HasValue ? (Model.HasDigestiveIssues.Value ? "نعم" : "لا") : "غير محدد")</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="fw-bold text-muted">مشاكل في الجهاز العصبي:</label>
+                            <div class="bg-light p-3 rounded mt-2">
+                                <p class="mb-0">@(Model.HasNeurologicalIssues.HasValue ? (Model.HasNeurologicalIssues.Value ? "نعم" : "لا") : "غير محدد")</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="fw-bold text-muted">مشاكل في الجهاز البولي أو التناسلي:</label>
+                            <div class="bg-light p-3 rounded mt-2">
+                                <p class="mb-0">@(Model.HasUrinaryOrReproductiveIssues.HasValue ? (Model.HasUrinaryOrReproductiveIssues.Value ? "نعم" : "لا") : "غير محدد")</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="fw-bold text-muted">تاريخ عائلي لأمراض وراثية:</label>
+                            <div class="bg-light p-3 rounded mt-2">
+                                <p class="mb-0">@(Model.FamilyDiseases ?? "لا يوجد")</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="fw-bold text-muted">مشاكل نفسية:</label>
+                            <div class="bg-light p-3 rounded mt-2">
+                                <p class="mb-0">@(Model.MentalHealthIssues ?? "لا يوجد")</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="fw-bold text-muted">أدوية نفسية:</label>
+                            <div class="bg-light p-3 rounded mt-2">
+                                <p class="mb-0">@(Model.PsychiatricMedications ?? "لا يوجد")</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="fw-bold text-muted">نتائج فحوصات وتحاليل سابقة:</label>
+                            <div class="bg-light p-3 rounded mt-2">
+                                <p class="mb-0">@(Model.PreviousTestsResults ?? "لا يوجد")</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <label class="fw-bold text-muted">تاريخ آخر تطعيم:</label>
+                            <div class="bg-light p-3 rounded mt-2">
+                                <p class="mb-0">@(Model.LastVaccinationDate?.ToString("dd/MM/yyyy") ?? "لا يوجد")</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Information -->
+    <div class="row g-4 mt-2">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0 p-4">
+                    <h5 class="card-title fw-bold mb-0">
+                        <i class="fas fa-credit-card me-2 text-info"></i>معلومات الدفع
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="fw-bold text-muted">حالة الدفع:</label>
+                            <p class="mb-0">
+                                <span class="badge @(Model.PaymentStatus == DAL.Data.Models.PaymentStatus.Paid ? "bg-success" : "bg-warning text-dark") fs-6">
+                                    <i class="fas @(Model.PaymentStatus == DAL.Data.Models.PaymentStatus.Paid ? "fa-check-circle" : "fa-clock") me-1"></i>
+                                    @(Model.PaymentStatus == DAL.Data.Models.PaymentStatus.Paid ? "مدفوع" : "في انتظار الدفع")
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="fw-bold text-muted">المبلغ المطلوب:</label>
+                            <p class="mb-0 fw-bold text-success fs-5">$@Model.ConsultationFee</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="row g-4 mt-2">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-transparent border-0 p-4">
+                    <h5 class="card-title fw-bold mb-0">
+                        <i class="fas fa-cogs me-2 text-secondary"></i>الإجراءات المتاحة
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="d-flex flex-wrap gap-2">
+                        @if (Model.Status == "قيد المراجعة")
+                        {
+                            <button class="btn btn-success" onclick="updateConsultationStatus(@Model.ConsultationId, 'Completed')">
+                                <i class="fas fa-check me-2"></i>تأكيد الاستشارة
+                            </button>
+                            <button class="btn btn-danger" onclick="updateConsultationStatus(@Model.ConsultationId, 'Canceled')">
+                                <i class="fas fa-times me-2"></i>إلغاء الاستشارة
+                            </button>
+                        }
+
+                        @if (Model.Status == "مكتمل")
+                        {
+                            <a href="@Url.Action("GenerateConsultationReport", "Admin", new { id = Model.ConsultationId })" class="btn btn-primary">
+                                <i class="fas fa-file-alt me-2"></i>إنشاء تقرير
+                            </a>
+                        }
+
+                        @if (Model.PaymentStatus == DAL.Data.Models.PaymentStatus.Paid)
+                        {
+                            <button class="btn btn-info" onclick="window.open(`/Admin/InvoiceDisplay?consultationId=@Model.ConsultationId`, `_blank`);">
+                                <i class="fas fa-file-invoice me-2"></i>إنشاء فاتورة
+                            </button>
+                            <button class="btn btn-success" onclick="sendWhatsApp(@Model.ConsultationId)">
+                                <i class="fab fa-whatsapp me-2"></i>إرسال واتساب
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-warning" onclick="updatePaymentStatus(@Model.ConsultationId, 'Paid')">
+                                <i class="fas fa-dollar-sign me-2"></i>تأكيد الدفع
+                            </button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link href="~/css/custom-confirmation.css" rel="stylesheet" />
+    <style>
+        /* Custom Confirmation Modal Styles */
+        .custom-confirmation-modal .modal-content {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .custom-confirmation-modal .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 25px 30px;
+            position: relative;
+        }
+
+            .custom-confirmation-modal .modal-header::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+                opacity: 0.3;
+            }
+
+        .custom-confirmation-modal .modal-title {
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .custom-confirmation-modal .modal-body {
+            padding: 40px 30px;
+            text-align: center;
+            background: #fafbfc;
+        }
+
+        .custom-confirmation-modal .confirmation-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .custom-confirmation-modal .confirmation-icon.warning {
+                background: linear-gradient(135deg, #ff9a56 0%, #ff6b6b 100%);
+            }
+
+            .custom-confirmation-modal .confirmation-icon.success {
+                background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+            }
+
+            .custom-confirmation-modal .confirmation-icon.danger {
+                background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            }
+
+            .custom-confirmation-modal .confirmation-icon::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+                transform: rotate(45deg);
+                animation: shimmer 2s infinite;
+            }
+
+        @@keyframes shimmer {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+        }
+
+        .custom-confirmation-modal .confirmation-message {
+            font-size: 1.1rem;
+            color: #495057;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .custom-confirmation-modal .modal-footer {
+            border: none;
+            padding: 0 30px 30px;
+            background: #fafbfc;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .custom-confirmation-modal .btn-custom {
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+            .custom-confirmation-modal .btn-custom:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            }
+
+            .custom-confirmation-modal .btn-custom:active {
+                transform: translateY(0);
+            }
+
+        .custom-confirmation-modal .btn-confirm {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .custom-confirmation-modal .btn-cancel {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        /* Loading Animation */
+        .btn-loading {
+            position: relative;
+            color: transparent !important;
+        }
+
+            .btn-loading::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 20px;
+                height: 20px;
+                margin: -10px 0 0 -10px;
+                border: 2px solid transparent;
+                border-top: 2px solid white;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+
+        @@keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Enhanced Toast Notifications */
+        .toast-custom {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            min-width: 350px;
+        }
+
+            .toast-custom .toast-header {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                border: none;
+                font-weight: 600;
+            }
+
+            .toast-custom .toast-body {
+                padding: 20px;
+                font-size: 1rem;
+                background: white;
+            }
+
+        /* Pulse Animation for Action Buttons */
+        .btn-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @@keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(102, 126, 234, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(102, 126, 234, 0);
+            }
+        }
+
+        /* Smooth transitions for all interactive elements */
+        * {
+            transition: all 0.3s ease;
+        }
+
+        /* Modal entrance animation */
+        .custom-confirmation-modal.fade .modal-dialog {
+            transform: scale(0.8) translateY(-50px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .custom-confirmation-modal.show .modal-dialog {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script src="~/js/custom-confirmation.js"></script>
+    <script>
+        // Custom Confirmation Modal System
+        class CustomConfirmation {
+            constructor() {
+                this.createModal();
+                this.setupEventListeners();
+            }
+
+            createModal() {
+                const modalHTML = `
+                    <div class="modal fade custom-confirmation-modal" id="customConfirmationModal" tabindex="-1" aria-labelledby="customConfirmationModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="customConfirmationModalLabel">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        تأكيد العملية
+                                    </h5>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="confirmation-icon warning">
+                                        <i class="fas fa-question-circle"></i>
+                                    </div>
+                                    <div class="confirmation-message">
+                                        هل أنت متأكد من تنفيذ هذه العملية؟
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-custom btn-cancel" data-bs-dismiss="modal">
+                                        <i class="fas fa-times me-2"></i>إلغاء
+                                    </button>
+                                    <button type="button" class="btn btn-custom btn-confirm" id="confirmActionBtn">
+                                        <i class="fas fa-check me-2"></i>تأكيد
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Remove existing modal if present
+                const existingModal = document.getElementById('customConfirmationModal');
+                if (existingModal) {
+                    existingModal.remove();
+                }
+
+                // Add modal to body
+                document.body.insertAdjacentHTML('beforeend', modalHTML);
+                this.modal = new bootstrap.Modal(document.getElementById('customConfirmationModal'));
+                this.modalElement = document.getElementById('customConfirmationModal');
+            }
+
+            setupEventListeners() {
+                // Reset modal state when hidden
+                this.modalElement.addEventListener('hidden.bs.modal', () => {
+                    this.resetModal();
+                });
+            }
+
+            show(options = {}) {
+                const {
+                    title = 'تأكيد العملية',
+                    message = 'هل أنت متأكد من تنفيذ هذه العملية؟',
+                    type = 'warning', // warning, success, danger
+                    confirmText = 'تأكيد',
+                    cancelText = 'إلغاء',
+                    onConfirm = () => {},
+                    onCancel = () => {}
+                } = options;
+
+                // Update modal content
+                this.modalElement.querySelector('.modal-title').innerHTML = `
+                    <i class="fas ${this.getIconClass(type)} me-2"></i>
+                    ${title}
+                `;
+
+                const iconElement = this.modalElement.querySelector('.confirmation-icon');
+                iconElement.className = `confirmation-icon ${type}`;
+                iconElement.innerHTML = `<i class="fas ${this.getIconClass(type)}"></i>`;
+
+                this.modalElement.querySelector('.confirmation-message').textContent = message;
+
+                const confirmBtn = this.modalElement.querySelector('#confirmActionBtn');
+                const cancelBtn = this.modalElement.querySelector('.btn-cancel');
+
+                confirmBtn.innerHTML = `<i class="fas fa-check me-2"></i>${confirmText}`;
+                cancelBtn.innerHTML = `<i class="fas fa-times me-2"></i>${cancelText}`;
+
+                // Set up event handlers
+                confirmBtn.onclick = () => {
+                    this.showLoading(confirmBtn);
+                    onConfirm();
+                };
+
+                cancelBtn.onclick = () => {
+                    onCancel();
+                    this.modal.hide();
+                };
+
+                // Show modal with animation
+                this.modal.show();
+
+                // Add pulse animation to confirm button
+                setTimeout(() => {
+                    confirmBtn.classList.add('btn-pulse');
+                }, 500);
+            }
+
+            getIconClass(type) {
+                const icons = {
+                    warning: 'fa-exclamation-triangle',
+                    success: 'fa-check-circle',
+                    danger: 'fa-times-circle',
+                    info: 'fa-info-circle'
+                };
+                return icons[type] || icons.warning;
+            }
+
+            showLoading(button) {
+                button.classList.add('btn-loading');
+                button.disabled = true;
+            }
+
+            hideLoading() {
+                const confirmBtn = this.modalElement.querySelector('#confirmActionBtn');
+                confirmBtn.classList.remove('btn-loading');
+                confirmBtn.disabled = false;
+            }
+
+            hide() {
+                this.modal.hide();
+            }
+
+            resetModal() {
+                const confirmBtn = this.modalElement.querySelector('#confirmActionBtn');
+                confirmBtn.classList.remove('btn-loading', 'btn-pulse');
+                confirmBtn.disabled = false;
+            }
+        }
+
+        // Enhanced Toast Notification System
+        class CustomToast {
+            static show(message, type = 'success', duration = 4000) {
+                const toastId = 'toast-' + Date.now();
+                const iconClass = this.getIconClass(type);
+                const bgClass = this.getBgClass(type);
+
+                const toastHTML = `
+                    <div class="toast toast-custom ${bgClass}" id="${toastId}" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="${duration}">
+                        <div class="toast-header">
+                            <i class="fas ${iconClass} me-2"></i>
+                            <strong class="me-auto">${this.getTitle(type)}</strong>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                    </div>
+                `;
+
+                // Create toast container if it doesn't exist
+                let toastContainer = document.getElementById('toast-container');
+                if (!toastContainer) {
+                    toastContainer = document.createElement('div');
+                    toastContainer.id = 'toast-container';
+                    toastContainer.className = 'toast-container position-fixed top-0 end-0 p-3';
+                    toastContainer.style.zIndex = '9999';
+                    document.body.appendChild(toastContainer);
+                }
+
+                // Add toast to container
+                toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+
+                // Initialize and show toast
+                const toastElement = document.getElementById(toastId);
+                const toast = new bootstrap.Toast(toastElement);
+                toast.show();
+
+                // Remove toast element after it's hidden
+                toastElement.addEventListener('hidden.bs.toast', () => {
+                    toastElement.remove();
+                });
+
+                return toast;
+            }
+
+            static getIconClass(type) {
+                const icons = {
+                    success: 'fa-check-circle',
+                    error: 'fa-times-circle',
+                    warning: 'fa-exclamation-triangle',
+                    info: 'fa-info-circle'
+                };
+                return icons[type] || icons.info;
+            }
+
+            static getBgClass(type) {
+                const classes = {
+                    success: 'bg-success',
+                    error: 'bg-danger',
+                    warning: 'bg-warning',
+                    info: 'bg-info'
+                };
+                return classes[type] || classes.info;
+            }
+
+            static getTitle(type) {
+                const titles = {
+                    success: 'نجح',
+                    error: 'خطأ',
+                    warning: 'تحذير',
+                    info: 'معلومات'
+                };
+                return titles[type] || titles.info;
+            }
+        }
+
+        // Initialize the confirmation system
+        const customConfirmation = new CustomConfirmation();
+
+        // Enhanced functions with custom confirmation
+        function updateConsultationStatus(id, status) {
+            const statusText = status === 'Completed' ? 'تأكيد الاستشارة' : 'إلغاء الاستشارة';
+            const type = status === 'Completed' ? 'success' : 'danger';
+
+            customConfirmation.show({
+                title: statusText,
+                message: `هل أنت متأكد من ${statusText}؟ لا يمكن التراجع عن هذا الإجراء.`,
+                type: type,
+                confirmText: statusText,
+                cancelText: 'إلغاء',
+                onConfirm: () => {
+                    // Perform the actual update
+                    fetch('/Admin/UpdateConsultationStatus', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                        },
+                        body: JSON.stringify({ consultationId: id, status: status })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        customConfirmation.hide();
+                        if (data.success) {
+                            CustomToast.show('تم تحديث حالة الاستشارة بنجاح', 'success');
+                            setTimeout(() => location.reload(), 2000);
+                        } else {
+                            CustomToast.show('فشل في تحديث حالة الاستشارة: ' + data.message, 'error');
+                        }
+                    })
+                    .catch(error => {
+                        customConfirmation.hide();
+                        console.error('Error:', error);
+                        CustomToast.show('حدث خطأ أثناء تحديث حالة الاستشارة.', 'error');
+                    });
+                }
+            });
+        }
+        
+    // Delete consultation
+           function deleteConsultation(consultationId) {
+            customConfirmation.show({
+                title: 'تأكيد الحذف',
+                message: 'هل أنت متأكد من حذف هذه الاستشارة؟ هذا الإجراء لا يمكن التراجع عنه.',
+                type: 'danger',
+                confirmText: 'نعم، احذف',
+                cancelText: 'إلغاء',
+                onConfirm: () => {
+                    fetch(`/Admin/DeleteConsultation/${consultationId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        customConfirmation.hide();
+                        if (data.success) {
+                            CustomToast.show('تم حذف الاستشارة بنجاح', 'success');
+                            setTimeout(() => {
+                                window.location.href = '/Admin/Consultations';
+                            }, 2000);
+                        } else {
+                            CustomToast.show('حدث خطأ أثناء حذف الاستشارة', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        customConfirmation.hide();
+                        CustomToast.show('حدث خطأ أثناء حذف الاستشارة', 'error');
+                        console.error(error);
+                    });
+                }
+            });
+        }
+
+        function updatePaymentStatus(id, status) {
+            customConfirmation.show({
+                title: 'تأكيد الدفع',
+                message: 'هل أنت متأكد من تأكيد حالة الدفع؟ سيتم تحديث حالة الدفع إلى "مدفوع".',
+                type: 'success',
+                confirmText: 'تأكيد الدفع',
+                cancelText: 'إلغاء',
+                onConfirm: () => {
+                    fetch('/Admin/UpdatePaymentStatus', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                        },
+                        body: JSON.stringify({ consultationId: id, status: status })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        customConfirmation.hide();
+                        if (data.success) {
+                            CustomToast.show('تم تحديث حالة الدفع بنجاح', 'success');
+                            setTimeout(() => location.reload(), 2000);
+                        } else {
+                            CustomToast.show('فشل في تحديث حالة الدفع: ' + data.message, 'error');
+                        }
+                    })
+                    .catch(error => {
+                        customConfirmation.hide();
+                        console.error('Error:', error);
+                        CustomToast.show('حدث خطأ أثناء تحديث حالة الدفع.', 'error');
+                    });
+                }
+            });
+        }
+
+        function generateInvoice(id) {
+            CustomToast.show('جاري إنشاء الفاتورة...', 'info', 2000);
+
+            fetch('/Admin/GenerateConsultationReport', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                },
+                body: JSON.stringify({ consultationId: id })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const blob = new Blob([data.invoiceHtml], { type: 'text/html' });
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = data.fileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    CustomToast.show('تم إنشاء الفاتورة بنجاح وتحميلها', 'success');
+                } else {
+                    CustomToast.show('فشل في إنشاء الفاتورة: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                CustomToast.show('حدث خطأ أثناء إنشاء الفاتورة.', 'error');
+            });
+        }
+
+        function sendWhatsApp(id) {
+            CustomToast.show('جاري تحضير رسالة الواتساب...', 'info', 2000);
+
+            fetch('/Admin/SendInvoiceWhatsApp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                },
+                body: JSON.stringify({ consultationId: id })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    CustomToast.show('تم تحضير رسالة الواتساب بنجاح', 'success');
+                    window.open(data.whatsappUrl, '_blank');
+                } else {
+                    CustomToast.show('فشل في تحضير رسالة الواتساب: ' + data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                CustomToast.show('حدث خطأ أثناء تحضير رسالة الواتساب.', 'error');
+            });
+        }
+    </script>
+}
+

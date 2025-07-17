@@ -1,0 +1,770 @@
+@model DAL.Data.Models.Partnership
+
+@{
+    ViewData["Title"] = "طلب شراكة جديد";
+}
+
+<!-- Hero Section -->
+@* <section class="hero-section position-relative overflow-hidden"> *@
+@*     <div class="hero-background"> *@
+@*         <div class="hero-overlay"></div> *@
+@*     </div> *@
+@*     <div class="container position-relative"> *@
+@*         <div class="row align-items-center min-vh-50"> *@
+@*             <div class="col-lg-8 mx-auto text-center"> *@
+@*                 <div class="hero-content animate-fade-in"> *@
+@*                     <div class="hero-icon mb-4"> *@
+@*                         <i class="fas fa-handshake"></i> *@
+@*                     </div> *@
+@*                     <h1 class="hero-title mb-4"> *@
+@*                         🤝 طلب شراكة جديد *@
+@*                     </h1> *@
+@*                     <p class="hero-subtitle mb-5"> *@
+@*                         انضم إلى شبكة شركائنا المتميزين واستفد من خبرتنا الواسعة في المجال الطبي *@
+@*                         <br> *@
+@*                         نحن نؤمن بقوة الشراكات الاستراتيجية في تحقيق النجاح المشترك *@
+@*                     </p> *@
+@*                     <div class="hero-stats d-flex justify-content-center gap-4 flex-wrap"> *@
+@*                         <div class="stat-item"> *@
+@*                             <div class="stat-number">50+</div> *@
+@*                             <div class="stat-label">شريك نشط</div> *@
+@*                         </div> *@
+@*                         <div class="stat-item"> *@
+@*                             <div class="stat-number">95%</div> *@
+@*                             <div class="stat-label">معدل الرضا</div> *@
+@*                         </div> *@
+@*                         <div class="stat-item"> *@
+@*                             <div class="stat-number">24/7</div> *@
+@*                             <div class="stat-label">دعم مستمر</div> *@
+@*                         </div> *@
+@*                     </div> *@
+@*                 </div> *@
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+@*     <div class="hero-scroll-indicator"> *@
+@*         <div class="scroll-arrow"> *@
+@*             <i class="fas fa-chevron-down"></i> *@
+@*         </div> *@
+@*     </div> *@
+@* </section> *@
+
+<!-- Main Content -->
+<section class="partnership-form-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <!-- Partnership Form -->
+                <div class="partnership-form-card">
+                    <div class="form-header">
+                        <div class="form-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h3 class="form-title">معلومات الشراكة</h3>
+                        <p class="form-subtitle">املأ النموذج أدناه وسنتواصل معك في أقرب وقت</p>
+                    </div>
+                    
+                    <div class="form-body">
+                        <form asp-action="Create" method="post" class="partnership-form needs-validation" novalidate>
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+                            
+                            <!-- Company Information Section -->
+                            <div class="form-section">
+                                <div class="section-header">
+                                    <div class="section-icon">
+                                        <i class="fas fa-info-circle"></i>
+                                    </div>
+                                    <h5 class="section-title">معلومات الشركة</h5>
+                                </div>
+                                
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="CompanyName" class="form-label">
+                                                <i class="fas fa-building me-2"></i>اسم الشركة *
+                                            </label>
+                                            <input asp-for="CompanyName" class="form-control" placeholder="أدخل اسم الشركة" required />
+                                            <span asp-validation-for="CompanyName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Website" class="form-label">
+                                                <i class="fas fa-globe me-2"></i>الموقع الإلكتروني
+                                            </label>
+                                            <input asp-for="Website" class="form-control" placeholder="https://example.com" />
+                                            <span asp-validation-for="Website" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label asp-for="CompanyAddress" class="form-label">
+                                                <i class="fas fa-map-marker-alt me-2"></i>عنوان الشركة *
+                                            </label>
+                                            <textarea asp-for="CompanyAddress" class="form-control" rows="2" placeholder="أدخل العنوان الكامل للشركة" required></textarea>
+                                            <span asp-validation-for="CompanyAddress" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label asp-for="CompanyDescription" class="form-label">
+                                                <i class="fas fa-file-alt me-2"></i>وصف الشركة
+                                            </label>
+                                            <textarea asp-for="CompanyDescription" class="form-control" rows="3" placeholder="وصف مختصر عن نشاط الشركة وخدماتها"></textarea>
+                                            <span asp-validation-for="CompanyDescription" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label asp-for="ServicesOffered" class="form-label">
+                                                <i class="fas fa-cogs me-2"></i>الخدمات المقدمة
+                                            </label>
+                                            <input asp-for="ServicesOffered" class="form-control" placeholder="اذكر أهم الخدمات التي تقدمها شركتكم" />
+                                            <span asp-validation-for="ServicesOffered" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Contact Information Section -->
+                            <div class="form-section">
+                                <div class="section-header">
+                                    <div class="section-icon">
+                                        <i class="fas fa-user-tie"></i>
+                                    </div>
+                                    <h5 class="section-title">معلومات الاتصال</h5>
+                                </div>
+                                
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="ContactPersonName" class="form-label">
+                                                <i class="fas fa-user me-2"></i>اسم الشخص المسؤول *
+                                            </label>
+                                            <input asp-for="ContactPersonName" class="form-control" placeholder="الاسم الكامل" required />
+                                            <span asp-validation-for="ContactPersonName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Position" class="form-label">
+                                                <i class="fas fa-briefcase me-2"></i>المنصب *
+                                            </label>
+                                            <input asp-for="Position" class="form-control" placeholder="مدير عام، مدير التسويق، إلخ" required />
+                                            <span asp-validation-for="Position" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="Email" class="form-label">
+                                                <i class="fas fa-envelope me-2"></i>البريد الإلكتروني *
+                                            </label>
+                                            <input asp-for="Email" type="email" class="form-control" placeholder="example@company.com" required />
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="PhoneNumber" class="form-label">
+                                                <i class="fas fa-phone me-2"></i>رقم الهاتف *
+                                            </label>
+                                            <input asp-for="PhoneNumber" class="form-control" type="tel" placeholder="+967 123 456 789" required />
+                                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="WhatsAppNumber" class="form-label">
+                                                <i class="fab fa-whatsapp me-2"></i>رقم الواتساب
+                                            </label>
+                                            <input asp-for="WhatsAppNumber" class="form-control" placeholder="+967 123 456 789" />
+                                            <span asp-validation-for="WhatsAppNumber" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="PreferredContactMethod" class="form-label">
+                                                <i class="fas fa-comments me-2"></i>طريقة التواصل المفضلة
+                                            </label>
+                                            <select asp-for="PreferredContactMethod" class="form-select">
+                                                <option value="">اختر طريقة التواصل</option>
+                                                <option value="البريد الإلكتروني">البريد الإلكتروني</option>
+                                                <option value="الهاتف">الهاتف</option>
+                                                <option value="الواتساب">الواتساب</option>
+                                                <option value="اجتماع مباشر">اجتماع مباشر</option>
+                                            </select>
+                                            <span asp-validation-for="PreferredContactMethod" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Partnership Details Section -->
+                            <div class="form-section">
+                                <div class="section-header">
+                                    <div class="section-icon">
+                                        <i class="fas fa-handshake"></i>
+                                    </div>
+                                    <h5 class="section-title">تفاصيل الشراكة</h5>
+                                </div>
+                                
+                                <div class="row g-4">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="PartnershipType" class="form-label">
+                                                <i class="fas fa-tags me-2"></i>نوع الشراكة *
+                                            </label>
+                                            <select asp-for="PartnershipType" class="form-select" required>
+                                                <option value="">اختر نوع الشراكة</option>
+                                                <option value="شراكة طبية">شراكة طبية</option>
+                                                <option value="شراكة إعلانية">شراكة إعلانية</option>
+                                                <option value="شراكة تقنية">شراكة تقنية</option>
+                                                <option value="شراكة تجارية">شراكة تجارية</option>
+                                                <option value="شراكة تدريبية">شراكة تدريبية</option>
+                                                <option value="أخرى">أخرى</option>
+                                            </select>
+                                            <span asp-validation-for="PartnershipType" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="ProposedBudget" class="form-label">
+                                                <i class="fas fa-dollar-sign me-2"></i>الميزانية المقترحة (دولار)
+                                            </label>
+                                            <input asp-for="ProposedBudget" type="number" step="0.01" class="form-control" placeholder="0.00" />
+                                            <span asp-validation-for="ProposedBudget" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label asp-for="PartnershipDetails" class="form-label">
+                                                <i class="fas fa-clipboard-list me-2"></i>تفاصيل الشراكة المطلوبة *
+                                            </label>
+                                            <textarea asp-for="PartnershipDetails" class="form-control" rows="4" placeholder="اشرح بالتفصيل نوع الشراكة المطلوبة والأهداف المرجوة منها" required></textarea>
+                                            <span asp-validation-for="PartnershipDetails" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label asp-for="ReferenceSource" class="form-label">
+                                                <i class="fas fa-search me-2"></i>كيف تعرفت علينا؟
+                                            </label>
+                                            <select asp-for="ReferenceSource" class="form-select">
+                                                <option value="">اختر المصدر</option>
+                                                <option value="محرك البحث">محرك البحث (جوجل)</option>
+                                                <option value="وسائل التواصل الاجتماعي">وسائل التواصل الاجتماعي</option>
+                                                <option value="إعلان">إعلان</option>
+                                                <option value="توصية من صديق">توصية من صديق</option>
+                                                <option value="مؤتمر أو معرض">مؤتمر أو معرض</option>
+                                                <option value="أخرى">أخرى</option>
+                                            </select>
+                                            <span asp-validation-for="ReferenceSource" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <div class="form-group d-flex align-items-center">
+                                            <div class="form-check">
+                                                <input asp-for="IsUrgent" class="form-check-input" type="checkbox" />
+                                                <label asp-for="IsUrgent" class="form-check-label">
+                                                    <i class="fas fa-exclamation-triangle text-warning me-2"></i>طلب عاجل
+                                                </label>
+                                                <small class="form-text text-muted d-block">ضع علامة إذا كان الطلب يحتاج لمعالجة سريعة</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Submit Section -->
+                            <div class="form-actions">
+                                <div class="d-flex gap-3 justify-content-end flex-wrap">
+                                    <a asp-action="Index" class="btn btn-outline-secondary btn-lg">
+                                        <i class="fas fa-arrow-right me-2"></i>العودة
+                                    </a>
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-paper-plane me-2"></i>إرسال طلب الشراكة
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Features Section -->
+                <div class="features-section mt-5">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <h5 class="feature-title">سرعة الاستجابة</h5>
+                                <p class="feature-description">نرد على جميع الطلبات خلال 24 ساعة</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <h5 class="feature-title">الأمان والخصوصية</h5>
+                                <p class="feature-description">جميع بياناتكم محمية ومشفرة بأعلى المعايير</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-headset"></i>
+                                </div>
+                                <h5 class="feature-title">الدعم المستمر</h5>
+                                <p class="feature-description">فريق دعم متخصص لمساعدتكم في كل خطوة</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* Hero Section Styles */
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    position: relative;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="%23ffffff" stop-opacity="0.1"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23a)"/><circle cx="800" cy="300" r="150" fill="url(%23a)"/><circle cx="400" cy="700" r="120" fill="url(%23a)"/></svg>') no-repeat center center;
+    background-size: cover;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.min-vh-50 {
+    min-height: 50vh;
+}
+
+.hero-icon {
+    font-size: 4rem;
+    opacity: 0.9;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    opacity: 0.9;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-stats {
+    margin-top: 2rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1rem;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ffd700;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-top: 0.5rem;
+}
+
+.hero-scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.scroll-arrow {
+    animation: bounce 2s infinite;
+    font-size: 1.5rem;
+    opacity: 0.7;
+}
+
+@@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeInUp 1s ease-out;
+}
+
+@@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Form Section Styles */
+.partnership-form-section {
+    background: #f8f9fa;
+}
+
+.partnership-form-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-top: -50px;
+    position: relative;
+    z-index: 10;
+}
+
+.form-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 3rem 2rem;
+    text-align: center;
+}
+
+.form-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+}
+
+.form-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.form-subtitle {
+    opacity: 0.9;
+    font-size: 1.1rem;
+}
+
+.form-body {
+    padding: 3rem 2rem;
+}
+
+.form-section {
+    margin-bottom: 3rem;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.section-icon {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    font-size: 1.2rem;
+}
+
+.section-title {
+    color: #333;
+    font-weight: 600;
+    margin: 0;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.form-control,
+.form-select {
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.form-check-input:checked {
+    background-color: #667eea;
+    border-color: #667eea;
+}
+
+.form-actions {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid #e9ecef;
+}
+
+.btn {
+    border-radius: 10px;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+}
+
+.btn-outline-secondary {
+    border: 2px solid #6c757d;
+}
+
+.btn-outline-secondary:hover {
+    transform: translateY(-2px);
+}
+
+/* Features Section */
+.features-section {
+    margin-top: 3rem;
+}
+
+.feature-card {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    height: 100%;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.feature-icon {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 1.5rem;
+}
+
+.feature-title {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.feature-description {
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Responsive Design */
+@@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .form-header {
+        padding: 2rem 1rem;
+    }
+    
+    .form-body {
+        padding: 2rem 1rem;
+    }
+    
+    .stat-item {
+        padding: 0.5rem;
+    }
+    
+    .stat-number {
+        font-size: 1.5rem;
+    }
+}
+
+/* Animation for form elements */
+.form-group {
+    animation: slideInUp 0.6s ease-out;
+    animation-fill-mode: both;
+}
+
+.form-group:nth-child(1) { animation-delay: 0.1s; }
+.form-group:nth-child(2) { animation-delay: 0.2s; }
+.form-group:nth-child(3) { animation-delay: 0.3s; }
+.form-group:nth-child(4) { animation-delay: 0.4s; }
+
+@@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        // Form validation
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+
+        // Phone number formatting
+        document.addEventListener('DOMContentLoaded', function() {
+            const phoneInputs = document.querySelectorAll('input[type="tel"], input[placeholder*="967"]');
+            phoneInputs.forEach(function(input) {
+                input.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.startsWith('967')) {
+                        value = '+' + value;
+                    } else if (value.startsWith('0')) {
+                        value = '+967' + value.substring(1);
+                    }
+                    e.target.value = value;
+                });
+            });
+        });
+
+        // Auto-resize textareas
+        document.addEventListener('DOMContentLoaded', function() {
+            const textareas = document.querySelectorAll('textarea');
+            textareas.forEach(function(textarea) {
+                textarea.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = this.scrollHeight + 'px';
+                });
+            });
+        });
+
+        // Smooth scroll for hero scroll indicator
+        document.addEventListener('DOMContentLoaded', function() {
+            const scrollIndicator = document.querySelector('.hero-scroll-indicator');
+            if (scrollIndicator) {
+                scrollIndicator.addEventListener('click', function() {
+                    document.querySelector('.partnership-form-section').scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        });
+
+        // Form animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const formSections = document.querySelectorAll('.form-section');
+            formSections.forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(30px)';
+                section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(section);
+            });
+        });
+    </script>
+}
+

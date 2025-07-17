@@ -1,0 +1,409 @@
+@model IEnumerable<DAL.Data.Models.MedicalSpecialty>
+@{
+    ViewData["Title"] = "إدارة التخصصات الطبية";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="specialties-page">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">التخصصات الطبية</h2>
+            <p class="text-muted mb-0">إدارة وتحديث التخصصات الطبية المتاحة في النظام</p>
+        </div>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSpecialtyModal">
+            <i class="fas fa-plus me-2"></i>إضافة تخصص جديد
+        </button>
+    </div>
+
+    <!-- Statistics -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center p-3">
+                    <i class="fas fa-stethoscope fa-2x text-primary mb-2"></i>
+                    <h4 class="fw-bold mb-1">@(Model?.Count() ?? 0)</h4>
+                    <small class="text-muted">إجمالي التخصصات</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center p-3">
+                    <i class="fas fa-eye fa-2x text-success mb-2"></i>
+                    <h4 class="fw-bold mb-1">@(Model?.Count(s => s.IsVisibleToPatient) ?? 0)</h4>
+                    <small class="text-muted">مرئية للمرضى</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center p-3">
+                    <i class="fas fa-dollar-sign fa-2x text-warning mb-2"></i>
+                    <h4 class="fw-bold mb-1">@($"{(Model?.Where(s => s.Price.HasValue).Average(s => s.Price) ?? 0):F0}$")</h4>
+                    <small class="text-muted">متوسط السعر</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center p-3">
+                    <i class="fas fa-users fa-2x text-info mb-2"></i>
+                    <h4 class="fw-bold mb-1">@(Model?.Sum(s => s.DoctorSpecialties?.Count() ?? 0) ?? 0)</h4>
+                    <small class="text-muted">أطباء متخصصون</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Specialties Grid -->
+    <div class="row g-4" id="specialtiesGrid">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var specialty in Model)
+            {
+                <div class="col-lg-4 col-md-6" id="specialty-@specialty.Id">
+                    <div class="specialty-card card border-0 shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <div class="specialty-icon">
+                                    @if (!string.IsNullOrEmpty(specialty.IconClass))
+                                    {
+                                        <i class="@specialty.IconClass fa-3x text-primary"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fas fa-stethoscope fa-3x text-primary"></i>
+                                    }
+                                </div>
+                                <div class="d-flex flex-wrap gap-2 justify-content-end">
+                                    <button class="btn btn-sm btn-outline-primary" onclick="editSpecialty(@specialty.Id)">
+                                        <i class="fas fa-edit"></i> تعديل
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-secondary" onclick="toggleVisibility(@specialty.Id)">
+                                        <i class="fas fa-eye"></i> @(specialty.IsVisibleToPatient ? "إخفاء" : "إظهار")
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="deleteSpecialty(@specialty.Id)">
+                                        <i class="fas fa-trash"></i> حذف
+                                    </button>
+                                </div>
+                            </div>
+
+                            <h5 class="card-title fw-bold mb-2">@specialty.Name</h5>
+
+                            @if (!string.IsNullOrEmpty(specialty.Description))
+                            {
+                                <p class="card-text text-muted mb-3">@specialty.Description</p>
+                            }
+
+                            <div class="specialty-details">
+                                @if (specialty.Price.HasValue)
+                                {
+                                    <div class="price-info mb-2">
+                                        <span class="badge bg-primary">$@specialty.Price</span>
+                                        <small class="text-muted ms-2">سعر الاستشارة</small>
+                                    </div>
+                                }
+
+                                <div class="visibility-status mb-2">
+                                    @if (specialty.IsVisibleToPatient)
+                                    {
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-eye me-1"></i>مرئي للمرضى
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">
+                                            <i class="fas fa-eye-slash me-1"></i>مخفي
+                                        </span>
+                                    }
+                                </div>
+
+                                <div class="doctors-count">
+                                    <small class="text-muted">
+                                        <i class="fas fa-user-md me-1"></i>
+                                        @(specialty.DoctorSpecialties?.Count() ?? 0) طبيب متخصص
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="text-center py-5">
+                    <i class="fas fa-stethoscope fa-4x text-muted mb-3"></i>
+                    <h4 class="text-muted">لا توجد تخصصات مضافة بعد</h4>
+                    <p class="text-muted">ابدأ بإضافة التخصصات الطبية المتاحة في عيادتك</p>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addSpecialtyModal">
+                        <i class="fas fa-plus me-2"></i>إضافة أول تخصص
+                    </button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Add Specialty Modal -->
+<div class="modal fade" id="addSpecialtyModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">إضافة تخصص جديد</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addSpecialtyForm">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">اسم التخصص <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">سعر الاستشارة</label>
+                            <input type="number" class="form-control" name="price" min="0" step="0.01">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-bold">وصف التخصص</label>
+                            <textarea class="form-control" name="description" rows="3"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">رمز الأيقونة</label>
+                            <input type="text" class="form-control" name="iconClass" placeholder="fas fa-stethoscope">
+                            <small class="text-muted">استخدم رموز Font Awesome</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">الرؤية</label>
+                            <div class="form-check form-switch mt-2">
+                                <input class="form-check-input" type="checkbox" name="isVisibleToPatient" id="addVisibleSwitch">
+                                <label class="form-check-label" for="addVisibleSwitch">
+                                    مرئي للمرضى
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary" onclick="addSpecialty()">إضافة التخصص</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Specialty Modal -->
+<div class="modal fade" id="editSpecialtyModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">تعديل التخصص</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editSpecialtyForm">
+                    <input type="hidden" name="id" id="editSpecialtyId">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">اسم التخصص <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="name" id="editSpecialtyName" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">سعر الاستشارة</label>
+                            <input type="number" class="form-control" name="price" id="editSpecialtyPrice" min="0" step="0.01">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-bold">وصف التخصص</label>
+                            <textarea class="form-control" name="description" id="editSpecialtyDescription" rows="3"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">رمز الأيقونة</label>
+                            <input type="text" class="form-control" name="iconClass" id="editSpecialtyIcon" placeholder="fas fa-stethoscope">
+                            <small class="text-muted">استخدم رموز Font Awesome</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">الرؤية</label>
+                            <div class="form-check form-switch mt-2">
+                                <input class="form-check-input" type="checkbox" name="isVisibleToPatient" id="editVisibleSwitch">
+                                <label class="form-check-label" for="editVisibleSwitch">
+                                    مرئي للمرضى
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="button" class="btn btn-primary" onclick="updateSpecialty()">حفظ التغييرات</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function addSpecialty() {
+            const form = document.getElementById('addSpecialtyForm');
+            const formData = new FormData(form);
+
+            const specialty = {
+                name: formData.get('name'),
+                description: formData.get('description'),
+                price: formData.get('price') ? parseFloat(formData.get('price')) : null,
+                iconClass: formData.get('iconClass'),
+                isVisibleToPatient: formData.get('isVisibleToPatient') === 'on'
+            };
+
+            fetch('/MedicalSpecialty/Add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                },
+                body: JSON.stringify(specialty)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    $('#addSpecialtyModal').modal('hide');
+                    location.reload();
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('حدث خطأ أثناء إضافة التخصص');
+            });
+        }
+
+        function editSpecialty(id) {
+            fetch(`/MedicalSpecialty/GetSpecialty?id=${id}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const specialty = data.data;
+                    document.getElementById('editSpecialtyId').value = specialty.id;
+                    document.getElementById('editSpecialtyName').value = specialty.name;
+                    document.getElementById('editSpecialtyDescription').value = specialty.description || '';
+                    document.getElementById('editSpecialtyPrice').value = specialty.price || '';
+                    document.getElementById('editSpecialtyIcon').value = specialty.iconClass || '';
+                    document.getElementById('editVisibleSwitch').checked = specialty.isVisibleToPatient;
+
+                    $('#editSpecialtyModal').modal('show');
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('حدث خطأ أثناء جلب بيانات التخصص');
+            });
+        }
+
+        function updateSpecialty() {
+            const form = document.getElementById('editSpecialtyForm');
+            const formData = new FormData(form);
+
+            const specialty = {
+                id: parseInt(formData.get('id')),
+                name: formData.get('name'),
+                description: formData.get('description'),
+                price: formData.get('price') ? parseFloat(formData.get('price')) : null,
+                iconClass: formData.get('iconClass'),
+                isVisibleToPatient: formData.get('isVisibleToPatient') === 'on'
+            };
+
+            fetch('/MedicalSpecialty/Edit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                },
+                body: JSON.stringify(specialty)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    $('#editSpecialtyModal').modal('hide');
+                    location.reload();
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('حدث خطأ أثناء تحديث التخصص');
+            });
+        }
+
+        function deleteSpecialty(id) {
+            if (confirm('هل أنت متأكد من حذف هذا التخصص؟ لا يمكن التراجع عن هذا الإجراء.')) {
+                fetch(`/MedicalSpecialty/Delete?id=${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById(`specialty-${id}`).remove();
+                        location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('حدث خطأ أثناء حذف التخصص');
+                });
+            }
+        }
+
+        function toggleVisibility(id) {
+            fetch(`/MedicalSpecialty/ToggleVisibility?id=${id}`, {
+                method: 'POST',
+                headers: {
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('حدث خطأ أثناء تحديث حالة الرؤية');
+            });
+        }
+    </script>
+}
+
+<style>
+    .specialty-card {
+        transition: transform 0.2s ease-in-out;
+    }
+
+        .specialty-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .specialty-icon {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+

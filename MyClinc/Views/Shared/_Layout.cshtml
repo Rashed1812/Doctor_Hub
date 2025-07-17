@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Doctor Hub | صحتك أولويتنا</title>
+    <meta name="description" content="Doctor Hub - منصة طبية متخصصة تقدم أفضل الاستشارات الطبية والخدمات الصحية. صحتك أولويتنا، خبرتنا ثقتك." />
+    <meta name="keywords" content="استشارات طبية، خدمات صحية، أطباء متخصصون، عيادة طبية، صحة، طب" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="~/images/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="~/images/favicon.ico">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Doctor Hub - صحتك أولويتنا" />
+    <meta property="og:description" content="منصة طبية متخصصة تقدم أفضل الاستشارات الطبية والخدمات الصحية مع فريق من الأطباء المتخصصين." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://doctorhub.com" />
+    
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.rtl.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MyClinc.styles.css" asp-append-version="true" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Toastr CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+    <!-- International Telephone Input CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/css/intlTelInput.css" />
+    <link rel="stylesheet" href="~/css/intl-tel-input-custom.css" asp-append-version="true" />
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link href="~/css/MedicalWhiteDesign.css" rel="stylesheet" />
+    <link href="~/css/modern-notifications.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg fixed-top">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-stethoscope me-2"></i>Doctor Hub
+                    <small class="d-block" style="font-size: 0.7rem; color: var(--text-medium); font-weight: 400;">صحتك أولويتنا</small>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-lg-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1 justify-content-center">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                                الرئيسية
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="About" asp-action="Index">
+                                من نحن
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Services" asp-action="Index">
+                                الخدمات
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Courses" asp-action="Index">
+                                الكورسات
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="DoctorJoinRequests" asp-action="Create">
+                                انضم إلينا
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Partnership" asp-action="Index">
+                                التعاون
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-primary text-white" asp-area="" asp-controller="Consultation" asp-action="Book">
+                                احجز استشارة
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <div class="container-fluid p-0">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h5><i class="fas fa-stethoscope me-2"></i>Doctor Hub</h5>
+                    <p>نقدم أفضل الخدمات الطبية والاستشارات المتخصصة بأحدث التقنيات والمعايير العالمية لضمان صحة أفضل لمرضانا.</p>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/dr.marwan_alani/" target="_blank" title="إنستغرام"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.tiktok.com/@@dr.marwanalani" target="_blank" title="تيك توك"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://www.youtube.com/@@Dr.Marwan-alani" target="_blank" title="يوتيوب"><i class="fab fa-youtube"></i></a>
+                        <a href="https://t.me/Dr_marwan_rdaif" target="_blank" title="تيليجرام"><i class="fab fa-telegram"></i></a>
+                        <a href="https://wa.me/9647715513344" target="_blank" title="واتساب"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h5>خدماتنا</h5>
+                    <p><a asp-controller="Services" asp-action="Index">الاستشارات الطبية</a></p>
+                    <p><a href="#">التغذية العلاجية</a></p>
+                    <p><a href="#">الجراحة العامة</a></p>
+                    <p><a href="#">الطب النفسي</a></p>
+                    <p><a href="#">طب الأطفال</a></p>
+                    <p><a href="#">طب النساء والولادة</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h5>روابط مهمة</h5>
+                    <p><a asp-controller="About" asp-action="Index">من نحن</a></p>
+                    <p><a asp-controller="Partnership" asp-action="Index">الشراكات</a></p>
+                    <p><a asp-controller="Courses" asp-action="Index">الكورسات التدريبية</a></p>
+                    <p><a asp-controller="DoctorJoinRequests" asp-action="Create">انضم كطبيب</a></p>
+                    <p><a href="#">سياسة الخصوصية</a></p>
+                    <p><a href="#">الشروط والأحكام</a></p>
+                </div>
+                
+                <div class="footer-section">
+                    <h5>معلومات التواصل</h5>
+                    <p><i class="fas fa-phone me-2"></i><a href="tel:+9647715513344">++9647715513344</a></p>
+                    <p><i class="fas fa-envelope me-2"></i><a href="mailto:doctorhub2025">info@doctor-medical.com</a></p>
+                    <p><i class="fab fa-whatsapp me-2"></i><a href="https://wa.me/9647715513344" target="_blank">واتساب: +9647715513344</a></p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <p>&copy; 2025 Doctor Hub. جميع الحقوق محفوظة.</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <div class="footer-bottom-links">
+                            <a href="#">سياسة الخصوصية</a>
+                            <span class="mx-2">|</span>
+                            <a href="#">الشروط والأحكام</a>
+                            <span class="mx-2">|</span>
+                            <a href="#">اتصل بنا</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <s    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/modern-notifications.js" asp-append-version="true"></script>
+    <!-- International Telephone Input JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/js/intlTelInput.min.js"></script>
+    <script src="~/js/phone-input.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)se)
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll("a[href^=\"#\"]").forEach(anchor => {
+            anchor.addEventListener("click", function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute("href")).scrollIntoView({
+                    behavior: "smooth"
+                });
+            });
+        });
+
+        // Add animation classes on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("fade-in");
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll(".card, .stats-card").forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+
+    <!-- Floating Social Media Links -->
+    <div class="floating-social">
+        <a href="https://wa.me/9647715513344" target="_blank" class="whatsapp" title="واتساب">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        <a href="https://t.me/Dr_marwan_rdaif" target="_blank" class="telegram" title="تيليجرام">
+            <i class="fab fa-telegram"></i>
+        </a>
+    </div>
+
+</body>
+</html>
+

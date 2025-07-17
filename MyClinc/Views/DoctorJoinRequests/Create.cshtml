@@ -1,0 +1,343 @@
+@model DAL.Data.Models.DoctorJoinRequest
+@{
+    ViewData["Title"] = "انضم إلينا كطبيب";
+}
+
+<!-- مكتبات intl-tel-input -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/css/intlTelInput.css" />
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-6 hero-content">
+                <h1 class="hero-title fade-in">انضم إلى فريقنا <span style="color: var(--text-medium );">الطبي المتميز</span></h1>
+                <p class="hero-subtitle fade-in">كن جزءاً من فريق طبي متخصص يقدم أفضل الخدمات الطبية.</p>
+                <div class="hero-buttons fade-in">
+                    <a href="#application-form" class="btn btn-primary">املأ طلب الانضمام</a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center slide-in-right">
+                <img src="~/images/medical_assets/healthcare_professional_1.jpg" alt="فريق طبي" class="img-fluid rounded-3 shadow-lg" style="max-height: 500px; object-fit: cover;">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Form -->
+<div class="doctor-join-page">
+    <div class="container">
+        <form asp-action="Create" method="post" enctype="multipart/form-data" class="application-form" id="application-form">
+            <div class="form-section mb-5">
+                <h4 class="section-title">معلومات شخصية</h4>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="FullName" class="form-label">الاسم الكامل <span class="text-danger">*</span></label>
+                        <input asp-for="FullName" class="form-control form-control-lg" required />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Email" class="form-label">البريد الإلكتروني <span class="text-danger">*</span></label>
+                        <input asp-for="Email" class="form-control form-control-lg" required />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="PhoneNumber" class="form-label">رقم الهاتف <span class="text-danger">*</span></label>
+                        <div class="phone-input-container">
+                            <div class="input-group">
+                                <input asp-for="PhoneNumber" id="phoneNumberDoctor" class="form-control form-control-lg" type="tel" required />
+                            </div>
+                            @* تم إزالة الحقل المخفي: <input name="FullPhoneNumber" id="fullPhoneNumberDoctor" type="hidden" /> *@
+                            <small class="form-text text-muted"><i class="fas fa-info-circle me-1"></i>أدخل رقم الهاتف</small>
+                        </div>
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        <div id="phoneErrorDoctor" class="text-danger mt-1" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Professional Information -->
+            <div class="form-section mb-5">
+                <h4 class="section-title fw-bold mb-3">
+                    <i class="fas fa-graduation-cap me-2 text-success"></i>المعلومات المهنية
+                </h4>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="ExperienceYears" class="form-label fw-bold">سنوات الخبرة <span class="text-danger">*</span></label>
+                        <input asp-for="ExperienceYears" type="number" min="0" class="form-control form-control-lg" placeholder="عدد سنوات الخبرة" required>
+                        <span asp-validation-for="ExperienceYears" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="EducationalDegree" class="form-label fw-bold">المؤهل التعليمي <span class="text-danger">*</span></label>
+                        <input asp-for="EducationalDegree" class="form-control form-control-lg" placeholder="مثل: بكالوريوس الطب والجراحة" required>
+                        <span asp-validation-for="EducationalDegree" class="text-danger"></span>
+                    </div>
+                    <div class="col-12">
+                        <label asp-for="CertificatesAndCourses" class="form-label fw-bold">الشهادات والدورات</label>
+                        <textarea asp-for="CertificatesAndCourses" class="form-control" rows="3" placeholder="اذكر الشهادات والدورات التدريبية التي حصلت عليها"></textarea>
+                    </div>
+                    <div class="col-md-6">
+                    <label asp-for="LicenseNumber" class="form-label">رقم الترخيص <span class="text-danger">*</span></label>
+                    <input asp-for="LicenseNumber" class="form-control form-control-lg" required />
+                    <span asp-validation-for="LicenseNumber" class="text-danger"></span>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Specialties -->
+            <div class="form-section mb-5">
+                <h4 class="section-title fw-bold mb-3">
+                    <i class="fas fa-stethoscope me-2 text-info"></i>التخصصات الطبية
+                </h4>
+                <div class="row">
+                    <div class="col-12">
+                        <label class="form-label fw-bold">اختر تخصصاتك <span class="text-danger">*</span></label>
+                        <div class="specialties-grid">
+                            @if (ViewBag.Specialties != null)
+                            {
+                                @foreach (var specialty in ViewBag.Specialties)
+                                {
+                                            <div class="form-check specialty-item p-3 mb-2 border rounded">
+                                                <input class="form-check-input" type="checkbox" name="SelectedSpecialties" value="@specialty.Id" id="specialty_@specialty.Id">
+                                                <label class="form-check-label fw-bold" for="specialty_@specialty.Id">
+                                            @specialty.Name
+                                            @if (!string.IsNullOrEmpty(specialty.Description))
+                                            {
+                                                            <small class="d-block text-muted">@specialty.Description</small>
+                                            }
+                                                </label>
+                                            </div>
+                                }
+                            }
+                            else
+                            {
+                                    <div class="form-check specialty-item p-3 mb-2 border rounded">
+                                        <input class="form-check-input" type="checkbox" name="SelectedSpecialties" value="1" id="specialty_1">
+                                        <label class="form-check-label fw-bold" for="specialty_1">
+                                            التغذية العلاجية
+                                            <small class="d-block text-muted">علاج اضطرابات التغذية والسمنة</small>
+                                        </label>
+                                    </div>
+                                    <div class="form-check specialty-item p-3 mb-2 border rounded">
+                                        <input class="form-check-input" type="checkbox" name="SelectedSpecialties" value="2" id="specialty_2">
+                                        <label class="form-check-label fw-bold" for="specialty_2">
+                                            الجراحة العامة
+                                            <small class="d-block text-muted">العمليات الجراحية المتقدمة</small>
+                                        </label>
+                                    </div>
+                                    <div class="form-check specialty-item p-3 mb-2 border rounded">
+                                        <input class="form-check-input" type="checkbox" name="SelectedSpecialties" value="3" id="specialty_3">
+                                        <label class="form-check-label fw-bold" for="specialty_3">
+                                            الطب النفسي
+                                            <small class="d-block text-muted">علاج الاضطرابات النفسية</small>
+                                        </label>
+                                    </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Biography -->
+            <div class="form-section mb-5">
+                <h4 class="section-title fw-bold mb-3">
+                    <i class="fas fa-file-alt me-2 text-warning"></i>نبذة شخصية
+                </h4>
+                <div class="row">
+                    <div class="col-12">
+                        <label asp-for="Biography" class="form-label fw-bold">نبذة عنك <span class="text-danger">*</span></label>
+                        <textarea asp-for="Biography" class="form-control" rows="5" placeholder="اكتب نبذة مختصرة عن خبرتك المهنية وإنجازاتك" required></textarea>
+                        <span asp-validation-for="Biography" class="text-danger"></span>
+                        <small class="form-text text-muted">اكتب نبذة شاملة عن خبرتك وتخصصك (على الأقل 100 كلمة)</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Documents Upload -->
+            <div class="form-section mb-5">
+                <h4 class="section-title fw-bold mb-3">
+                    <i class="fas fa-upload me-2 text-danger"></i>المستندات المطلوبة
+                </h4>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label asp-for="GraduationCertificateFile" class="form-label fw-bold">شهادة التخرج <span class="text-danger">*</span></label>
+                        <input asp-for="GraduationCertificateFile" type="file" class="form-control form-control-lg" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required>
+                        <span asp-validation-for="GraduationCertificateFile" class="text-danger"></span>
+                        <small class="form-text text-muted">PDF, Word, JPG, PNG (حد أقصى 5MB)</small>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="CertificateFile" class="form-label fw-bold">شهادة التخصص <span class="text-danger">*</span></label>
+                        <input asp-for="CertificateFile" type="file" class="form-control form-control-lg" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required>
+                        <span asp-validation-for="CertificateFile" class="text-danger"></span>
+                        <small class="form-text text-muted">PDF, Word, JPG, PNG (حد أقصى 5MB)</small>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="LicenseFile" class="form-label fw-bold">رخصة المزاولة <span class="text-danger">*</span></label>
+                        <input asp-for="LicenseFile" type="file" class="form-control form-control-lg" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" required>
+                        <span asp-validation-for="LicenseFile" class="text-danger"></span>
+                        <small class="form-text text-muted">PDF, Word, JPG, PNG (حد أقصى 5MB)</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Terms and Conditions -->
+            <div class="form-section mb-5">
+                <div class="form-check p-3 border rounded" style="background: rgba(102, 126, 234, 0.1);">
+                    <input asp-for="IsTermsAccepted" class="form-check-input" type="checkbox" required>
+                    <label asp-for="IsTermsAccepted" class="form-check-label fw-bold">
+                        أوافق على الشروط والأحكام <span class="text-danger">*</span>
+                    </label>
+                    <span asp-validation-for="IsTermsAccepted" class="text-danger d-block"></span>
+                    <small class="form-text text-muted">
+                        بالموافقة، أؤكد أن جميع المعلومات المقدمة صحيحة وأوافق على شروط وأحكام الانضمام للفريق الطبي.
+                    </small>
+                </div>
+            </div>
+
+            <!-- أزرار -->
+            <div class="form-actions text-center">
+                <button type="submit" class="btn btn-primary btn-lg px-5">إرسال الطلب</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+        <!-- مكتبات intl-tel-input JS -->
+        <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/intlTelInput.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js"></script> @* utils.js ضروري للتحقق من صحة الرقم *@
+
+    @* هذا الجزء يقوم بتحميل jQuery و jquery.validate و jquery.validate.unobtrusive بالترتيب الصحيح *@
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+        <!-- JS المخصص للصفحة (تم دمج جميع السكريبتات هنا) -->
+        <script>
+            // Phone input initialization and validation
+            document.addEventListener('DOMContentLoaded', function () {
+                const phoneInput = document.getElementById('phoneNumberDoctor');
+                const phoneError = document.getElementById('phoneErrorDoctor');
+
+                if (phoneInput) {
+                    const iti = window.intlTelInput(phoneInput, {
+                        initialCountry: 'auto',
+                        nationalMode: true,
+                        separateDialCode: true,
+                        utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
+                        geoIpLookup: function (callback ) {
+                            fetch('https://ipapi.co/json' )
+                                .then(res => res.json())
+                                .then(data => callback(data.country_code))
+                                .catch(() => callback('YE')); // Fallback to Yemen if lookup fails
+                        }
+                    });
+
+                    function validatePhoneNumber() {
+                        if (iti.isValidNumber()) {
+                            // هام: قم بتعيين الرقم الكامل الصالح مباشرة إلى حقل الإدخال المرئي المرتبط بـ asp-for
+                            phoneInput.value = iti.getNumber();
+                            phoneError.style.display = 'none';
+                            phoneInput.classList.remove('is-invalid');
+                            phoneInput.classList.add('is-valid');
+                        } else {
+                            phoneInput.value = ''; // مسح الحقل إذا كان غير صالح لمنع الإرسال الجزئي
+                            phoneError.textContent = 'رقم الهاتف غير صالح.';
+                            phoneError.style.display = 'block';
+                            phoneInput.classList.add('is-invalid');
+                            phoneInput.classList.remove('is-valid');
+                        }
+                    }
+
+                    phoneInput.addEventListener('blur', validatePhoneNumber);
+                    phoneInput.addEventListener('input', () => {
+                        // إعادة التحقق عند الكتابة إذا كان الخطأ ظاهرًا
+                        if (phoneError.style.display === 'block') {
+                            validatePhoneNumber();
+                        }
+                    });
+                    phoneInput.addEventListener('keypress', function (e) {
+                        // السماح فقط بالأرقام وبعض مفاتيح التحكم
+                        if (!/[0-9]/.test(e.key) && !['Backspace', 'Delete', 'Tab', 'Enter'].includes(e.key)) {
+                            e.preventDefault();
+                        }
+                    });
+                }
+            });
+
+            // Animation and Form progress
+            const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("visible"); // إضافة فئة "visible" للعناصر المرئية
+                    }
+                });
+            }, observerOptions);
+
+            document.addEventListener('DOMContentLoaded', function () {
+                setTimeout(() => {
+                    // ملاحظة: تأكد أن هذه المحددات (selectors) تتطابق مع عناصر HTML الخاصة بك للرسوم المتحركة
+                    document.querySelectorAll(".fade-in, .slide-in-right, .slide-in-left, .card, .stats-card").forEach(el => {
+                        observer.observe(el);
+                    });
+                }, 100);
+
+                const form = document.querySelector('.application-form');
+                const requiredFields = form.querySelectorAll('[required]');
+                const progressContainer = document.createElement('div');
+                progressContainer.className = 'form-progress';
+                progressContainer.innerHTML = '<div class="form-progress-bar" style="width: 0%"></div>';
+                form.insertBefore(progressContainer, form.firstChild);
+                const progressBar = progressContainer.querySelector('.form-progress-bar');
+
+                function updateProgress() {
+                    let filled = 0;
+                    requiredFields.forEach(field => {
+                        if (field.type === 'checkbox') {
+                            if (field.checked) {
+                                filled++;
+                            }
+                        } else if (field.type === 'file') {
+                            if (field.files.length > 0) {
+                                filled++;
+                            }
+                        } else if (field.value.trim() !== '') {
+                            filled++;
+                        }
+                    });
+                    progressBar.style.width = (filled / requiredFields.length) * 100 + '%';
+                }
+
+                requiredFields.forEach(field => {
+                    field.addEventListener('input', updateProgress);
+                    field.addEventListener('change', updateProgress); // 'change' مهم لمربعات الاختيار والملفات
+                });
+
+                updateProgress(); // تحديث التقدم عند تحميل الصفحة لأول مرة
+            });
+        </script>
+}
+
+<!-- CSS -->
+<style>
+    .doctor-join-page {
+        padding: 50px 0;
+        background-color: #f8f9fa;
+        border-radius: 15px;
+    }
+
+    .form-progress {
+        height: 5px;
+        background: #ddd;
+        border-radius: 3px;
+        margin-bottom: 30px;
+        overflow: hidden;
+    }
+
+    .form-progress-bar {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        transition: width 0.3s ease;
+    }
+</style>
