@@ -768,7 +768,7 @@ namespace MyClinc.Controllers
             if (partnership != null)
             {
                 partnership.Status = PartnershipStatus.Rejected;
-                partnership.RejectionReason = reason; // Assuming you add this field to Partnership model
+                partnership.RejectionReason = reason;
                 await _partnershipRepo.SaveAsync();
                 TempData["SuccessMessage"] = "تم رفض طلب الشراكة";
             }
@@ -795,7 +795,6 @@ namespace MyClinc.Controllers
                 return Json(new { success = false, message = "حدث خطأ أثناء حذف طلب الطبيب: " + ex.Message });
             }
         }
-
         [HttpDelete]
         public async Task<IActionResult> DeleteConsultation(int id)
         {
