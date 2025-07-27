@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DAL.Data.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Data
 {
-    public class ClincDbContext : DbContext
+    public class ClincDbContext : IdentityDbContext<ApplicationUser>
     {
         public ClincDbContext(DbContextOptions<ClincDbContext> options)
             : base(options)
@@ -19,15 +17,19 @@ namespace DAL.Data
         public DbSet<MedicalSpecialty> MedicalSpecialties { get; set; }
         public DbSet<DoctorJoinRequest> DoctorJoinRequests { get; set; }
         public DbSet<DoctorSpecialty> DoctorSpecialties { get; set; }
-        public DbSet<CustomerReview> CustomerReviews { get; set; } // Added DbSet for CustomerReview
-        public DbSet<Partnership> Partnerships { get; set; } // Added DbSet for Partnership
-        public DbSet<WhatsAppUserSession> WhatsAppUserSessions { get; set; } // Added DbSet for WhatsApp sessions
+        public DbSet<CustomerReview> CustomerReviews { get; set; }
+        public DbSet<Partnership> Partnerships { get; set; }
+        public DbSet<WhatsAppUserSession> WhatsAppUserSessions { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<CourseChapter> CourseChapters { get; set; }
+        public DbSet<CoursePurchaseRequest> CoursePurchases { get; set; }
+        public DbSet<CourseVideo> CourseVideos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder); // مهم جداً لتهيئة Identity
 
-            // اجعل جميع الخصائص النصية تدعم اللغة العربية
+            // اجعل جميع الخصائص النصية تدعم Unicode (العربية)
             foreach (var entity in modelBuilder.Model.GetEntityTypes())
             {
                 var stringProps = entity.ClrType
@@ -41,6 +43,8 @@ namespace DAL.Data
                                 .IsUnicode(true);
                 }
             }
+
+            // تكوين علاقات DoctorSpecialty مع Composite Key
             modelBuilder.Entity<DoctorSpecialty>()
                 .HasKey(ds => new { ds.DoctorJoinRequestId, ds.MedicalSpecialtyId });
 
@@ -53,6 +57,34 @@ namespace DAL.Data
                 .HasOne(ds => ds.MedicalSpecialty)
                 .WithMany(ms => ms.DoctorSpecialties)
                 .HasForeignKey(ds => ds.MedicalSpecialtyId);
+
+            // CourseVideo - Course (واحد إلى واحد)
+            modelBuilder.Entity<Course>()
+                .HasOne(c => c.Videos)
+                .WithOne(v => v.Course)
+                .HasForeignKey<CourseVideo>(v => v.CourseId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // CourseChapter - Course (واحد إلى كثير)
+            modelBuilder.Entity<CourseChapter>()
+                .HasOne(cc => cc.Course)
+                .WithMany(c => c.Chapters)
+                .HasForeignKey(cc => cc.CourseId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // CoursePurchaseRequest - Course (واحد إلى كثير)
+            modelBuilder.Entity<CoursePurchaseRequest>()
+                .HasOne(cpr => cpr.Course)
+                .WithMany(c => c.PurchaseRequests)
+                .HasForeignKey(cpr => cpr.CourseId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // CoursePurchaseRequest - ApplicationUser (واحد إلى كثير)
+            modelBuilder.Entity<CoursePurchaseRequest>()
+                .HasOne(cpr => cpr.User)
+                .WithMany(u => u.CoursePurchaseRequests)
+                .HasForeignKey(cpr => cpr.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Seed MedicalSpecialties
             modelBuilder.Entity<MedicalSpecialty>().HasData(
@@ -200,5 +232,3 @@ namespace DAL.Data
         }
     }
 }
-
-
